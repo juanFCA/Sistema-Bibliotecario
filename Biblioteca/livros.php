@@ -4,6 +4,7 @@ require_once "view/template.php";
 require_once "dao/livroDAO.php";
 require_once "modelo/livro.php";
 require_once "db/conexao.php";
+require_once "dao/categoriaDAO.php";
 
 $object = new livroDAO();
 
@@ -11,56 +12,35 @@ template::header();
 template::sidebar();
 template::mainpanel();
 
-
-// Verificar se foi enviando dados via POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = (isset($_POST["id"]) && $_POST["id"] != null) ? $_POST["id"] : "";
-    $titulo = (isset($_POST["titulo"]) && $_POST["titulo"] != null) ? $_POST["titulo"] : "";
-    $isbn = (isset($_POST["isbn"]) && $_POST["isbn"] != null) ? $_POST["isbn"] : "";
-    $edicao = (isset($_POST["edicao"]) && $_POST["edicao"] != null) ? $_POST["edicao"] : "";
-    $ano = (isset($_POST["ano"]) && $_POST["ano"] != null) ? $_POST["ano"] : "";
-    $upload = (isset($_POST["upload"]) && $_POST["upload"] != null) ? $_POST["upload"] : "";
-} else if (!isset($id)) {
-    // Se não se não foi setado nenhum valor para variável $id
-    $id = (isset($_GET["id"]) && $_GET["id"] != null) ? $_GET["id"] : "";
-    $titulo = null;
-    $isbn = null;
-    $edicao = null;
-    $ano = null;
-    $upload = null;
+if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
+    $livro = new livro();
+    if(isset($_POST["id"])){
+        $livro->setIdtbLivro($_POST["id"]);
+    }
+    $livro->setTitulo($_POST["titulo"]);
+    $livro->setIsbn($_POST["isbn"]);
+    $livro->setAno($_POST["ano"]);
+    $livro->setEdicao($_POST["edicao"]);
+    $livro->setUpload($_POST["upload"]);
+    $livro->setTbCategoriaIdtbCategoria($_POST["categoria"]);
+    $livro->setTbEditoraIdtbEditora($_POST["editora"]);
+    $object->salvarAtualizar($livro);
+    unset($livro);
 }
 
-if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != "") {
-    $livro = new livro($id, "", "", "", "", "", "", "");
-    $msg = $object->atualizar($livro);
-    $id = $msg->getIdtbLivro();
-    $titulo = $msg->getTitulo();
-    $isbn = $msg->getIsbn();
-    $edicao = $msg->getEdicao();
-    $ano = $msg->getAno();
-    $upload = $msg->getUpload();
-}
-
-if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $titulo != "" && $isbn != "" && $edicao != "" && $ano != "" && $upload != "") {
-    $livro = new livro($id, $titulo, $isbn, $edicao, $ano, $upload);
-    $msg = $object->salvar($livro);
-    $id = null;
-    $titulo = null;
-    $isbn = null;
-    $edicao = null;
-    $ano = null;
-    $upload = null;
+if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
+    $id = $_REQUEST["id"];
+    $livro = new livro();
+    $livro = $object->select($id);
 
 }
-if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
-    $livro = new livro($id, "", "", "", "", "", "", "");
-    $msg = $object->remover($livro);
-    $id = null;
-    $titulo = null;
-    $isbn = null;
-    $edicao = null;
-    $ano = null;
-    $upload = null;
+
+if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
+    $id = $_REQUEST["id"];
+    $livro = new livro();
+    $livro = $object->select($id);
+    $object->remover($livro);
+    unset($livro);
 }
 ?>
 
@@ -111,6 +91,21 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                             echo (isset($upload) && ($upload != null || $upload != "")) ? $upload : '';
                             ?>"/>
                             <br/>
+                            <label>Categoria</label>
+                            <select name="categoria" class="form-control">
+                                <option value="0" selected>Selecione a Categoria</option>
+                                <?php
+                                $categoriaDAO = new categoriaDAO();
+                                $categorias = $categoriaDAO->buscarTodos();
+                                foreach($categorias as $categoria){
+                                    if(isset($livro) && $livro != null && $categoria->getNomeCategoria() == $livro->getCategoria()){
+                                        ?>
+                                        <option value="<?php echo $categoria->getIdCategoria() ?>" selected><?php echo $categoria->getNomeCategoria()?></option>
+                                        <?php
+                                    }else{ ?>
+                                        <option value="<?php echo $categoria->getIdCategoria() ?>"><?php echo $categoria->getNomeCategoria()?></option>
+                                    <?php }} ?>
+                            </select>
                             <input class="btn btn-success" type="submit" value="REGISTRAR">
                             <hr>
                         </form>

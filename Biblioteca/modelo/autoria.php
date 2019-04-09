@@ -5,7 +5,11 @@
         private $tb_livro_idtb_livro;
         private $tb_autores_idtb_autores;
 
-        public function __construct($tb_livro_idtb_livro, $tb_autores_idtb_autores)
+        public function __construct()
+        {
+        }
+
+        public function __construct1($tb_livro_idtb_livro, $tb_autores_idtb_autores)
         {
             $this->tb_livro_idtb_livro = $tb_livro_idtb_livro;
             $this->tb_autores_idtb_autores = $tb_autores_idtb_autores;

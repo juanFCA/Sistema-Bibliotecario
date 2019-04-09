@@ -71,6 +71,26 @@ class categoriaDAO
         }
     }
 
+    public function buscarTodos(){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_categoria");
+            if ($statement->execute()) {
+                $categorias = [];
+                while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
+                    $categoria = new categoria();
+                    $categoria->setIdCategoria($rs->idtb_categoria);
+                    $categoria->setNomeCategoria($rs->nomeCategoria);
+                    array_push($categorias, $categoria);
+                }
+                return $categorias;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
     public function tabelapaginada()
     {
         //carrega o banco

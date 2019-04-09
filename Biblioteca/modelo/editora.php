@@ -5,7 +5,11 @@
         private $idtb_editora;
         private $nomeEditora;
 
-        public function __construct($idtb_editora, $nomeEditora)
+        public function __construct()
+        {
+        }
+
+        public function __construct1($idtb_editora, $nomeEditora)
         {
             $this->idtb_editora = $idtb_editora;
             $this->nomeEditora = $nomeEditora;

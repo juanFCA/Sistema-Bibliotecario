@@ -7,7 +7,11 @@
         private $dataEmprestimo;
         private $observacoes;
 
-        public function __construct($tb_usuario_idtb_usuario, $tb_exemplar_idtb_exemplar, $dataEmprestimo, $observacoes)
+        public function __construct()
+        {
+        }
+
+        public function __construct1($tb_usuario_idtb_usuario, $tb_exemplar_idtb_exemplar, $dataEmprestimo, $observacoes)
         {
             $this->tb_usuario_idtb_usuario = $tb_usuario_idtb_usuario;
             $this->tb_exemplar_idtb_exemplar = $tb_exemplar_idtb_exemplar;

@@ -9,15 +9,11 @@
         private $email;
         private $senha;
 
-        /**
-         * usuario constructor.
-         * @param $idtb_usuario
-         * @param $nomeUsuario
-         * @param $tipo
-         * @param $email
-         * @param $senha
-         */
-        public function __construct($idtb_usuario, $nomeUsuario, $tipo, $email, $senha)
+        public function __construct()
+        {
+        }
+
+        public function __construct1($idtb_usuario, $nomeUsuario, $tipo, $email, $senha)
         {
             $this->idtb_usuario = $idtb_usuario;
             $this->nomeUsuario = $nomeUsuario;

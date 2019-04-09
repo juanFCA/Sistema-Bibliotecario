@@ -74,39 +74,6 @@ class livroDAO
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " .$erro->getMessage();
-        }
-    }
-
-    public function atualizar($livro)
-    {
-        try {
-            $statement = Conexao::getInstance()->prepare("SELECT idtb_livro, 
-                                                                            titulo, 
-                                                                            isbn, 
-                                                                            edicao, 
-                                                                            ano, 
-                                                                            upload, 
-                                                                            tb_editora_idtb_editora, 
-                                                                            tb_categoria_idtb_categoria 
-                                                                    FROM tb_usuario WHERE idtb_usuario=:id");
-            $statement->bindValue(":id", $livro->getIdtbLivro());
-
-            if ($statement->execute()) {
-                $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $livro->setIdtbLivro($rs->idtb_livro);
-                $livro->setTitulo($rs->titulo);
-                $livro->setIsbn($rs->isbn);
-                $livro->setEdicao($rs->edicao);
-                $livro->setAno($rs->ano);
-                $livro->setUpload($rs->upload);
-                $livro->setTbEditoraIdtbEditora($rs->tb_editora_idtb_editora);
-                $livro->setTbCategoriaIdtbCategoria($rs->tb_categoria_idtb_categoria);
-                return $livro;
-            } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
-            }
-        } catch (PDOException $erro) {
             return "Erro: " . $erro->getMessage();
         }
     }
