@@ -71,6 +71,46 @@ class editoraDAO
         }
     }
 
+    public function buscarTodos(){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_editora");
+            if ($statement->execute()) {
+                $editoras = [];
+                while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
+                    $editora = new editora();
+                    $editora->setIdtbEditora($rs->idtb_editora);
+                    $editora->setNomeEditora($rs->nomeEditora);
+                    array_push($editoras, $editora);
+                }
+                return $editoras;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
+    public function buscarEditora($id){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_editora AS id,
+                                                                           a.nomeEditora AS nomeEditora
+                                                                      FROM tb_editora a                                            
+                                                                     WHERE a.idtb_editora = " . $id);
+            if ($statement->execute()) {
+                $rs = $statement->fetch(PDO::FETCH_OBJ);
+                $editora = new editora();
+                $editora->setIdtbEditora($rs->id);
+                $editora->setNomeEditora($rs->nomeEditora);
+                return $editora;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
     public function tabelapaginada()
     {
         //carrega o banco

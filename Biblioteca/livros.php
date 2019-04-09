@@ -4,7 +4,10 @@ require_once "view/template.php";
 require_once "dao/livroDAO.php";
 require_once "modelo/livro.php";
 require_once "db/conexao.php";
+require_once "modelo/categoria.php";
 require_once "dao/categoriaDAO.php";
+require_once "modelo/editora.php";
+require_once "dao/editoraDAO.php";
 
 $object = new livroDAO();
 
@@ -31,14 +34,14 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $livro = new livro();
-    $livro = $object->select($id);
+    $livro = $object->buscarLivro($id);
 
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $livro = new livro();
-    $livro = $object->select($id);
+    $livro = $object->buscarLivro($id);
     $object->remover($livro);
     unset($livro);
 }
@@ -57,55 +60,54 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                     <div class='content table-responsive'>
                         <form action="?act=save&id=" method="POST" name="form1">
 
-                            <input type="hidden" name="id" value="<?php
-                            // Preenche o id no campo id com um valor "value"
-                            echo (isset($id) && ($id != null || $id != "")) ? $id : '';
-                            ?>"/>
+                            <input type="hidden" name="id" value="<?php if(isset($livro) && $livro != null) {echo $livro->getIdtbLivro();}?>"/>
                             <Label>Título</Label>
-                            <input class="form-control" type="text" size="50" name="titulo" value="<?php
-                            // Preenche o titulo no campo titulo com um valor "value"
-                            echo (isset($titulo) && ($titulo != null || $titulo != "")) ? $titulo : '';
-                            ?>" required/>
+                            <input class="form-control" type="text" size="50" name="titulo" value="<?php if(isset($livro) && $livro != null) {echo $livro->getTitulo();}?>" required/>
                             <br/>
                             <Label>ISBN</Label>
-                            <input class="form-control" type="text" size="50" name="isbn" value="<?php
-                            // Preenche o isbn no campo isbn com um valor "value"
-                            echo (isset($isbn) && ($isbn != null || $isbn != "")) ? $isbn : '';
-                            ?>" required/>
+                            <input class="form-control" type="text" size="50" name="isbn" value="<?php if(isset($livro) && $livro != null) {echo $livro->getIsbn();}?>" required/>
                             <br/>
                             <Label>Edição</Label>
-                            <input class="form-control" type="text" size="50" name="edicao" value="<?php
-                            // Preenche a edicao no campo edicao com um valor "value"
-                            echo (isset($edicao) && ($edicao != null || $edicao != "")) ? $edicao : '';
-                            ?>" required/>
+                            <input class="form-control" type="text" size="50" name="edicao" value="<?php if(isset($livro) && $livro != null) {echo $livro->getEdicao();}?>" required/>
                             <br/>
                             <Label>Ano</Label>
-                            <input class="form-control" type="number" size="4" name="ano" value="<?php
-                            // Preenche o ano no campo ano com um valor "value"
-                            echo (isset($ano) && ($ano != null || $ano != "")) ? $ano : '';
-                            ?>" required/>
+                            <input class="form-control" type="number" size="4" name="ano" value="<?php if(isset($livro) && $livro != null) {echo $livro->getAno();}?>" required/>
                             <br/>
-                            <Label>Upload de Arquivo</Label>
-                            <input class="form-control" type="file" name="upload" value="<?php
-                            // Preenche o upload no campo upload com um valor "value"
-                            echo (isset($upload) && ($upload != null || $upload != "")) ? $upload : '';
-                            ?>"/>
+                            <label>Editora</label>
+                            <select name="editora" class="form-control">
+                                <option value="" selected disabled hidden >Selecione a Editora</option>
+                                <?php
+                                $editoraDAO = new editoraDAO();
+                                $editoras = $editoraDAO->buscarTodos();
+                                foreach($editoras as $editora){
+                                    if(isset($livro) && $livro != null && $editora->getIdtbEditora() == $livro->getTbEditoraIdtbEditora()){
+                                        ?>
+                                        <option value="<?php echo $editora->getIdtbEditora() ?>" selected><?php echo $editora->getNomeEditora()?></option>
+                                        <?php
+                                    }else{ ?>
+                                        <option value="<?php echo $editora->getIdtbEditora() ?>"><?php echo $editora->getNomeEditora()?></option>
+                                    <?php }} ?>
+                            </select>
                             <br/>
                             <label>Categoria</label>
                             <select name="categoria" class="form-control">
-                                <option value="0" selected>Selecione a Categoria</option>
+                                <option value="" selected disabled hidden >Selecione a Categoria</option>
                                 <?php
                                 $categoriaDAO = new categoriaDAO();
                                 $categorias = $categoriaDAO->buscarTodos();
                                 foreach($categorias as $categoria){
-                                    if(isset($livro) && $livro != null && $categoria->getNomeCategoria() == $livro->getCategoria()){
+                                    if(isset($livro) && $livro != null && $categoria->getIdtbCategoria() == $livro->getTbCategoriaIdtbCategoria()){
                                         ?>
-                                        <option value="<?php echo $categoria->getIdCategoria() ?>" selected><?php echo $categoria->getNomeCategoria()?></option>
+                                        <option value="<?php echo $categoria->getIdtbCategoria() ?>" selected><?php echo $categoria->getNomeCategoria()?></option>
                                         <?php
                                     }else{ ?>
-                                        <option value="<?php echo $categoria->getIdCategoria() ?>"><?php echo $categoria->getNomeCategoria()?></option>
+                                        <option value="<?php echo $categoria->getIdtbCategoria() ?>"><?php echo $categoria->getNomeCategoria()?></option>
                                     <?php }} ?>
                             </select>
+                            <br/>
+                            <Label>Upload de Arquivo Digital</Label>
+                            <input class="form-control" type="file" name="upload" value="<?php if(isset($livro) && $livro != null) {echo $livro->getUpload();}?>"/>
+                            <br/>
                             <input class="btn btn-success" type="submit" value="REGISTRAR">
                             <hr>
                         </form>

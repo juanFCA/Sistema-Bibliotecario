@@ -78,11 +78,31 @@ class categoriaDAO
                 $categorias = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
                     $categoria = new categoria();
-                    $categoria->setIdCategoria($rs->idtb_categoria);
+                    $categoria->setIdtbCategoria($rs->idtb_categoria);
                     $categoria->setNomeCategoria($rs->nomeCategoria);
                     array_push($categorias, $categoria);
                 }
                 return $categorias;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
+    public function buscarCategoria($id){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_categoria AS id,
+                                                                           a.nomeCategoria AS nomeCategoria
+                                                                      FROM tb_categoria a                                            
+                                                                     WHERE a.idtb_categoria = " . $id);
+            if ($statement->execute()) {
+                $rs = $statement->fetch(PDO::FETCH_OBJ);
+                $categoria = new categoria();
+                $categoria->setIdtbCategoria($rs->id);
+                $categoria->setNomeCategoria($rs->nomeCategoria);
+                return $categoria;
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
             }

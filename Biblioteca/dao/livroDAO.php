@@ -8,6 +8,8 @@
 
 require_once "db/conexao.php";
 require_once "modelo/livro.php";
+require_once "dao/editoraDAO.php";
+require_once "dao/categoriaDAO.php";
 
 class livroDAO
 {
@@ -78,6 +80,80 @@ class livroDAO
         }
     }
 
+    public function buscarTodos(){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_livro AS id,
+                                                                           a.titulo AS titulo,
+                                                                           a.isbn AS isbn,
+                                                                           a.edicao AS edicao,
+                                                                           a.ano AS ano,
+                                                                           a.upload AS upload,
+                                                                           b.idtb_editora AS editora, 
+                                                                           c.idtb_categoria AS categoria
+                                                                      FROM tb_livro a 
+                                                                INNER JOIN tb_editora b 
+                                                                        ON a.tb_editora_idtb_editora = b.idtb_editora
+                                                                INNER JOIN tb_categoria c 
+                                                                        ON a.tb_categoria_idtb_categoria = c.idtb_categoria ");
+            if ($statement->execute()) {
+                $livros = [];
+                while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
+                    $livro = new livro;
+                    $livro->setIdtbLivro($rs->id);
+                    $livro->setTitulo($rs->titulo);
+                    $livro->setIsbn($rs->isbn);
+                    $livro->setEdicao($rs->edicao);
+                    $livro->setAno($rs->ano);
+                    $livro->setUpload($rs->upload);
+                    $livro->setTbEditoraIdtbEditora($rs->editora);
+                    $livro->setTbCategoriaIdtbCategoria($rs->categoria);
+                    array_push($livros, $livro);
+                }
+                return $livros;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
+    public function buscarLivro($id){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_livro AS id,
+                                                                           a.titulo AS titulo,
+                                                                           a.isbn AS isbn,
+                                                                           a.edicao AS edicao,
+                                                                           a.ano AS ano,
+                                                                           a.upload AS upload,
+                                                                           b.idtb_editora AS editora, 
+                                                                           c.idtb_categoria AS categoria
+                                                                      FROM tb_livro a 
+                                                                INNER JOIN tb_editora b
+                                                                        ON a.tb_editora_idtb_editora = b.idtb_editora
+                                                                INNER JOIN tb_categoria c
+                                                                        ON a.tb_categoria_idtb_categoria = c.idtb_categoria 
+                                                                     WHERE a.idtb_livro = " . $id);
+            if ($statement->execute()) {
+                $rs = $statement->fetch(PDO::FETCH_OBJ);
+                $livro = new livro;
+                $livro->setIdtbLivro($rs->id);
+                $livro->setTitulo($rs->titulo);
+                $livro->setIsbn($rs->isbn);
+                $livro->setEdicao($rs->edicao);
+                $livro->setAno($rs->ano);
+                $livro->setUpload($rs->upload);
+                $livro->setTbEditoraIdtbEditora($rs->editora);
+                $livro->setTbCategoriaIdtbCategoria($rs->categoria);
+                return $livro;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
     public function tabelapaginada()
     {
         //carrega o banco
@@ -131,6 +207,10 @@ class livroDAO
         /* Verifica se vai exibir o botão "Anterior" e "Último" */
         $exibir_botao_final = ($range_final > $pagina_atual) ? '' : 'disabled';
 
+        //verifica nome de categoria e editora
+        $categoriaDAO = new categoriaDAO();
+        $editoraDAO = new editoraDAO();
+
         if (!empty($dados)):
             echo "
              <table class='table table-striped table-bordered'>
@@ -142,13 +222,15 @@ class livroDAO
                 <th style='text-align: center; font-weight: bolder;'>Edição</th>
                 <th style='text-align: center; font-weight: bolder;'>Ano</th>
                 <th style='text-align: center; font-weight: bolder;'>Upload</th>
-                <th style='text-align: center; font-weight: bolder;'>ID Editora</th>
-                <th style='text-align: center; font-weight: bolder;'>ID Categoria</th>
+                <th style='text-align: center; font-weight: bolder;'>Editora</th>
+                <th style='text-align: center; font-weight: bolder;'>Categoria</th>
                 <th style='text-align: center; font-weight: bolder;' colspan='2'>Ações</th>
                </tr>
              </thead>
              <tbody>";
             foreach ($dados as $acti):
+                $editora = $editoraDAO->buscarEditora($acti->tb_editora_idtb_editora);
+                $categoria = $categoriaDAO->buscarCategoria($acti->tb_categoria_idtb_categoria);
                 echo "<tr>
                     <td style='text-align: center'>$acti->idtb_livro</td>
                     <td style='text-align: center'>$acti->titulo</td>
@@ -156,10 +238,10 @@ class livroDAO
                     <td style='text-align: center'>$acti->edicao</td>
                     <td style='text-align: center'>$acti->ano</td>
                     <td style='text-align: center'>$acti->upload</td>
-                    <td style='text-align: center'>$acti->tb_editora_idtb_editora</td>
-                    <td style='text-align: center'>$acti->tb_categoria_idtb_categoria</td>
-                    <td style='text-align: center'><a href='?act=upd&id=$acti->id_action' title='Alterar'><i class='ti-reload'></i></a></td>
-                    <td style='text-align: center'><a href='?act=del&id=$acti->id_action' title='Remover'><i class='ti-close'></i></a></td>
+                    <td style='text-align: center'>". $editora->getNomeEditora()."</td>
+                    <td style='text-align: center'>". $categoria->getNomeCategoria() ."</td>
+                    <td style='text-align: center'><a href='?act=upd&id=$acti->idtb_livro' title='Alterar'><i class='ti-reload'></i></a></td>
+                    <td style='text-align: center'><a href='?act=del&id=$acti->idtb_livro' title='Remover'><i class='ti-close'></i></a></td>
                    </tr>";
             endforeach;
             echo "
