@@ -34,7 +34,7 @@ class Template
             <meta name='viewport' content='width=device-width' />
 
             <!-- Bootstrap core CSS     -->
-            <link href='assets/css/bootstrap.min.css' rel='stylesheet' />
+            <link href='assets/css/bootstrap.css' rel='stylesheet' />
 
             <!-- Animation library for notifications   -->
             <link href='assets/css/animate.min.css' rel='stylesheet'/>
@@ -65,16 +65,16 @@ class Template
             </footer>
             </div>
             </div>
-            </body>
+        </body>
 
-                <!--   Core JS Files   -->
-                <script src=\"assets/js/jquery-1.10.2.js\" type=\"text/javascript\"></script>
-                <script src=\"assets/js/bootstrap.min.js\" type=\"text/javascript\"></script>
+            <!--   Core JS Files   -->
+            <script src=\"assets/js/jquery-1.10.2.js\" type=\"text/javascript\"></script>
+            <script src=\"assets/js/bootstrap.min.js\" type=\"text/javascript\"></script>
 
-                <!--  Checkbox, Radio & Switch Plugins -->
-                <script src=\"assets/js/bootstrap-checkbox-radio.js\"></script>
+            <!--  Checkbox, Radio & Switch Plugins -->
+            <script src=\"assets/js/bootstrap-checkbox-radio.js\"></script>
 
-            </html>";
+        </html>";
     }
 
     public static function sidebar()
@@ -96,23 +96,31 @@ class Template
             </div>
 
             <ul class=\"nav\">
-                <li class=\"active text-center\">
+                <li class=\"active\">
                     <a href='autores.php'>
                         <i class=\"ti-user\"></i>
                         <p>Autores</p>
                     </a>
+                </li>
+                <li class=\"active\">
                     <a href='editoras.php'>
                         <i class=\"ti-ruler-pencil\"></i>
                         <p>Editoras</p>
                     </a>
+                </li>
+                <li class=\"active\">
                     <a href='categorias.php'>
                         <i class=\"ti-view-list\"></i>
                         <p>Categorias</p>
                     </a>
+                </li>
+                <li class=\"active\">
                     <a href='livros.php'>
                         <i class=\"ti-book\"></i>
                         <p>Livros</p>
                     </a>
+                </li>
+                <li class=\"active\">
                     <a href='usuarios.php'>
                         <i class=\"ti-user\"></i>
                         <p>Usuários</p>
@@ -120,7 +128,7 @@ class Template
                 </li>
             </ul>
         </div>
-        </div>";
+    </div>";
     }
 
     public static function mainpanel()

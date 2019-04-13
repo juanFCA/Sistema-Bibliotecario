@@ -1,4 +1,5 @@
 <?php
+$_SESSION['active_window'] = "autores";
 
 require_once "view/template.php";
 require_once "dao/autorDAO.php";
@@ -13,31 +14,29 @@ template::mainpanel();
 
 // Verificar se foi enviando dados via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = (isset($_POST["id"]) && $_POST["id"] != null) ? $_POST["id"] : "";
-    $nome = (isset($_POST["nome"]) && $_POST["nome"] != null) ? $_POST["nome"] : "";
+    $id = (!empty($_POST["id"])) ? $_POST["id"] : "";
+    $nome = (!empty($_POST["nome"])) ? $_POST["nome"] : "";
 } else if (!isset($id)) {
     // Se não se não foi setado nenhum valor para variável $id
-    $id = (isset($_GET["id"]) && $_GET["id"] != null) ? $_GET["id"] : "";
+    $id = (!empty($_GET["id"])) ? $_GET["id"] : "";
     $nome = null;
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != "") {
-    $autor = new autor($id, "");
-    $resultado = $object->atualizar($autor);
-    $id = $resultado->getIdtbAutor();
-    $nome = $resultado->getNomeAutor();
-
+    $autor = $object->buscarAutor($id);
+    $id = $autor->getIdtbAutor();
+    $nome = $autor->getNomeAutor();
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" ) {
     $autor = new autor($id, $nome);
-    $msg = $object->salvar($autor);
+    $msg = $object->salvarAtualizar($autor);
     $id = null;
     $nome = null;
-
 }
+
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
-    $autor = new autor($id, "");
+    $autor = $object->buscarAutor($id);
     $msg = $object->remover($autor);
     $id = null;
 }

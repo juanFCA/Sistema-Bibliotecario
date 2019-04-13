@@ -6,11 +6,7 @@
         private $tb_livro_idtb_livro;
         private $tipoExemplar;
 
-        public function __construct()
-        {
-        }
-
-        public function __construct1($idtb_exemplar, $tb_livro_idtb_livro, $tipoExemplar)
+        public function __construct($idtb_exemplar, $tb_livro_idtb_livro, $tipoExemplar)
         {
             $this->idtb_exemplar = $idtb_exemplar;
             $this->tb_livro_idtb_livro = $tb_livro_idtb_livro;

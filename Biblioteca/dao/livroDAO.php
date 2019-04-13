@@ -10,6 +10,7 @@ require_once "db/conexao.php";
 require_once "modelo/livro.php";
 require_once "dao/editoraDAO.php";
 require_once "dao/categoriaDAO.php";
+require_once "dao/autoriaDAO.php";
 
 class livroDAO
 {
@@ -98,15 +99,14 @@ class livroDAO
             if ($statement->execute()) {
                 $livros = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
-                    $livro = new livro;
-                    $livro->setIdtbLivro($rs->id);
-                    $livro->setTitulo($rs->titulo);
-                    $livro->setIsbn($rs->isbn);
-                    $livro->setEdicao($rs->edicao);
-                    $livro->setAno($rs->ano);
-                    $livro->setUpload($rs->upload);
-                    $livro->setTbEditoraIdtbEditora($rs->editora);
-                    $livro->setTbCategoriaIdtbCategoria($rs->categoria);
+                    $livro = new livro($rs->id,
+                                        $rs->titulo,
+                                        $rs->isbn,
+                                        $rs->edicao,
+                                        $rs->ano,
+                                        $rs->upload,
+                                        $rs->editora,
+                                        $rs->categoria);
                     array_push($livros, $livro);
                 }
                 return $livros;
@@ -136,15 +136,14 @@ class livroDAO
                                                                      WHERE a.idtb_livro = " . $id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $livro = new livro;
-                $livro->setIdtbLivro($rs->id);
-                $livro->setTitulo($rs->titulo);
-                $livro->setIsbn($rs->isbn);
-                $livro->setEdicao($rs->edicao);
-                $livro->setAno($rs->ano);
-                $livro->setUpload($rs->upload);
-                $livro->setTbEditoraIdtbEditora($rs->editora);
-                $livro->setTbCategoriaIdtbCategoria($rs->categoria);
+                $livro = new livro($rs->id,
+                                        $rs->titulo,
+                                        $rs->isbn,
+                                        $rs->edicao,
+                                        $rs->ano,
+                                        $rs->upload,
+                                        $rs->editora,
+                                        $rs->categoria);
                 return $livro;
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");

@@ -20,18 +20,18 @@ $tipo = 3;
 $usuario = new usuario('', $login, $tipo, $email, $senha);
 
 $usuarioD = new usuarioDAO();
-$validado = $usuarioD->salvar($usuario);
+$validado = $usuarioD->salvarAtualizar($usuario);
 
 if ($validado == true) {
-    unset ($_SESSION['login']);
+    unset($_SESSION['login']);
     unset($_SESSION['email']);
-    unset ($_SESSION['senha']);
-    header('location:login.php?mensagem=Usuário cadastrado com sucesso! Faça seu Login para Continuar! & alerttype=alert-success');
+    unset($_SESSION['senha']);
+    header('location:login.php?mensagem=Usuário cadastrado com sucesso! Faça seu Login para Continuar!&alerttype=alert-success');
 }
 else{
-    unset ($_SESSION['login']);
+    unset($_SESSION['login']);
     unset($_SESSION['email']);
-    unset ($_SESSION['senha']);
-    header('location:login.php?mensagem=Erro ao tentar efetivar o seu cadastro! Nome de Usuário ou Email Inválidos! & alerttype=alert-danger');
+    unset($_SESSION['senha']);
+    header('location:login.php?mensagem=Erro ao tentar efetivar o seu cadastro! Nome de Usuário ou Email Inválidos!&alerttype=alert-danger');
 }
 ?>

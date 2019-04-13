@@ -1,4 +1,5 @@
 <?php
+$_SESSION['active_window'] = "editoras";
 
 require_once "view/template.php";
 require_once "dao/editoraDAO.php";
@@ -22,22 +23,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != "") {
-    $editora = new editora($id, "");
-    $resultado = $object->atualizar($editora);
-    $id = $resultado->getIdtbEditora();
-    $nome = $resultado->getNomeEditora();
+    $editora = $object->buscarEditora($id);
+    $id = $editora->getIdtbEditora();
+    $nome = $editora->getNomeEditora();
 
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" ) {
     $editora = new editora($id, $nome);
-    $msg = $object->salvar($editora);
+    $msg = $object->salvarAtualizar($editora);
     $id = null;
     $nome = null;
 
 }
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
-    $editora = new editora($id, "");
+    $editora = $object->buscarEditora($id);
     $msg = $object->remover($editora);
     $id = null;
 }

@@ -3,16 +3,12 @@
     class autoria
     {
         private $tb_livro_idtb_livro;
-        private $tb_autores_idtb_autores;
+        private $tb_autor_idtb_autor;
 
-        public function __construct()
-        {
-        }
-
-        public function __construct1($tb_livro_idtb_livro, $tb_autores_idtb_autores)
+        public function __construct($tb_livro_idtb_livro, $tb_autor_idtb_autor)
         {
             $this->tb_livro_idtb_livro = $tb_livro_idtb_livro;
-            $this->tb_autores_idtb_autores = $tb_autores_idtb_autores;
+            $this->tb_autor_idtb_autor = $tb_autor_idtb_autor;
         }
 
         public function getTbLivroIdtbLivro()
@@ -27,12 +23,12 @@
 
         public function getTbAutoresIdtbAutores()
         {
-            return $this->tb_autores_idtb_autores;
+            return $this->tb_autor_idtb_autor;
         }
 
-        public function setTbAutoresIdtbAutores($tb_autores_idtb_autores)
+        public function setTbAutoresIdtbAutores($tb_autor_idtb_autor)
         {
-            $this->tb_autores_idtb_autores = $tb_autores_idtb_autores;
+            $this->tb_autor_idtb_autor = $tb_autor_idtb_autor;
         }
     }
 

@@ -11,11 +11,7 @@
         private $tb_editora_idtb_editora;
         private $tb_categoria_idtb_categoria;
 
-        public function __construct()
-        {
-        }
-
-        public function __construct1($idtb_livro, $titulo, $isbn, $edicao, $ano, $upload, $tb_editora_idtb_editora, $tb_categoria_idtb_categoria)
+        public function __construct($idtb_livro, $titulo, $isbn, $edicao, $ano, $upload, $tb_editora_idtb_editora, $tb_categoria_idtb_categoria)
         {
             $this->idtb_livro = $idtb_livro;
             $this->titulo = $titulo;

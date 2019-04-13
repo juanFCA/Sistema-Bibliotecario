@@ -27,7 +27,7 @@ class autorDAO
         }
     }
 
-    public function salvar(autor $autor)
+    public function salvarAtualizar(autor $autor)
     {
         try {
             if ($autor->getIdtbAutor() != "") {
@@ -52,17 +52,32 @@ class autorDAO
         }
     }
 
-    public function atualizar($autor)
+    public function buscarAutor($id)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT idtb_autor, nomeAutor FROM tb_autor WHERE idtb_autor=:id");
-            $statement->bindValue(":id", $autor->getIdtbAutor());
-
+            $statement = Conexao::getInstance()->prepare("SELECT idtb_autor, nomeAutor FROM tb_autor WHERE idtb_autor=". $id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $autor->setIdtbAutor($rs->idtb_autor);
-                $autor->setNomeAutor($rs->nomeAutor);
+                $autor = new autor($rs->idtb_autor, $rs->nomeAutor);
                 return $autor;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
+    public function buscarTodos(){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_autor");
+            if ($statement->execute()) {
+                $autores = [];
+                while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
+                    $autor = new autor($rs->idtb_autor, $rs->nomeAutor);
+                    array_push($autores, $autor);
+                }
+                return $autores;
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
             }

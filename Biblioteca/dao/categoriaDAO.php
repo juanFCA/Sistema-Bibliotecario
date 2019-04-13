@@ -27,7 +27,7 @@ class categoriaDAO
         }
     }
 
-    public function salvar($categoria)
+    public function salvarAtualizar($categoria)
     {
         try {
             if ($categoria->getIdtbCategoria() != "") {
@@ -52,34 +52,13 @@ class categoriaDAO
         }
     }
 
-    public function atualizar($categoria)
-    {
-        try {
-            $statement = Conexao::getInstance()->prepare("SELECT idtb_categoria, nomeCategoria FROM tb_categoria WHERE idtb_categoria=:id");
-            $statement->bindValue(":id", $categoria->getIdtbCategoria());
-
-            if ($statement->execute()) {
-                $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $categoria->setIdtbCategoria($rs->idtb_categoria);
-                $categoria->setNomeCategoria($rs->nomeCategoria);
-                return $categoria;
-            } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
-            }
-        } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
-        }
-    }
-
     public function buscarTodos(){
         try {
             $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_categoria");
             if ($statement->execute()) {
                 $categorias = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
-                    $categoria = new categoria();
-                    $categoria->setIdtbCategoria($rs->idtb_categoria);
-                    $categoria->setNomeCategoria($rs->nomeCategoria);
+                    $categoria = new categoria($rs->idtb_categoria, $rs->nomeCategoria);
                     array_push($categorias, $categoria);
                 }
                 return $categorias;
@@ -93,15 +72,10 @@ class categoriaDAO
 
     public function buscarCategoria($id){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_categoria AS id,
-                                                                           a.nomeCategoria AS nomeCategoria
-                                                                      FROM tb_categoria a                                            
-                                                                     WHERE a.idtb_categoria = " . $id);
+            $statement = Conexao::getInstance()->prepare("SELECT idtb_categoria, nomeCategoria FROM tb_categoria WHERE idtb_categoria =". $id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $categoria = new categoria();
-                $categoria->setIdtbCategoria($rs->id);
-                $categoria->setNomeCategoria($rs->nomeCategoria);
+                $categoria = new categoria($rs->idtb_categoria, $rs->nomeCategoria);
                 return $categoria;
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");

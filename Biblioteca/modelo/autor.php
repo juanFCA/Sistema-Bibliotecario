@@ -5,11 +5,7 @@
         private $idtb_autor;
         private $nomeAutor;
 
-        public function __construct()
-        {
-        }
-
-        public function __construct1($idtb_autor, $nomeAutor)
+        public function __construct($idtb_autor, $nomeAutor)
         {
             $this->idtb_autor = $idtb_autor;
             $this->nomeAutor = $nomeAutor;

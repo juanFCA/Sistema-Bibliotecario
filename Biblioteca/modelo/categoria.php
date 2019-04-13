@@ -5,11 +5,7 @@
         private $idtb_categoria;
         private $nomeCategoria;
 
-        public function __construct()
-        {
-        }
-
-        public function __construct1($idtb_categoria, $nomeCategoria)
+        public function __construct($idtb_categoria, $nomeCategoria)
         {
             $this->idtb_categoria = $idtb_categoria;
             $this->nomeCategoria = $nomeCategoria;

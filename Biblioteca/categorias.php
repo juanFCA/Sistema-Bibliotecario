@@ -1,4 +1,5 @@
 <?php
+$_SESSION['active_window'] = "categorias";
 
 require_once "view/template.php";
 require_once "dao/categoriaDAO.php";
@@ -13,31 +14,29 @@ template::mainpanel();
 
 // Verificar se foi enviando dados via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = (isset($_POST["id"]) && $_POST["id"] != null) ? $_POST["id"] : "";
-    $nome = (isset($_POST["nome"]) && $_POST["nome"] != null) ? $_POST["nome"] : "";
+    $id = (!empty($_POST["id"])) ? $_POST["id"] : "";
+    $nome = (!empty($_POST["nome"])) ? $_POST["nome"] : "";
 } else if (!isset($id)) {
     // Se não se não foi setado nenhum valor para variável $id
-    $id = (isset($_GET["id"]) && $_GET["id"] != null) ? $_GET["id"] : "";
+    $id = (!empty($_GET["id"])) ? $_GET["id"] : "";
     $nome = null;
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != "") {
-    $categoria = new categoria($id, "");
-    $resultado = $object->atualizar($categoria);
+    $resultado = $object->buscarCategoria($id);
     $id = $resultado->getIdtbCategoria();
     $nome = $resultado->getNomeCategoria();
-
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" ) {
     $categoria = new categoria($id, $nome);
-    $msg = $object->salvar($categoria);
+    $msg = $object->salvarAtualizar($categoria);
     $id = null;
     $nome = null;
 
 }
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
-    $categoria = new categoria($id, "");
+    $categoria = $object->buscarCategoria($id);
     $msg = $object->remover($categoria);
     $id = null;
 }

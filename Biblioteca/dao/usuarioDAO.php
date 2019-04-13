@@ -46,18 +46,21 @@ class usuarioDAO
         }
     }
 
-    public function salvar($usuario)
+    public function salvarAtualizar($usuario)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_usuario WHERE nomeUsuario=:nomeUsuario OR email=:email");
-            if ($statement->execute()) {
-                if ($statement->rowCount() > 0) {
-                    return false;
-                }
+            if ($usuario->getIdtbUsuario() != "") {
+                $statement = Conexao::getInstance()->prepare("UPDATE tb_usuario SET nomeUsuario=:nomeUsuario,
+                                                                                            tipo=:tipo,
+                                                                                            email=:email,
+                                                                                            senha=:senha
+                                                                                            WHERE idtb_usuario=:id");
+                $statement->bindValue(":id", $usuario->getIdtbUsuario());
             } else {
                 $statement = Conexao::getInstance()->prepare("INSERT INTO tb_usuario(nomeUsuario, tipo, email, senha) 
                                                                         VALUES (:nomeUsuario, :tipo, :email, :senha)");
             }
+
             $statement->bindValue(":nomeUsuario", $usuario->getNomeUsuario());
             $statement->bindValue(":tipo", $usuario->getTipo());
             $statement->bindValue(":email", $usuario->getEmail());
@@ -65,9 +68,9 @@ class usuarioDAO
 
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
-                    return true;
+                    return "<script> alert('Dados cadastrados com sucesso!'); </script>";
                 } else {
-                    return false;
+                    return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
                 }
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
@@ -77,21 +80,33 @@ class usuarioDAO
         }
     }
 
-    public function atualizar($usuario)
+    public function buscarUsuario($id)
     {
         try {
             $statement = Conexao::getInstance()->prepare("SELECT idtb_usuario, nomeUsuario, tipo, email, senha 
-                                                                    FROM tb_usuario WHERE idtb_usuario=:id");
-            $statement->bindValue(":id", $usuario->getIdtbUsuario());
-
+                                                                    FROM tb_usuario WHERE idtb_usuario=" .$id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $usuario->setIdtbUsuario($rs->idtb_usuario);
-                $usuario->setNomeUsuario($rs->nomeUsuario);
-                $usuario->setTipo($rs->tipo);
-                $usuario->setEmail($rs->email);
-                $usuario->setSenha($rs->senha);
+                $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha);
                 return $usuario;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
+    public function buscarTodos(){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_usuario");
+            if ($statement->execute()) {
+                $usuarios = [];
+                while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
+                    $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha);
+                    array_push($usuarios, $usuario);
+                }
+                return $usuarios;
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
             }
@@ -160,7 +175,7 @@ class usuarioDAO
                 <th style='text-align: center; font-weight: bolder;'>Nome</th>
                 <th style='text-align: center; font-weight: bolder;'>Tipo</th>
                 <th style='text-align: center; font-weight: bolder;'>Email</th>
-                <th style='text-align: center; font-weight: bolder;'>Senha</th>
+                <!--<th style='text-align: center; font-weight: bolder;'>Senha</th>-->
                 <th style='text-align: center; font-weight: bolder;' colspan='2'>Ações</th>
                </tr>
              </thead>
@@ -171,7 +186,7 @@ class usuarioDAO
                     <td style='text-align: center'>$acti->nomeUsuario</td>
                     <td style='text-align: center'>$acti->tipo</td>
                     <td style='text-align: center'>$acti->email</td>
-                    <td style='text-align: center'>$acti->senha</td>
+                    <!--<td style='text-align: center'>$acti->senha</td>-->
                     <td style='text-align: center'><a href='?act=upd&id=$acti->idtb_usuario' title='Alterar'><i class='ti-reload'></i></a></td>
                     <td style='text-align: center'><a href='?act=del&id=$acti->idtb_usuario' title='Remover'><i class='ti-close'></i></a></td>
                    </tr>";

@@ -27,7 +27,7 @@ class editoraDAO
         }
     }
 
-    public function salvar($editora)
+    public function salvarAtualizar($editora)
     {
         try {
             if ($editora->getIdtbEditora() != "") {
@@ -52,16 +52,15 @@ class editoraDAO
         }
     }
 
-    public function atualizar($editora)
-    {
+    public function buscarEditora($id){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT idtb_editora, nomeEditora FROM tb_editora WHERE idtb_editora=:id");
-            $statement->bindValue(":id", $editora->getIdtbEditora());
-
+            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_editora AS id,
+                                                                           a.nomeEditora AS nomeEditora
+                                                                      FROM tb_editora a                                            
+                                                                     WHERE a.idtb_editora = " . $id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $editora->setIdtbEditora($rs->idtb_editora);
-                $editora->setNomeEditora($rs->nomeEditora);
+                $editora = new editora($rs->id, $rs->nomeEditora);
                 return $editora;
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
@@ -77,32 +76,10 @@ class editoraDAO
             if ($statement->execute()) {
                 $editoras = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
-                    $editora = new editora();
-                    $editora->setIdtbEditora($rs->idtb_editora);
-                    $editora->setNomeEditora($rs->nomeEditora);
+                    $editora = new editora($rs->idtb_editora, $rs->nomeEditora);
                     array_push($editoras, $editora);
                 }
                 return $editoras;
-            } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
-            }
-        } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
-        }
-    }
-
-    public function buscarEditora($id){
-        try {
-            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_editora AS id,
-                                                                           a.nomeEditora AS nomeEditora
-                                                                      FROM tb_editora a                                            
-                                                                     WHERE a.idtb_editora = " . $id);
-            if ($statement->execute()) {
-                $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $editora = new editora();
-                $editora->setIdtbEditora($rs->id);
-                $editora->setNomeEditora($rs->nomeEditora);
-                return $editora;
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
             }
