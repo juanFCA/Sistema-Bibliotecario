@@ -1,5 +1,4 @@
 <?php
-$_SESSION['active_window'] = "autores";
 
 require_once "view/template.php";
 require_once "dao/autorDAO.php";
@@ -9,7 +8,7 @@ require_once "db/conexao.php";
 $object = new autorDAO();
 
 template::header();
-template::sidebar();
+template::sidebar("autores");
 template::mainpanel();
 
 // Verificar se foi enviando dados via POST

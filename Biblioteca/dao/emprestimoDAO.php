@@ -15,7 +15,7 @@ class emprestimoDAO
     public function remover($emprestimo)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("DELETE FROM tb_emprestimo WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
+            $statement = conexao::getInstance()->prepare("DELETE FROM tb_emprestimo WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
             $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
             $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
             if ($statement->execute()) {
@@ -32,11 +32,11 @@ class emprestimoDAO
     {
         try {
             if ($emprestimo->getTbUsuarioIdtbUsuario() != "" or $emprestimo->getTbExemplarIdtbExemplar() != "") {
-                $statement = Conexao::getInstance()->prepare("UPDATE tb_emprestimo SET dataEmprestimo=:dataEmprestimo, observacoes=:observacoes WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
+                $statement = conexao::getInstance()->prepare("UPDATE tb_emprestimo SET dataEmprestimo=:dataEmprestimo, observacoes=:observacoes WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
                 $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
                 $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
             } else {
-                $statement = Conexao::getInstance()->prepare("INSERT INTO tb_emprestimo(dataEmprestimo, observacoes) VALUES (:dataEnprestimo, :observacoes)");
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_emprestimo(dataEmprestimo, observacoes) VALUES (:dataEnprestimo, :observacoes)");
             }
             $statement->bindValue(":dataEmprestimo", $emprestimo->getDataEmprestimo());
             $statement->bindValue(":observacoes", $emprestimo->getObservacoes());
@@ -58,7 +58,7 @@ class emprestimoDAO
     public function atualizar($emprestimo)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT tb_usuario_idtb_usuario, tb_exemplar_idtb_exemplar, dataEmprestimo, observacoes FROM tb_emprestimo WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
+            $statement = conexao::getInstance()->prepare("SELECT tb_usuario_idtb_usuario, tb_exemplar_idtb_exemplar, dataEmprestimo, observacoes FROM tb_emprestimo WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
             $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
             $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
 
@@ -96,13 +96,13 @@ class emprestimoDAO
 
         /* Instrução de consulta para paginação com MySQL */
         $sql = "SELECT tb_usuario_idtb_usuario, tb_exemplar_idtb_exemplar, dataEmprestimo, observacoes FROM tb_emprestimo LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
-        $statement = Conexao::getInstance()->prepare($sql);
+        $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
 
         /* Conta quantos registos existem na tabela */
         $sqlContador = "SELECT COUNT(*) AS total_registros FROM tb_emprestimo";
-        $statement = Conexao::getInstance()->prepare($sqlContador);
+        $statement = conexao::getInstance()->prepare($sqlContador);
         $statement->execute();
         $valor = $statement->fetch(PDO::FETCH_OBJ);
 
@@ -156,8 +156,8 @@ class emprestimoDAO
             echo "
              </tbody>
              </table>
-                <nav>
-                <ul class='pagination justify-content-center' style='text-align: center'>
+             <nav class='text-center'>
+                <ul class='pagination' style='text-align: center'>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
              ";
@@ -169,7 +169,7 @@ class emprestimoDAO
             echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
                   <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
                 </ul>
-                <nav/>";
+             <nav/>";
         else:
             echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
         endif;

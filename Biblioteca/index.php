@@ -3,7 +3,7 @@
 require_once "view/template.php";
 
 template::header();
-template::sidebar();
+template::sidebar("index");
 template::mainpanel();
 ?>
 

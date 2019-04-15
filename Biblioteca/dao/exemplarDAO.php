@@ -15,7 +15,7 @@ class exemplarDAO
     public function remover($exemplar)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("DELETE FROM tb_exemplar WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
+            $statement = conexao::getInstance()->prepare("DELETE FROM tb_exemplar WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
             $statement->bindValue(":idExemplar", $exemplar->getIdtbExemplar());
             $statement->bindValue(":idLivro", $exemplar->getTbLivroIdtbLivro());
             if ($statement->execute()) {
@@ -32,11 +32,11 @@ class exemplarDAO
     {
         try {
             if ($exemplar->getIdtbExemplar() != "" or $exemplar->getTbLivroIdtbLivro() != "") {
-                $statement = Conexao::getInstance()->prepare("UPDATE tb_exemplar SET tipoExemplar=:tipoExemplar  WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
+                $statement = conexao::getInstance()->prepare("UPDATE tb_exemplar SET tipoExemplar=:tipoExemplar  WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
                 $statement->bindValue(":idExemplar", $exemplar->getIdtbExemplar());
                 $statement->bindValue(":idLivro", $exemplar->getTbLivroIdtbLivro());
             } else {
-                $statement = Conexao::getInstance()->prepare("INSERT INTO tb_exemplar(tipoExemplar) VALUES (:tipoExemplar)");
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_exemplar(tipoExemplar) VALUES (:tipoExemplar)");
             }
             $statement->bindValue(":tipoExemplar", $exemplar->getTipoExemplar());
 
@@ -57,7 +57,7 @@ class exemplarDAO
     public function atualizar($exemplar)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT idtb_exemplar, tb_livro_idtb_livro, tipoExemplar FROM tb_exemplar WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
+            $statement = conexao::getInstance()->prepare("SELECT idtb_exemplar, tb_livro_idtb_livro, tipoExemplar FROM tb_exemplar WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
             $statement->bindValue(":idExemplar", $exemplar->getIdtbExemplar());
             $statement->bindValue(":idLivro", $exemplar->getTbLivroIdtbLivro());
 
@@ -94,13 +94,13 @@ class exemplarDAO
 
         /* Instrução de consulta para paginação com MySQL */
         $sql = "SELECT idtb_exemplar, tb_livro_idtb_livro, tipoExemplar FROM tb_exemplar LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
-        $statement = Conexao::getInstance()->prepare($sql);
+        $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
 
         /* Conta quantos registos existem na tabela */
         $sqlContador = "SELECT COUNT(*) AS total_registros FROM tb_exemplar";
-        $statement = Conexao::getInstance()->prepare($sqlContador);
+        $statement = conexao::getInstance()->prepare($sqlContador);
         $statement->execute();
         $valor = $statement->fetch(PDO::FETCH_OBJ);
 
@@ -152,8 +152,8 @@ class exemplarDAO
             echo "
              </tbody>
              </table>
-                <nav>
-                <ul class='pagination justify-content-center' style='text-align: center'>
+             <nav class='text-center'>
+                <ul class='pagination' style='text-align: center'>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
              ";
@@ -165,7 +165,7 @@ class exemplarDAO
             echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
                   <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
                 </ul>
-                <nav/>";
+             <nav/>";
         else:
             echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
         endif;

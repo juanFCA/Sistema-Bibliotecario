@@ -15,7 +15,7 @@ class editoraDAO
     public function remover($editora)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("DELETE FROM tb_editora WHERE idtb_editora=:id");
+            $statement = conexao::getInstance()->prepare("DELETE FROM tb_editora WHERE idtb_editora=:id");
             $statement->bindValue(":id", $editora->getIdtbEditora());
             if ($statement->execute()) {
                 return "<script> alert('Registro foi excluído com êxito!'); </script>";
@@ -31,10 +31,10 @@ class editoraDAO
     {
         try {
             if ($editora->getIdtbEditora() != "") {
-                $statement = Conexao::getInstance()->prepare("UPDATE tb_editora SET nomeEditora=:nomeEditora WHERE idtb_editora=:id");
+                $statement = conexao::getInstance()->prepare("UPDATE tb_editora SET nomeEditora=:nomeEditora WHERE idtb_editora=:id");
                 $statement->bindValue(":id", $editora->getIdtbEditora());
             } else {
-                $statement = Conexao::getInstance()->prepare("INSERT INTO tb_editora(nomeEditora) VALUES (:nomeEditora)");
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_editora(nomeEditora) VALUES (:nomeEditora)");
             }
             $statement->bindValue(":nomeEditora", $editora->getNomeEditora());
 
@@ -54,7 +54,7 @@ class editoraDAO
 
     public function buscarEditora($id){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_editora AS id,
+            $statement = conexao::getInstance()->prepare("SELECT a.idtb_editora AS id,
                                                                            a.nomeEditora AS nomeEditora
                                                                       FROM tb_editora a                                            
                                                                      WHERE a.idtb_editora = " . $id);
@@ -72,7 +72,7 @@ class editoraDAO
 
     public function buscarTodos(){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_editora");
+            $statement = conexao::getInstance()->prepare("SELECT * FROM tb_editora");
             if ($statement->execute()) {
                 $editoras = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
@@ -107,13 +107,13 @@ class editoraDAO
 
         /* Instrução de consulta para paginação com MySQL */
         $sql = "SELECT idtb_editora, nomeEditora FROM tb_editora LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
-        $statement = Conexao::getInstance()->prepare($sql);
+        $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
 
         /* Conta quantos registos existem na tabela */
         $sqlContador = "SELECT COUNT(*) AS total_registros FROM tb_editora";
-        $statement = Conexao::getInstance()->prepare($sqlContador);
+        $statement = conexao::getInstance()->prepare($sqlContador);
         $statement->execute();
         $valor = $statement->fetch(PDO::FETCH_OBJ);
 
@@ -163,7 +163,7 @@ class editoraDAO
             echo "
              </tbody>
              </table>
-                <nav>
+             <nav class='text-center'>
                 <ul class='pagination justify-content-center' style='text-align: center'>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
@@ -176,7 +176,7 @@ class editoraDAO
             echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
                   <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
                 </ul>
-                <nav/>";
+             <nav/>";
         else:
             echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
         endif;

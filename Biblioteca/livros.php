@@ -1,5 +1,4 @@
 <?php
-$_SESSION['active_window'] = "livros";
 
 require_once "view/template.php";
 require_once "dao/livroDAO.php";
@@ -13,7 +12,7 @@ require_once "dao/editoraDAO.php";
 $object = new livroDAO();
 
 template::header();
-template::sidebar();
+template::sidebar("livros");
 template::mainpanel();
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {

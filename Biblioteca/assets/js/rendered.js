@@ -14,3 +14,9 @@ $('#logregister').click(function () {
     $('form.register-form').animate({ height: "toggle", opacity: "toggle" }, "slow");
     $('form.login-form').animate({ height: "toggle", opacity: "toggle" }, "slow");
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function () {
+        $('#divalert').fadeOut().empty();
+    }, 5000);
+}, false);

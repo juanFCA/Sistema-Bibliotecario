@@ -2,14 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: juan
- * Date: 18/03/19
- * Time: 14:42
+ * Date: 2019-03-16
+ * Time: 15:25
  */
 
 require_once "configDB.php";
 
-class Conexao
+class conexao
 {
+
     private static $pdo;
 
     private function __construct() {
@@ -26,5 +27,5 @@ class Conexao
         }
         return self::$pdo;
     }
+
 }
-?>

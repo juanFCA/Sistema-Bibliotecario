@@ -14,7 +14,7 @@
       </div>
       <?php
         if(isset($_GET['mensagem']) && isset($_GET['alerttype'])) {
-      ?> <div class="alert <?=$_GET['alerttype']?> text-center" role="alert"><?=$_GET['mensagem']?></div>
+      ?> <div class="alert <?=$_GET['alerttype']?> text-center" role="alert" id="divalert"><?=$_GET['mensagem']?></div>
       <?php
         }
       ?>
@@ -25,7 +25,7 @@
           <button>Registrar</button>
           <p class="message">Já possui Registro? <a href="#" id="logregister">Logar Agora</a></p>
       </form>
-      <form class="recover-form">
+      <form class="recover-form" method="post" action="recuperar.php" id="formrecover" name="formrecover">
           <input type="text" placeholder="Endereço de E-mail" name="email" id="email"/>
           <button>Recuperar</button>
           <p class="message">Já recuperou a Senha? <a href="#" id="logrecover">Logar Agora</a></p>

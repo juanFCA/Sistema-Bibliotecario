@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: tassio
+ * User: juan
  * Date: 04/01/2018
  * Time: 16:31
  */
@@ -19,8 +19,8 @@ $tipo = 3;
 
 $usuario = new usuario('', $login, $tipo, $email, $senha);
 
-$usuarioD = new usuarioDAO();
-$validado = $usuarioD->salvarAtualizar($usuario);
+$usuarioDAO = new usuarioDAO();
+$validado = $usuarioDAO->salvarAtualizar($usuario);
 
 if ($validado == true) {
     unset($_SESSION['login']);

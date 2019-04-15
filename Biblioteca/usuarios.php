@@ -1,5 +1,4 @@
 <?php
-$_SESSION['active_window'] = "usuarios";
 
 require_once "view/template.php";
 require_once "dao/usuarioDAO.php";
@@ -9,7 +8,7 @@ require_once "db/conexao.php";
 $object = new usuarioDAO();
 
 template::header();
-template::sidebar();
+template::sidebar("usuarios");
 template::mainpanel();
 
 

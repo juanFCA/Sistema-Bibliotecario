@@ -15,7 +15,7 @@ class categoriaDAO
     public function remover($categoria)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("DELETE FROM tb_categoria WHERE idtb_categoria=:id");
+            $statement = conexao::getInstance()->prepare("DELETE FROM tb_categoria WHERE idtb_categoria=:id");
             $statement->bindValue(":id", $categoria->getIdtbCategoria());
             if ($statement->execute()) {
                 return "<script> alert('Registro foi excluído com êxito!'); </script>";
@@ -31,10 +31,10 @@ class categoriaDAO
     {
         try {
             if ($categoria->getIdtbCategoria() != "") {
-                $statement = Conexao::getInstance()->prepare("UPDATE tb_categoria SET nomeCategoria=:nomeCategoria WHERE idtb_categoria=:id");
+                $statement = conexao::getInstance()->prepare("UPDATE tb_categoria SET nomeCategoria=:nomeCategoria WHERE idtb_categoria=:id");
                 $statement->bindValue(":id", $categoria->getIdtbCategoria());
             } else {
-                $statement = Conexao::getInstance()->prepare("INSERT INTO tb_categoria(nomeCategoria) VALUES (:nomeCategoria)");
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_categoria(nomeCategoria) VALUES (:nomeCategoria)");
             }
             $statement->bindValue(":nomeCategoria", $categoria->getNomeCategoria());
 
@@ -54,7 +54,7 @@ class categoriaDAO
 
     public function buscarTodos(){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_categoria");
+            $statement = conexao::getInstance()->prepare("SELECT * FROM tb_categoria");
             if ($statement->execute()) {
                 $categorias = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
@@ -72,7 +72,7 @@ class categoriaDAO
 
     public function buscarCategoria($id){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT idtb_categoria, nomeCategoria FROM tb_categoria WHERE idtb_categoria =". $id);
+            $statement = conexao::getInstance()->prepare("SELECT idtb_categoria, nomeCategoria FROM tb_categoria WHERE idtb_categoria =". $id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
                 $categoria = new categoria($rs->idtb_categoria, $rs->nomeCategoria);
@@ -104,13 +104,13 @@ class categoriaDAO
 
         /* Instrução de consulta para paginação com MySQL */
         $sql = "SELECT idtb_categoria, nomeCategoria FROM tb_categoria LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
-        $statement = Conexao::getInstance()->prepare($sql);
+        $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
 
         /* Conta quantos registos existem na tabela */
         $sqlContador = "SELECT COUNT(*) AS total_registros FROM tb_categoria";
-        $statement = Conexao::getInstance()->prepare($sqlContador);
+        $statement = conexao::getInstance()->prepare($sqlContador);
         $statement->execute();
         $valor = $statement->fetch(PDO::FETCH_OBJ);
 
@@ -160,8 +160,8 @@ class categoriaDAO
             echo "
              </tbody>
              </table>
-                <nav>
-                <ul class='pagination justify-content-center' style='text-align: center'>
+             <nav class='text-center'>
+                <ul class='pagination' style='text-align: center'>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
              ";
@@ -173,7 +173,7 @@ class categoriaDAO
             echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
                   <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
                 </ul>
-                <nav/>";
+            <nav/>";
         else:
             echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
         endif;

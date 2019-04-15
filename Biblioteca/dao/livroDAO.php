@@ -18,7 +18,7 @@ class livroDAO
     public function remover($livro)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("DELETE FROM tb_livro WHERE idtb_livro=:id");
+            $statement = conexao::getInstance()->prepare("DELETE FROM tb_livro WHERE idtb_livro=:id");
             $statement->bindValue(":id", $livro->getIdtbLivro());
             if ($statement->execute()) {
                 return "<script> alert('Registro foi excluído com êxito!'); </script>";
@@ -34,7 +34,7 @@ class livroDAO
     {
         try {
             if ($livro->getIdtbLivro() != "") {
-                $statement = Conexao::getInstance()->prepare("UPDATE tb_livro SET titulo=:titulo, 
+                $statement = conexao::getInstance()->prepare("UPDATE tb_livro SET titulo=:titulo, 
                                                                                             isbn=:isbn, 
                                                                                             edicao=:edicao, 
                                                                                             ano=:ano, 
@@ -44,7 +44,7 @@ class livroDAO
                                                                                         WHERE idtb_livro=:id");
                 $statement->bindValue(":id", $livro->getIdtbLivro());
             } else {
-                $statement = Conexao::getInstance()->prepare("INSERT INTO tb_livro(titulo, 
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_livro(titulo, 
                                                                                             isbn, 
                                                                                             edicao, 
                                                                                             ano,
@@ -83,7 +83,7 @@ class livroDAO
 
     public function buscarTodos(){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_livro AS id,
+            $statement = conexao::getInstance()->prepare("SELECT a.idtb_livro AS id,
                                                                            a.titulo AS titulo,
                                                                            a.isbn AS isbn,
                                                                            a.edicao AS edicao,
@@ -120,7 +120,7 @@ class livroDAO
 
     public function buscarLivro($id){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT a.idtb_livro AS id,
+            $statement = conexao::getInstance()->prepare("SELECT a.idtb_livro AS id,
                                                                            a.titulo AS titulo,
                                                                            a.isbn AS isbn,
                                                                            a.edicao AS edicao,
@@ -172,13 +172,13 @@ class livroDAO
 
         /* Instrução de consulta para paginação com MySQL */
         $sql = "SELECT idtb_livro, titulo, isbn, edicao, ano, upload, tb_editora_idtb_editora, tb_categoria_idtb_categoria FROM tb_livro LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
-        $statement = Conexao::getInstance()->prepare($sql);
+        $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
 
         /* Conta quantos registos existem na tabela */
         $sqlContador = "SELECT COUNT(*) AS total_registros FROM tb_livro";
-        $statement = Conexao::getInstance()->prepare($sqlContador);
+        $statement = conexao::getInstance()->prepare($sqlContador);
         $statement->execute();
         $valor = $statement->fetch(PDO::FETCH_OBJ);
 
@@ -246,7 +246,7 @@ class livroDAO
             echo "
              </tbody>
              </table>
-                <nav>
+             <nav class='text-center'>
                 <ul class='pagination justify-content-center' style='text-align: center'>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
@@ -259,7 +259,7 @@ class livroDAO
             echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
                   <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
                 </ul>
-                <nav/>";
+             <nav/>";
         else:
             echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
         endif;

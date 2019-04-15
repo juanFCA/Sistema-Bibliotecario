@@ -17,7 +17,7 @@ class usuarioDAO
      */
     function logar($login, $senha){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_usuario WHERE nomeUsuario=:nome AND senha =:senha");
+            $statement = conexao::getInstance()->prepare("SELECT * FROM tb_usuario WHERE nomeUsuario=:nome AND senha =:senha");
             $statement->bindValue(":nome", $login);
             $statement->bindValue(":senha", $senha);
             if ($statement->execute()) {
@@ -34,7 +34,7 @@ class usuarioDAO
     public function remover($usuario)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("DELETE FROM tb_usuario WHERE idtb_usuario=:id");
+            $statement = conexao::getInstance()->prepare("DELETE FROM tb_usuario WHERE idtb_usuario=:id");
             $statement->bindValue(":id", $usuario->getIdtbUsuario());
             if ($statement->execute()) {
                 return "<script> alert('Registro foi excluído com êxito!'); </script>";
@@ -50,14 +50,14 @@ class usuarioDAO
     {
         try {
             if ($usuario->getIdtbUsuario() != "") {
-                $statement = Conexao::getInstance()->prepare("UPDATE tb_usuario SET nomeUsuario=:nomeUsuario,
+                $statement = conexao::getInstance()->prepare("UPDATE tb_usuario SET nomeUsuario=:nomeUsuario,
                                                                                             tipo=:tipo,
                                                                                             email=:email,
                                                                                             senha=:senha
                                                                                             WHERE idtb_usuario=:id");
                 $statement->bindValue(":id", $usuario->getIdtbUsuario());
             } else {
-                $statement = Conexao::getInstance()->prepare("INSERT INTO tb_usuario(nomeUsuario, tipo, email, senha) 
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_usuario(nomeUsuario, tipo, email, senha) 
                                                                         VALUES (:nomeUsuario, :tipo, :email, :senha)");
             }
 
@@ -83,8 +83,9 @@ class usuarioDAO
     public function buscarUsuario($id)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT idtb_usuario, nomeUsuario, tipo, email, senha 
-                                                                    FROM tb_usuario WHERE idtb_usuario=" .$id);
+            $statement = conexao::getInstance()->prepare("SELECT idtb_usuario, nomeUsuario, tipo, email, senha 
+                                                                    FROM tb_usuario WHERE idtb_usuario=:id");
+            $statement->bindValue(":id", $id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
                 $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha);
@@ -97,9 +98,29 @@ class usuarioDAO
         }
     }
 
+    public function buscarPorEmail($email){
+        try{
+            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_usuario WHERE email =:email");
+            $statement->bindValue(":email", $email);
+            if($statement->execute()){
+                $rs = $statement->fetch(PDO::FETCH_OBJ);
+                if($rs != null){
+                    $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha);
+                } else {
+                    $usuario = null;
+                }
+                return $usuario;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch(PDOException $erro){
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
     public function buscarTodos(){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_usuario");
+            $statement = conexao::getInstance()->prepare("SELECT * FROM tb_usuario");
             if ($statement->execute()) {
                 $usuarios = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
@@ -132,13 +153,13 @@ class usuarioDAO
 
         /* Instrução de consulta para paginação com MySQL */
         $sql = "SELECT idtb_usuario, nomeUsuario, tipo, email, senha FROM tb_usuario LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
-        $statement = Conexao::getInstance()->prepare($sql);
+        $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
 
         /* Conta quantos registos existem na tabela */
         $sqlContador = "SELECT COUNT(*) AS total_registros FROM tb_usuario";
-        $statement = Conexao::getInstance()->prepare($sqlContador);
+        $statement = conexao::getInstance()->prepare($sqlContador);
         $statement->execute();
         $valor = $statement->fetch(PDO::FETCH_OBJ);
 
@@ -194,8 +215,8 @@ class usuarioDAO
             echo "
              </tbody>
              </table>
-                <nav>
-                <ul class='pagination justify-content-center' style='text-align: center'>
+             <nav class='text-center'>
+                <ul class='pagination' style='text-align: center'>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
              ";
@@ -207,7 +228,7 @@ class usuarioDAO
             echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
                   <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
                 </ul>
-                <nav/>";
+             <nav/>";
         else:
             echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
         endif;

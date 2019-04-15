@@ -15,7 +15,7 @@ class autorDAO
     public function remover($autor)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("DELETE FROM tb_autor WHERE idtb_autor=:id");
+            $statement = conexao::getInstance()->prepare("DELETE FROM tb_autor WHERE idtb_autor=:id");
             $statement->bindValue(":id", $autor->getIdtbAutor());
             if ($statement->execute()) {
                 return "<script> alert('Registro foi excluído com êxito!'); </script>";
@@ -31,10 +31,10 @@ class autorDAO
     {
         try {
             if ($autor->getIdtbAutor() != "") {
-                $statement = Conexao::getInstance()->prepare("UPDATE tb_autor SET nomeAutor=:nomeAutor WHERE idtb_autor=:id");
+                $statement = conexao::getInstance()->prepare("UPDATE tb_autor SET nomeAutor=:nomeAutor WHERE idtb_autor=:id");
                 $statement->bindValue(":id", $autor->getIdtbAutor());
             } else {
-                $statement = Conexao::getInstance()->prepare("INSERT INTO tb_autor(nomeAutor) VALUES (:nomeAutor)");
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_autor(nomeAutor) VALUES (:nomeAutor)");
             }
             $statement->bindValue(":nomeAutor", $autor->getNomeAutor());
 
@@ -55,7 +55,7 @@ class autorDAO
     public function buscarAutor($id)
     {
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT idtb_autor, nomeAutor FROM tb_autor WHERE idtb_autor=". $id);
+            $statement = conexao::getInstance()->prepare("SELECT idtb_autor, nomeAutor FROM tb_autor WHERE idtb_autor=". $id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
                 $autor = new autor($rs->idtb_autor, $rs->nomeAutor);
@@ -70,7 +70,7 @@ class autorDAO
 
     public function buscarTodos(){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT * FROM tb_autor");
+            $statement = conexao::getInstance()->prepare("SELECT * FROM tb_autor");
             if ($statement->execute()) {
                 $autores = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
@@ -105,13 +105,13 @@ class autorDAO
 
         /* Instrução de consulta para paginação com MySQL */
         $sql = "SELECT idtb_autor, nomeAutor FROM tb_autor LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
-        $statement = Conexao::getInstance()->prepare($sql);
+        $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
 
         /* Conta quantos registos existem na tabela */
         $sqlContador = "SELECT COUNT(*) AS total_registros FROM tb_autor";
-        $statement = Conexao::getInstance()->prepare($sqlContador);
+        $statement = conexao::getInstance()->prepare($sqlContador);
         $statement->execute();
         $valor = $statement->fetch(PDO::FETCH_OBJ);
 
@@ -161,8 +161,8 @@ class autorDAO
             echo "
              </tbody>
              </table>
-             <nav>
-                <ul class='pagination justify-content-center' style='text-align: center'>
+             <nav class='text-center'>
+                <ul class='pagination' style='text-align: center'>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
                     <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
              ";

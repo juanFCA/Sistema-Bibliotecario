@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * User: juan
- * Date: 01/04/2019
+ * Date: 02/03/2018
  * Time: 11:23
  */
 
@@ -19,7 +19,6 @@ class Template
             unset($_SESSION['senha']);
             header('location:login.php');
         }
-        $logado = $_SESSION['login'];
 
         echo "<!doctype html>
         <html lang='en'>
@@ -27,21 +26,21 @@ class Template
             <meta charset='utf-8' />
             <link rel='icon' type='image/png' sizes='96x96' href='assets/img/favicon.jpg'>
             <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' />
-
+        
             <title>Biblioteca</title>
-
+        
             <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
             <meta name='viewport' content='width=device-width' />
-
+        
             <!-- Bootstrap core CSS     -->
-            <link href='assets/css/bootstrap.css' rel='stylesheet' />
-
+            <link href='assets/css/bootstrap.min.css' rel='stylesheet' />
+        
             <!-- Animation library for notifications   -->
             <link href='assets/css/animate.min.css' rel='stylesheet'/>
-
+        
             <!--  Paper Dashboard core CSS    -->
             <link href='assets/css/paper-dashboard.css' rel='stylesheet'/>
-
+        
             <!--  Fonts and icons     -->
             <link href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css' rel='stylesheet'>
         <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
@@ -54,81 +53,89 @@ class Template
     public static function footer()
     {
         echo " <footer class=\"footer\">
-            <div class=\"container-fluid\">
-                <nav class=\"pull-left\">
-                    
-                </nav>
-                <div class=\"copyright pull-right\">
-                    &copy; <script>document.write(new Date().getFullYear())</script>, template made with <i class=\"fa fa-heart heart\"></i> by <a href=\"http://www.creative-tim.com\" target='_blank'>Creative Tim</a>
-                </div>
+                    <div class=\"container-fluid\">
+                        <nav class=\"pull-left\">
+                            <ul>
+                                <li>
+                                    <p>
+                                       ". $_SESSION['login'] ." 
+                                    </p>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class=\"copyright pull-right\">
+                            &copy; <script>document.write(new Date().getFullYear())</script>, template made with <i class=\"fa fa-heart heart\"></i> by <a href=\"http://www.creative-tim.com\" target='_blank'>Creative Tim</a>
+                        </div>
+                    </div>
+                </footer>
+        
             </div>
-            </footer>
-            </div>
-            </div>
+        </div>
         </body>
-
+        
             <!--   Core JS Files   -->
             <script src=\"assets/js/jquery-1.10.2.js\" type=\"text/javascript\"></script>
             <script src=\"assets/js/bootstrap.min.js\" type=\"text/javascript\"></script>
-
+        
             <!--  Checkbox, Radio & Switch Plugins -->
             <script src=\"assets/js/bootstrap-checkbox-radio.js\"></script>
-
+        
         </html>";
+
     }
 
-    public static function sidebar()
+    public static function sidebar($janela)
     {
         echo "<div class=\"wrapper\">
-        <div class=\"sidebar\" data-background-color=\"white\" data-active-color=\"danger\">
-
-        <!--
-            Tip 1: you can change the color of the sidebar's background using: data-background-color=\"white | black\"
-            Tip 2: you can change the color of the active button using the data-active-color=\"primary | info | success | warning | danger\"
-        -->
-
-        <div class=\"sidebar-wrapper\">
-            <div class=\"logo\">
-                <a href='index.php'><img src=\"assets/img/logo.jpg\" height=\"150\" width=\"200\"></a>
-                <h4>Biblioteca</h4>
-                <small></small>
-                <a class='btn btn-success'  href=\"logout.php\">Logout</a>
+            <div class=\"sidebar\" data-background-color=\"white\" data-active-color=\"danger\">
+    
+            <!--
+                Tip 1: you can change the color of the sidebar's background using: data-background-color=\"white | black\"
+                Tip 2: you can change the color of the active button using the data-active-color=\"primary | info | success | warning | danger\"
+            -->
+    
+            <div class=\"sidebar-wrapper\">
+                <div class=\"logo\">
+                    <a href='index.php'><img src=\"assets/img/logo.jpg\" height=\"150\" width=\"200\"></a>
+                    <h4>Biblioteca</h4>
+                    <small></small>
+                    <a class='btn btn-success'  href=\"logout.php\">Logout</a>
+                </div>
+    
+                <ul class=\"nav\">
+                    <li class="; echo (!empty($janela) && $janela == "autores") ? "active" : "deactive"; echo">
+                        <a href='autores.php'>
+                            <i class=\"ti-user\"></i>
+                            <p>Autores</p>
+                        </a>
+                    </li>
+                    <li class="; echo (!empty($janela) && $janela == "categorias") ? "active" : "deactive"; echo">
+                        <a href='categorias.php'>
+                            <i class=\"ti-view-list\"></i>
+                            <p>Categorias</p>
+                        </a>
+                    </li>
+                    <li class="; echo (!empty($janela) && $janela == "editoras") ? "active" : "deactive"; echo">
+                        <a href='editoras.php'>
+                            <i class=\"ti-ruler-pencil\"></i>
+                            <p>Editoras</p>
+                        </a>
+                    </li>
+                    <li class="; echo (!empty($janela) && $janela == "livros") ? "active" : "deactive"; echo">
+                        <a href='livros.php'>
+                            <i class=\"ti-book\"></i>
+                            <p>Livros</p>
+                        </a>
+                    </li>
+                    <li class="; echo (!empty($janela) && $janela == "usuarios") ? "active" : "deactive"; echo">
+                        <a href='usuarios.php'>
+                            <i class=\"ti-user\"></i>
+                            <p>Usuários</p>
+                        </a>
+                    </li>
+                </ul>
             </div>
-
-            <ul class=\"nav\">
-                <li class=\"active\">
-                    <a href='autores.php'>
-                        <i class=\"ti-user\"></i>
-                        <p>Autores</p>
-                    </a>
-                </li>
-                <li class=\"active\">
-                    <a href='editoras.php'>
-                        <i class=\"ti-ruler-pencil\"></i>
-                        <p>Editoras</p>
-                    </a>
-                </li>
-                <li class=\"active\">
-                    <a href='categorias.php'>
-                        <i class=\"ti-view-list\"></i>
-                        <p>Categorias</p>
-                    </a>
-                </li>
-                <li class=\"active\">
-                    <a href='livros.php'>
-                        <i class=\"ti-book\"></i>
-                        <p>Livros</p>
-                    </a>
-                </li>
-                <li class=\"active\">
-                    <a href='usuarios.php'>
-                        <i class=\"ti-user\"></i>
-                        <p>Usuários</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>";
+        </div>";
     }
 
     public static function mainpanel()
@@ -181,5 +188,7 @@ class Template
                 </div>
             </div>
         </nav>";
+
     }
+
 }
