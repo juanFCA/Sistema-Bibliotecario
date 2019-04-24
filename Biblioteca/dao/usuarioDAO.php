@@ -60,7 +60,6 @@ class usuarioDAO
                 $statement = conexao::getInstance()->prepare("INSERT INTO tb_usuario(nomeUsuario, tipo, email, senha) 
                                                                         VALUES (:nomeUsuario, :tipo, :email, :senha)");
             }
-
             $statement->bindValue(":nomeUsuario", $usuario->getNomeUsuario());
             $statement->bindValue(":tipo", $usuario->getTipo());
             $statement->bindValue(":email", $usuario->getEmail());
