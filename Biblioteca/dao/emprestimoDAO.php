@@ -12,7 +12,7 @@ require_once "modelo/emprestimo.php";
 class emprestimoDAO
 {
 
-    public function remover($emprestimo)
+    public function remover(emprestimo $emprestimo)
     {
         try {
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_emprestimo WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
@@ -28,7 +28,7 @@ class emprestimoDAO
         }
     }
 
-    public function salvar($emprestimo)
+    public function salvar(emprestimo $emprestimo)
     {
         try {
             if ($emprestimo->getTbUsuarioIdtbUsuario() != "" or $emprestimo->getTbExemplarIdtbExemplar() != "") {
@@ -55,7 +55,7 @@ class emprestimoDAO
         }
     }
 
-    public function atualizar($emprestimo)
+    public function atualizar(emprestimo $emprestimo)
     {
         try {
             $statement = conexao::getInstance()->prepare("SELECT tb_usuario_idtb_usuario, tb_exemplar_idtb_exemplar, dataEmprestimo, observacoes FROM tb_emprestimo WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");

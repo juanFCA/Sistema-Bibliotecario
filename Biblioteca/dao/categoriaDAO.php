@@ -12,7 +12,7 @@ require_once "modelo/categoria.php";
 class categoriaDAO
 {
 
-    public function remover($categoria)
+    public function remover(categoria $categoria)
     {
         try {
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_categoria WHERE idtb_categoria=:id");
@@ -27,7 +27,7 @@ class categoriaDAO
         }
     }
 
-    public function salvarAtualizar($categoria)
+    public function salvarAtualizar(categoria $categoria)
     {
         try {
             if ($categoria->getIdtbCategoria() != "") {

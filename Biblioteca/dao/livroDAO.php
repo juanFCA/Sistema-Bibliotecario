@@ -12,10 +12,10 @@ require_once "dao/editoraDAO.php";
 require_once "dao/categoriaDAO.php";
 require_once "dao/autoriaDAO.php";
 
+
 class livroDAO
 {
-
-    public function remover($livro)
+    public function remover(livro $livro)
     {
         try {
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_livro WHERE idtb_livro=:id");
@@ -30,42 +30,30 @@ class livroDAO
         }
     }
 
-    public function salvarAtualizar($livro)
+    public function salvarAtualizar(livro $livro)
     {
         try {
             if ($livro->getIdtbLivro() != "") {
-                $statement = conexao::getInstance()->prepare("UPDATE tb_livro SET titulo=:titulo, 
-                                                                                            isbn=:isbn, 
-                                                                                            edicao=:edicao, 
-                                                                                            ano=:ano, 
-                                                                                            upload=:upload, 
-                                                                                            tb_editora_idtb_editora=:idEditora, 
-                                                                                            tb_categoria_idtb_categoria=:idCategoria 
-                                                                                        WHERE idtb_livro=:id");
+                $statement = conexao::getInstance()->prepare("UPDATE tb_livro SET titulo=:titulo,
+                                                                                            isbn=:isbn,
+                                                                                            edicao=:edicao,
+                                                                                            ano=:ano,
+                                                                                            upload=:upload,
+                                                                                            tb_editora_idtb_editora=:editora,
+                                                                                            tb_categoria_idtb_categoria=:categoria
+                                                                                            WHERE idtb_livro=:id");
                 $statement->bindValue(":id", $livro->getIdtbLivro());
             } else {
-                $statement = conexao::getInstance()->prepare("INSERT INTO tb_livro(titulo, 
-                                                                                            isbn, 
-                                                                                            edicao, 
-                                                                                            ano,
-                                                                                            upload,
-                                                                                            tb_editora_idtb_editora,
-                                                                                            tb_categoria_idtb_categoria) 
-                                                                              VALUES(:titulo, 
-                                                                                     :isbn, 
-                                                                                     :edicao, 
-                                                                                     :ano, 
-                                                                                     :upload, 
-                                                                                     :idEditora, 
-                                                                                     :idCategoria)");
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_livro(titulo, isbn, edicao, ano, upload, tb_editora_idtb_editora, tb_categoria_idtb_categoria) 
+                                                                        VALUES (:titulo, :isbn, :edicao, :ano, :upload, :editora, :categoria)");
             }
             $statement->bindValue(":titulo", $livro->getTitulo());
             $statement->bindValue(":isbn", $livro->getIsbn());
             $statement->bindValue(":edicao", $livro->getEdicao());
             $statement->bindValue(":ano", $livro->getAno());
             $statement->bindValue(":upload", $livro->getUpload());
-            $statement->bindValue(":idEditora", $livro->getTbEditoraIdtbEditora());
-            $statement->bindValue(":idCategoria", $livro->getTbCategoriaIdtbCategoria());
+            $statement->bindValue(":editora", $livro->getTbEditoraIdtbEditora());
+            $statement->bindValue(":categoria", $livro->getTbCategoriaIdtbCategoria());
 
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
@@ -74,10 +62,11 @@ class livroDAO
                     return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
                 }
             } else {
+                var_dump($statement->errorInfo());
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return "Erro: " .$erro->getMessage();
         }
     }
 

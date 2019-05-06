@@ -12,7 +12,7 @@ require_once "modelo/editora.php";
 class editoraDAO
 {
 
-    public function remover($editora)
+    public function remover(editora $editora)
     {
         try {
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_editora WHERE idtb_editora=:id");
@@ -27,7 +27,7 @@ class editoraDAO
         }
     }
 
-    public function salvarAtualizar($editora)
+    public function salvarAtualizar(editora $editora)
     {
         try {
             if ($editora->getIdtbEditora() != "") {

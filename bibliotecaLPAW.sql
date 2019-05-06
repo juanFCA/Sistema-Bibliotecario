@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 02/04/2019 às 21:33
+-- Tempo de geração: 06/05/2019 às 19:16
 -- Versão do servidor: 10.1.38-MariaDB
--- Versão do PHP: 7.3.3
+-- Versão do PHP: 7.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -33,17 +33,6 @@ CREATE TABLE `tb_autor` (
   `nomeAutor` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Despejando dados para a tabela `tb_autor`
---
-
-INSERT INTO `tb_autor` (`idtb_autor`, `nomeAutor`) VALUES
-(1, 'Monteiro Lobato'),
-(2, 'Agatha Christie'),
-(3, 'José Saramago'),
-(4, 'Machado de Assis'),
-(7, 'Gomes de Castro');
-
 -- --------------------------------------------------------
 
 --
@@ -66,16 +55,6 @@ CREATE TABLE `tb_categoria` (
   `nomeCategoria` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Despejando dados para a tabela `tb_categoria`
---
-
-INSERT INTO `tb_categoria` (`idtb_categoria`, `nomeCategoria`) VALUES
-(1, 'Ação'),
-(3, 'Aventura'),
-(5, 'Comédia'),
-(6, 'Romance');
-
 -- --------------------------------------------------------
 
 --
@@ -86,14 +65,6 @@ CREATE TABLE `tb_editora` (
   `idtb_editora` int(11) NOT NULL,
   `nomeEditora` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Despejando dados para a tabela `tb_editora`
---
-
-INSERT INTO `tb_editora` (`idtb_editora`, `nomeEditora`) VALUES
-(2, 'Saraiva'),
-(3, 'Saramago');
 
 -- --------------------------------------------------------
 
@@ -130,7 +101,7 @@ CREATE TABLE `tb_livro` (
   `idtb_livro` int(11) NOT NULL,
   `titulo` varchar(255) NOT NULL,
   `isbn` varchar(255) NOT NULL,
-  `edicao` varchar(4) DEFAULT NULL,
+  `edicao` varchar(45) DEFAULT NULL,
   `ano` year(4) NOT NULL,
   `upload` varchar(45) DEFAULT NULL,
   `tb_editora_idtb_editora` int(11) NOT NULL,
@@ -150,13 +121,6 @@ CREATE TABLE `tb_usuario` (
   `email` varchar(255) NOT NULL,
   `senha` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Despejando dados para a tabela `tb_usuario`
---
-
-INSERT INTO `tb_usuario` (`idtb_usuario`, `nomeUsuario`, `tipo`, `email`, `senha`) VALUES
-(1, 'admin', 1, 'admin@admin.com', 'admin');
 
 --
 -- Índices de tabelas apagadas
@@ -227,19 +191,19 @@ ALTER TABLE `tb_usuario`
 -- AUTO_INCREMENT de tabela `tb_autor`
 --
 ALTER TABLE `tb_autor`
-  MODIFY `idtb_autor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idtb_autor` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `tb_categoria`
 --
 ALTER TABLE `tb_categoria`
-  MODIFY `idtb_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idtb_categoria` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `tb_editora`
 --
 ALTER TABLE `tb_editora`
-  MODIFY `idtb_editora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idtb_editora` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `tb_livro`
@@ -251,7 +215,7 @@ ALTER TABLE `tb_livro`
 -- AUTO_INCREMENT de tabela `tb_usuario`
 --
 ALTER TABLE `tb_usuario`
-  MODIFY `idtb_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idtb_usuario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restrições para dumps de tabelas

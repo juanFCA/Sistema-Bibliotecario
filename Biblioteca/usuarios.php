@@ -17,11 +17,11 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
         $_POST["nome"],
         $_POST["tipo"],
         $_POST["email"],
-        $_POST["senha"]);
+        md5($_POST["senha"]));
     if(isset($_POST["id"])){
         $usuario->setIdtbUsuario($_POST["id"]);
     }
-    $object->salvarAtualizar($usuario);
+    $msg = $object->salvarAtualizar($usuario);
     unset($usuario);
 }
 
@@ -33,7 +33,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $usuario = $object->buscarUsuario($id);
-    $object->remover($usuario);
+    $msg = $object->remover($usuario);
     unset($usuario);
 }
 ?>

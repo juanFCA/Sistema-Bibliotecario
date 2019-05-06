@@ -12,7 +12,7 @@ require_once "modelo/autor.php";
 class autorDAO
 {
 
-    public function remover($autor)
+    public function remover(autor $autor)
     {
         try {
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_autor WHERE idtb_autor=:id");
@@ -37,7 +37,6 @@ class autorDAO
                 $statement = conexao::getInstance()->prepare("INSERT INTO tb_autor(nomeAutor) VALUES (:nomeAutor)");
             }
             $statement->bindValue(":nomeAutor", $autor->getNomeAutor());
-
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
                     return "<script> alert('Dados cadastrados com sucesso!'); </script>";

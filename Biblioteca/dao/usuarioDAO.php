@@ -31,7 +31,7 @@ class usuarioDAO
         }
     }
 
-    public function remover($usuario)
+    public function remover(usuario $usuario)
     {
         try {
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_usuario WHERE idtb_usuario=:id");
@@ -46,7 +46,7 @@ class usuarioDAO
         }
     }
 
-    public function salvarAtualizar($usuario)
+    public function salvarAtualizar(usuario $usuario)
     {
         try {
             if ($usuario->getIdtbUsuario() != "") {

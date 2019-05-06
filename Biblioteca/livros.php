@@ -27,7 +27,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     if(isset($_POST["id"])){
         $livro->setIdtbLivro($_POST["id"]);
     }
-    $object->salvarAtualizar($livro);
+    $msg = $object->salvarAtualizar($livro);
     unset($livro);
 }
 
@@ -40,7 +40,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $livro = $object->buscarLivro($id);
-    $object->remover($livro);
+    $msg = $object->remover($livro);
     unset($livro);
 }
 ?>

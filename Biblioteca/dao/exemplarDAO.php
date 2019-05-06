@@ -12,7 +12,7 @@ require_once "modelo/exemplar.php";
 class exemplarDAO
 {
 
-    public function remover($exemplar)
+    public function remover(exemplar $exemplar)
     {
         try {
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_exemplar WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
@@ -28,7 +28,7 @@ class exemplarDAO
         }
     }
 
-    public function salvar($exemplar)
+    public function salvar(exemplar $exemplar)
     {
         try {
             if ($exemplar->getIdtbExemplar() != "" or $exemplar->getTbLivroIdtbLivro() != "") {
@@ -54,7 +54,7 @@ class exemplarDAO
         }
     }
 
-    public function atualizar($exemplar)
+    public function atualizar(exemplar $exemplar)
     {
         try {
             $statement = conexao::getInstance()->prepare("SELECT idtb_exemplar, tb_livro_idtb_livro, tipoExemplar FROM tb_exemplar WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
