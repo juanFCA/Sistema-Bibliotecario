@@ -9,7 +9,7 @@
 require_once 'dao/usuarioDAO.php';
 require_once 'modelo/usuario.php';
 
-// session_start inicia a sessão                                                               https://pt.stackoverflow.com/questions/247026/exibir-um-alert-e-redirecionar-a-p%C3%A1gina
+// session_start inicia a sessão https://pt.stackoverflow.com/questions/247026/exibir-um-alert-e-redirecionar-a-p%C3%A1gina
 session_start();
 // as variáveis login e senha recebem os dados digitados na página anterior
 $login = $_POST['login'];
