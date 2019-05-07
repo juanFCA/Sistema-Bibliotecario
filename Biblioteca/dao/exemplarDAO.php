@@ -8,9 +8,15 @@
 
 require_once "db/conexao.php";
 require_once "modelo/exemplar.php";
+require_once "dao/livroDAO.php";
 
 class exemplarDAO
 {
+
+    public function tipos() {
+        return array( 1 => 'Circular', 
+                      2 => 'Não Circular');
+    }
 
     public function remover(exemplar $exemplar)
     {
@@ -28,16 +34,16 @@ class exemplarDAO
         }
     }
 
-    public function salvar(exemplar $exemplar)
+    public function salvarAtualizar(exemplar $exemplar)
     {
         try {
-            if ($exemplar->getIdtbExemplar() != "" or $exemplar->getTbLivroIdtbLivro() != "") {
-                $statement = conexao::getInstance()->prepare("UPDATE tb_exemplar SET tipoExemplar=:tipoExemplar  WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
+            if ($exemplar->getIdtbExemplar() != "") {
+                $statement = conexao::getInstance()->prepare("UPDATE tb_exemplar SET tipoExemplar=:tipoExemplar, tb_livro_idtb_livro=:idLivro WHERE idtb_exemplar=:idExemplar");
                 $statement->bindValue(":idExemplar", $exemplar->getIdtbExemplar());
-                $statement->bindValue(":idLivro", $exemplar->getTbLivroIdtbLivro());
             } else {
-                $statement = conexao::getInstance()->prepare("INSERT INTO tb_exemplar(tipoExemplar) VALUES (:tipoExemplar)");
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_exemplar(tipoExemplar, tb_livro_idtb_livro) VALUES (:tipoExemplar, :idLivro)");
             }
+            $statement->bindValue(":idLivro", $exemplar->getTbLivroIdtbLivro());
             $statement->bindValue(":tipoExemplar", $exemplar->getTipoExemplar());
 
             if ($statement->execute()) {
@@ -54,19 +60,34 @@ class exemplarDAO
         }
     }
 
-    public function atualizar(exemplar $exemplar)
+    public function buscarExemplar($id)
     {
         try {
-            $statement = conexao::getInstance()->prepare("SELECT idtb_exemplar, tb_livro_idtb_livro, tipoExemplar FROM tb_exemplar WHERE idtb_exemplar=:idExemplar AND tb_livro_idtb_livro=:idLivro");
-            $statement->bindValue(":idExemplar", $exemplar->getIdtbExemplar());
-            $statement->bindValue(":idLivro", $exemplar->getTbLivroIdtbLivro());
-
+            $statement = conexao::getInstance()->prepare("SELECT idtb_exemplar, tb_livro_idtb_livro, tipoExemplar 
+                                                            FROM tb_exemplar WHERE idtb_exemplar=:id");
+            $statement->bindValue(":id", $id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $exemplar->setIdtbExemplar($rs->idtb_exemplar);
-                $exemplar->setTbLivroIdtbLivro($rs->tb_livro_idtb_livro);
-                $exemplar->setTipoExemplar($rs->tipoExemplar);
+                $exemplar = new exemplar($rs->idtb_exemplar, $rs->tb_livro_idtb_livro, $rs->tipoExemplar);
                 return $exemplar;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
+    public function buscarTodos(){
+        try {
+            $statement = conexao::getInstance()->prepare("SELECT * FROM tb_exemplar");
+            if ($statement->execute()) {
+                $exemplares = [];
+                while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
+                    $exemplar = new exemplar($rs->idtb_exemplar, $rs->tb_livro_idtb_livro, $rs->tipoExemplar);
+                    array_push($exemplares, $exemplar);
+                }
+                return $exemplares;
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
             }
@@ -127,6 +148,9 @@ class exemplarDAO
 
         /* Verifica se vai exibir o botão "Anterior" e "Último" */
         $exibir_botao_final = ($range_final > $pagina_atual) ? '' : 'disabled';
+        
+        /* Verifica nome do livro */
+        $livroDAO = new livroDAO();
 
         if (!empty($dados)):
             echo "
@@ -134,19 +158,20 @@ class exemplarDAO
              <thead>
                <tr style='text-transform: uppercase;' class='active'>
                 <th style='text-align: center; font-weight: bolder;'>ID</th>
-                <th style='text-align: center; font-weight: bolder;'>ID Livro</th>
+                <th style='text-align: center; font-weight: bolder;'>Livro</th>
                 <th style='text-align: center; font-weight: bolder;'>Tipo</th>
                 <th style='text-align: center; font-weight: bolder;' colspan='2'>Ações</th>
                </tr>
              </thead>
              <tbody>";
             foreach ($dados as $acti):
+                $livro = $livroDAO->buscarLivro($acti->tb_livro_idtb_livro);
                 echo "<tr>
                     <td style='text-align: center'>$acti->idtb_exemplar</td>
-                    <td style='text-align: center'>$acti->tb_livro_idtb_livro</td>
-                    <td style='text-align: center'>$acti->tipoExemplar</td>
-                    <td style='text-align: center'><a href='?act=upd&id=$acti->id_action' title='Alterar'><i class='ti-reload'></i></a></td>
-                    <td style='text-align: center'><a href='?act=del&id=$acti->id_action' title='Remover'><i class='ti-close'></i></a></td>
+                    <td style='text-align: center'>". $livro->getTitulo() ."</td>
+                    <td style='text-align: center'>" . $this->tipos()[$acti->tipoExemplar] . "</td>
+                    <td style='text-align: center'><a href='?act=upd&id=$acti->idtb_exemplar' title='Alterar'><i class='ti-reload'></i></a></td>
+                    <td style='text-align: center'><a href='?act=del&id=$acti->idtb_exemplar' title='Remover'><i class='ti-close'></i></a></td>
                    </tr>";
             endforeach;
             echo "

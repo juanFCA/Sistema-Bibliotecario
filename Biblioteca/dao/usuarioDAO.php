@@ -10,12 +10,20 @@ require_once "modelo/usuario.php";
 
 class usuarioDAO
 {
+    
+    public function tipos() {
+        return array( 1 => 'Administrador', 
+                2 => 'Bibliotecário',
+                3 => 'Docente',
+                4 => 'Discente');
+    }
+
     /**
      * @param $login
      * @param $senha
      * @return array|string
      */
-    function logar($login, $senha){
+    public function logar($login, $senha){
         try {
             $statement = conexao::getInstance()->prepare("SELECT * FROM tb_usuario WHERE nomeUsuario=:nome AND senha =:senha");
             $statement->bindValue(":nome", $login);
@@ -204,7 +212,7 @@ class usuarioDAO
                 echo "<tr>
                     <td style='text-align: center'>$acti->idtb_usuario</td>
                     <td style='text-align: center'>$acti->nomeUsuario</td>
-                    <td style='text-align: center'>$acti->tipo</td>
+                    <td style='text-align: center'>" . $this->tipos()[$acti->tipo] . "</td>
                     <td style='text-align: center'>$acti->email</td>
                     <!--<td style='text-align: center'>$acti->senha</td>-->
                     <td style='text-align: center'><a href='?act=upd&id=$acti->idtb_usuario' title='Alterar'><i class='ti-reload'></i></a></td>

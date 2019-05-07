@@ -14,7 +14,7 @@ template::mainpanel();
                 <div class='card'>
                     <div class='header'>
                         <h1 class='title' style="text-align: center">Biblioteca</h1>
-                        <p class='category'></p>
+                        <p class='category'>Sistema Bibliotecário</p>
                     </div>
                     <div class='content table-responsive'>
                           <h4 class="title">Seja bem-vindo </h4>

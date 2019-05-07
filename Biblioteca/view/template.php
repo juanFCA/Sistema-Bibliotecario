@@ -127,6 +127,12 @@ class Template
                             <p>Livros</p>
                         </a>
                     </li>
+                    <li class="; echo (!empty($janela) && $janela == "exemplares") ? "active" : "deactive"; echo">
+                        <a href='exemplares.php'>
+                            <i class=\"ti-book\"></i>
+                            <p>Exemplares</p>
+                        </a>
+                    </li>
                     <li class="; echo (!empty($janela) && $janela == "usuarios") ? "active" : "deactive"; echo">
                         <a href='usuarios.php'>
                             <i class=\"ti-user\"></i>

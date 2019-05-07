@@ -6,11 +6,11 @@ require_once "modelo/usuario.php";
 require_once "db/conexao.php";
 
 $object = new usuarioDAO();
+$tipos = $object->tipos();
 
 template::header();
 template::sidebar("usuarios");
 template::mainpanel();
-
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     $usuario = new usuario("",
@@ -56,7 +56,15 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                 <input class="form-control" type="text" size="50" name="nome" value="<?php if(!empty($usuario)) {echo $usuario->getNomeUsuario();}?>" required/>
                                 <br/>
                                 <Label>Tipo</Label>
-                                <input class="form-control" type="number" size="1" name="tipo" value="<?php if(!empty($usuario)) {echo $usuario->getTipo();}?>" required/>
+                                <div class="form-group">
+                                    <select class="form-control" name="tipo" required>
+                                        <option value="" selected disabled hidden >Selecione o Tipo</option>
+                                        <option value="1" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 1) ? 'selected':'';}?>><?php echo $tipos[1] ?></option>
+                                        <option value="2" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 2) ? 'selected':'';}?>><?php echo $tipos[2] ?></option>
+                                        <option value="3" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 3) ? 'selected':'';}?>><?php echo $tipos[3] ?></option>
+                                        <option value="4" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 4) ? 'selected':'';}?>><?php echo $tipos[4] ?></option>
+                                    </select>
+                                </div>
                                 <br/>
                                 <Label>Email</Label>
                                 <input class="form-control" type="text" size="100" name="email" value="<?php if(!empty($usuario)) {echo $usuario->getEmail();}?>" required/>
