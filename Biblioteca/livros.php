@@ -8,6 +8,9 @@ require_once "modelo/categoria.php";
 require_once "dao/categoriaDAO.php";
 require_once "modelo/editora.php";
 require_once "dao/editoraDAO.php";
+require_once "modelo/autor.php";
+require_once "dao/autorDAO.php";
+require_once "dao/autoriaDAO.php";
 
 $object = new livroDAO();
 
@@ -27,21 +30,25 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     if(isset($_POST["id"])){
         $livro->setIdtbLivro($_POST["id"]);
     }
-    $msg = $object->salvarAtualizar($livro);
+    $msg = $object->salvarAtualizar($livro, $_POST['autores']);
     unset($livro);
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $livro = $object->buscarLivro($id);
-
+    $autoriaDAO = new autoriaDAO();
+    $autoresAutoria = $autoriaDAO->buscarAutores($id); 
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $livro = $object->buscarLivro($id);
+    $autoriaDAO = new autoriaDAO();
+    $autoresAutoria = $autoriaDAO->buscarAutores($id); 
+    $msg = $autoriaDAO->remover($id, $autoresAutoria);
     $msg = $object->remover($livro);
-    unset($livro);
+    unset($livro, $autores);
 }
 ?>
 
@@ -84,7 +91,8 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                         <?php
                                     }else{ ?>
                                         <option value="<?php echo $editora->getIdtbEditora() ?>"><?php echo $editora->getNomeEditora()?></option>
-                                    <?php }} ?>
+                                    <?php }
+                                } ?>
                             </select>
                             <br/>
                             <label>Categoria</label>
@@ -100,7 +108,26 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                         <?php
                                     }else{ ?>
                                         <option value="<?php echo $categoria->getIdtbCategoria() ?>"><?php echo $categoria->getNomeCategoria()?></option>
-                                    <?php }} ?>
+                                    <?php }
+                                } ?>
+                            </select>
+                            <br/>
+                            <label>Autor(es)</label>
+                            <select name="autores" class="form-control">
+                                <option value="" selected disabled hidden >Selecione o(s) Autor(es)</option>
+                                <?php
+                                $autorDAO = new autorDAO();
+                                $autoriaDAO = new autoriaDAO();
+                                $autores = $autorDAO->buscarTodos();
+                                foreach($autores as $autor){
+                                    if(!empty($livro) && !empty($autoriaDAO->buscarAutoria($livro->getIdtbLivro(), $autor->getIdtbAutor())) ){
+                                        ?>
+                                        <option value="<?php echo $autor->getIdtbAutor() ?>" selected><?php echo $autor->getNomeAutor()?></option>
+                                        <?php
+                                    }else{ ?>
+                                        <option value="<?php echo $autor->getIdtbAutor() ?>"><?php echo $autor->getNomeAutor()?></option>
+                                    <?php }
+                                } ?>
                             </select>
                             <br/>
                             <Label>Upload de Arquivo Digital</Label>
