@@ -40,12 +40,16 @@ class Template
         
             <!--  Paper Dashboard core CSS    -->
             <link href='assets/css/paper-dashboard.css' rel='stylesheet'/>
-        
+
             <!--  Fonts and icons     -->
             <link href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css' rel='stylesheet'>
-        <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
-        <link href='assets/css/themify-icons.css' rel='stylesheet'>
-        </head>
+            <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+            <link href='assets/css/themify-icons.css' rel='stylesheet'>
+            
+            <!-- Bootstrap multiselection -->
+            <link href='vendor/mrohnstock/bootstrap-multiselect/css/bootstrap-multiselect.css' rel='stylesheet'/>
+
+            </head>
         <body>";
 
     }
@@ -79,7 +83,11 @@ class Template
         
             <!--  Checkbox, Radio & Switch Plugins -->
             <script src=\"assets/js/bootstrap-checkbox-radio.js\"></script>
-        
+
+            <!-- Bootstrap multiselection -->
+            <script src=\"vendor/mrohnstock/bootstrap-multiselect/js/bootstrap-multiselect.js\" type=\"text/javascript\"></script>
+            <script src=\"assets/js/rendered.js\" type=\"text/javascript\"></script>
+
         </html>";
 
     }

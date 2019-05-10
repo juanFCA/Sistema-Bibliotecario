@@ -30,7 +30,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     if(isset($_POST["id"])){
         $livro->setIdtbLivro($_POST["id"]);
     }
-    $msg = $object->salvarAtualizar($livro, $_POST['autores']);
+    $msg = $object->salvarAtualizar($livro, $_POST['autores[]']);
     unset($livro);
 }
 
@@ -113,8 +113,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                             </select>
                             <br/>
                             <label>Autor(es)</label>
-                            <select name="autores" class="form-control">
-                                <option value="" selected disabled hidden >Selecione o(s) Autor(es)</option>
+                            <select id="autores" multiple="multiple" name="autores[]" class="form-control">
                                 <?php
                                 $autorDAO = new autorDAO();
                                 $autoriaDAO = new autoriaDAO();
