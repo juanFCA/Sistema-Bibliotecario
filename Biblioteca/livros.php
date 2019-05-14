@@ -13,6 +13,10 @@ require_once "dao/autorDAO.php";
 require_once "dao/autoriaDAO.php";
 
 $object = new livroDAO();
+$autoriaDAO = new autoriaDAO();
+$autorDAO = new autorDAO();
+$categoriaDAO = new categoriaDAO();
+$editoraDAO = new editoraDAO();
 
 template::header();
 template::sidebar("livros");
@@ -30,21 +34,21 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     if(isset($_POST["id"])){
         $livro->setIdtbLivro($_POST["id"]);
     }
-    $msg = $object->salvarAtualizar($livro, $_POST['autores[]']);
+    $autores = $_POST["autores"];
+    $msg = $object->salvarAtualizar($livro, $autores);
+    echo $livro->getIdtbLivro();
     unset($livro);
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $livro = $object->buscarLivro($id);
-    $autoriaDAO = new autoriaDAO();
     $autoresAutoria = $autoriaDAO->buscarAutores($id); 
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $livro = $object->buscarLivro($id);
-    $autoriaDAO = new autoriaDAO();
     $autoresAutoria = $autoriaDAO->buscarAutores($id); 
     $msg = $autoriaDAO->remover($id, $autoresAutoria);
     $msg = $object->remover($livro);
@@ -82,7 +86,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                             <select name="editora" class="form-control">
                                 <option value="" selected disabled hidden >Selecione a Editora</option>
                                 <?php
-                                $editoraDAO = new editoraDAO();
                                 $editoras = $editoraDAO->buscarTodos();
                                 foreach($editoras as $editora){
                                     if( !empty($livro) && $editora->getIdtbEditora() == $livro->getTbEditoraIdtbEditora()){
@@ -99,7 +102,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                             <select name="categoria" class="form-control">
                                 <option value="" selected disabled hidden >Selecione a Categoria</option>
                                 <?php
-                                $categoriaDAO = new categoriaDAO();
                                 $categorias = $categoriaDAO->buscarTodos();
                                 foreach($categorias as $categoria){
                                     if(!empty($livro) && $categoria->getIdtbCategoria() == $livro->getTbCategoriaIdtbCategoria()){
@@ -115,8 +117,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                             <label>Autor(es)</label>
                             <select id="autores" multiple="multiple" name="autores[]" class="form-control">
                                 <?php
-                                $autorDAO = new autorDAO();
-                                $autoriaDAO = new autoriaDAO();
                                 $autores = $autorDAO->buscarTodos();
                                 foreach($autores as $autor){
                                     if(!empty($livro) && !empty($autoriaDAO->buscarAutoria($livro->getIdtbLivro(), $autor->getIdtbAutor())) ){

@@ -11,7 +11,7 @@ require_once "modelo/autoria.php";
 
 class autoriaDAO
 {
-    public function remover($idLivro, $autores)
+    public function remover($idLivro, array $autores)
     {
         foreach($autores as $key => $idAutor) {
             try {
@@ -31,9 +31,14 @@ class autoriaDAO
         }
     }
 
-    public function salvar($idLivro, $autores)
+    public function salvar($idLivro, array $autores)
     {
         foreach($autores as $key => $idAutor) {
+            echo "<pre>"; 
+            var_dump($idLivro);
+            var_dump($idAutor);
+            echo "</pre>";
+            
             try {
                 $statement = conexao::getInstance()->prepare("INSERT INTO tb_autoria(tb_livro_idtb_livro, tb_autor_idtb_autor) 
                                                                 VALUES (:idLivro, :idAutor)");
@@ -54,13 +59,18 @@ class autoriaDAO
         }
     }
 
-    public function atualizar($idLivro, $autores)
+    public function atualizar($idLivro, array $autores)
     {
-        $adicionados = [];
-        $removidos = [];
+        echo "<pre>"; 
+        var_dump($idLivro);
+        print_r($autores);
+        echo "</pre>";
+
+        $adicionados = array();
+        $removidos = array();
 
         $autoresBD = $this->buscarAutores($idLivro);
-        $resultado = array_diff($autoresBD, $autores);
+        $resultado = array_diff($autores, $autoresBD);
         foreach($resultado as $key => $idAutor) {
             if (!isEmpty($this->buscarAutoriaLivro($idLivro, $idAutor))) {
                 $removidos = $idAutor;

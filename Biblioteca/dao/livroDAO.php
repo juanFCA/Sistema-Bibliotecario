@@ -30,7 +30,7 @@ class livroDAO
         }
     }
 
-    public function salvarAtualizar(livro $livro, $autores)
+    public function salvarAtualizar(livro $livro, array $autores)
     {
         try {
             $autoriaDAO = new autoriaDAO();
@@ -44,11 +44,11 @@ class livroDAO
                                                                                             tb_categoria_idtb_categoria=:categoria
                                                                                             WHERE idtb_livro=:id");
                 $statement->bindValue(":id", $livro->getIdtbLivro());
-                $autoriaDAO->salvar($livro->getIdtbLivro(), $autores);
+                $autoriaDAO->atualizar($livro->getIdtbLivro(), $autores);
             } else {
                 $statement = conexao::getInstance()->prepare("INSERT INTO tb_livro(titulo, isbn, edicao, ano, upload, tb_editora_idtb_editora, tb_categoria_idtb_categoria) 
                                                                         VALUES (:titulo, :isbn, :edicao, :ano, :upload, :editora, :categoria)");
-                $autoriaDAO->atualizar($livro->getIdtbLivro(), $autores);
+                $autoriaDAO->salvar($livro->getIdtbLivro(), $autores);
             }
             $statement->bindValue(":titulo", $livro->getTitulo());
             $statement->bindValue(":isbn", $livro->getIsbn());
