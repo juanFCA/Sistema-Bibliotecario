@@ -13,74 +13,57 @@ class autoriaDAO
 {
     public function remover($idLivro, array $autores)
     {
-        foreach($autores as $key => $idAutor) {
-            try {
+        $acerto = 0;
+
+        try {
+            foreach ($autores as $key => $idAutor) {
                 $statement = conexao::getInstance()->prepare("DELETE FROM tb_autoria 
                                                                     WHERE tb_livro_idtb_livro=:idLivro
                                                                     AND tb_autor_idtb_autor=:idAutor");
                 $statement->bindValue(":idLivro", $idLivro);
                 $statement->bindValue(":idAutor", $idAutor);
                 if ($statement->execute()) {
-                    return "<script> alert('Registro foi excluído com êxito!'); </script>";
+                    $acerto += 1;
                 } else {
                     throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
                 }
-            } catch (PDOException $erro) {
-                return "Erro: " . $erro->getMessage();
             }
+            if (count($autores) == $acerto) {
+                return "<script> alert('Registro foi excluído com êxito!'); </script>";
+            } else {
+                return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+            }
+        }catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
         }
     }
 
     public function salvar($idLivro, array $autores)
     {
-        foreach($autores as $key => $idAutor) {
-            echo "<pre>"; 
-            var_dump($idLivro);
-            var_dump($idAutor);
-            echo "</pre>";
-            
-            try {
+        $acerto = 0;
+
+        try {
+            foreach ($autores as $key => $idAutor) {
                 $statement = conexao::getInstance()->prepare("INSERT INTO tb_autoria(tb_livro_idtb_livro, tb_autor_idtb_autor) 
                                                                 VALUES (:idLivro, :idAutor)");
                 $statement->bindValue(":idLivro", $idLivro);
                 $statement->bindValue(":idAutor", $idAutor);
                 if ($statement->execute()) {
                     if ($statement->rowCount() > 0) {
-                        return "<script> alert('Dados cadastrados com sucesso!'); </script>";
-                    } else {
-                        return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+                        $acerto += 1;
                     }
                 } else {
                     throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
                 }
-            } catch (PDOException $erro) {
-                return "Erro: " .$erro->getMessage();
             }
-        }
-    }
-
-    public function atualizar($idLivro, array $autores)
-    {
-        echo "<pre>"; 
-        var_dump($idLivro);
-        print_r($autores);
-        echo "</pre>";
-
-        $adicionados = array();
-        $removidos = array();
-
-        $autoresBD = $this->buscarAutores($idLivro);
-        $resultado = array_diff($autores, $autoresBD);
-        foreach($resultado as $key => $idAutor) {
-            if (!isEmpty($this->buscarAutoriaLivro($idLivro, $idAutor))) {
-                $removidos = $idAutor;
+            if (count($autores) == $acerto) {
+                return "<script> alert('Dados cadastrados com sucesso!'); </script>";
             } else {
-                $adicionados = $idAutor;
+                return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
             }
+        }catch (PDOException $erro) {
+            return "Erro: " .$erro->getMessage();
         }
-
-        $this->remover($idLivro, $removidos);
-        $this->salvar($idLivro, $adicionados);
     }
 
     public function buscarAutoria($idLivro, $idAutor)

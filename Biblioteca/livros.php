@@ -34,25 +34,32 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     if(isset($_POST["id"])){
         $livro->setIdtbLivro($_POST["id"]);
     }
-    $autores = $_POST["autores"];
-    $msg = $object->salvarAtualizar($livro, $autores);
-    echo $livro->getIdtbLivro();
+    $autoresPost = $_POST["autores"];
+    $idLivro = $object->salvarAtualizar($livro);
+    if ($idLivro == "Erro") {
+        $msg = "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+    } else {
+        $autoresBD = $autoriaDAO->buscarAutores($idLivro);
+        $adicionados = array_diff($autoresPost, $autoresBD);
+        $removidos = array_diff($autoresBD, $autoresPost);
+        $msg1 = $autoriaDAO->remover($idLivro, $removidos);
+        $msg2 = $autoriaDAO->salvar($idLivro, $adicionados);
+    }
     unset($livro);
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $livro = $object->buscarLivro($id);
-    $autoresAutoria = $autoriaDAO->buscarAutores($id); 
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
     $livro = $object->buscarLivro($id);
-    $autoresAutoria = $autoriaDAO->buscarAutores($id); 
-    $msg = $autoriaDAO->remover($id, $autoresAutoria);
+    $autoresAutoria = $autoriaDAO->buscarAutores($id);
+    $msg1 = $autoriaDAO->remover($id, $autoresAutoria);
     $msg = $object->remover($livro);
-    unset($livro, $autores);
+    unset($livro);
 }
 ?>
 
@@ -115,13 +122,17 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                             </select>
                             <br/>
                             <label>Autor(es)</label>
-                            <select id="autores" multiple="multiple" name="autores[]" class="form-control">
+                            <select id="autores" name="autores[]" class="form-control" aria-multiselectable="true" multiple>
                                 <?php
                                 $autores = $autorDAO->buscarTodos();
+                                if(!empty($livro)) {
+                                    $autoria = $autoriaDAO->buscarAutores($livro->getIdtbLivro());
+                                }
                                 foreach($autores as $autor){
-                                    if(!empty($livro) && !empty($autoriaDAO->buscarAutoria($livro->getIdtbLivro(), $autor->getIdtbAutor())) ){
+                                    if(!empty($livro)){
                                         ?>
-                                        <option value="<?php echo $autor->getIdtbAutor() ?>" selected><?php echo $autor->getNomeAutor()?></option>
+                                        <option value="<?php echo $autor->getIdtbAutor()?>"<?php if (in_array($autor->getIdtbAutor(), $autoria)) { echo "selected"; }?>>
+                                            <?php echo $autor->getNomeAutor()?></option>
                                         <?php
                                     }else{ ?>
                                         <option value="<?php echo $autor->getIdtbAutor() ?>"><?php echo $autor->getNomeAutor()?></option>
@@ -137,6 +148,8 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                         </form>
                         <?php
                         echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
+                        echo (isset($msg1) && ($msg1 != null || $msg1 != "")) ? $msg1 : '';
+                        echo (isset($msg2) && ($msg2 != null || $msg2 != "")) ? $msg2 : '';
                         //chamada a paginação
                         $object->tabelapaginada();
                         ?>

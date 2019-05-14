@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 06/05/2019 às 19:16
+-- Tempo de geração: 14/05/2019 às 18:48
 -- Versão do servidor: 10.1.38-MariaDB
 -- Versão do PHP: 7.3.4
 
@@ -41,7 +41,7 @@ CREATE TABLE `tb_autor` (
 
 CREATE TABLE `tb_autoria` (
   `tb_livro_idtb_livro` int(11) NOT NULL,
-  `tb_autores_idtb_autores` int(11) NOT NULL
+  `tb_autor_idtb_autor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -136,8 +136,8 @@ ALTER TABLE `tb_autor`
 -- Índices de tabela `tb_autoria`
 --
 ALTER TABLE `tb_autoria`
-  ADD PRIMARY KEY (`tb_livro_idtb_livro`,`tb_autores_idtb_autores`),
-  ADD KEY `fk_tb_livro_has_tb_autores_tb_autores1_idx` (`tb_autores_idtb_autores`),
+  ADD PRIMARY KEY (`tb_livro_idtb_livro`,`tb_autor_idtb_autor`),
+  ADD KEY `fk_tb_livro_has_tb_autores_tb_autores1_idx` (`tb_autor_idtb_autor`),
   ADD KEY `fk_tb_livro_has_tb_autores_tb_livro_idx` (`tb_livro_idtb_livro`);
 
 --
@@ -225,7 +225,7 @@ ALTER TABLE `tb_usuario`
 -- Restrições para tabelas `tb_autoria`
 --
 ALTER TABLE `tb_autoria`
-  ADD CONSTRAINT `fk_tb_livro_has_tb_autores_tb_autores1` FOREIGN KEY (`tb_autores_idtb_autores`) REFERENCES `tb_autor` (`idtb_autor`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tb_livro_has_tb_autores_tb_autores1` FOREIGN KEY (`tb_autor_idtb_autor`) REFERENCES `tb_autor` (`idtb_autor`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_tb_livro_has_tb_autores_tb_livro` FOREIGN KEY (`tb_livro_idtb_livro`) REFERENCES `tb_livro` (`idtb_livro`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

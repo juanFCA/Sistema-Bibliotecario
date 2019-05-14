@@ -30,10 +30,9 @@ class livroDAO
         }
     }
 
-    public function salvarAtualizar(livro $livro, array $autores)
+    public function salvarAtualizar(livro $livro)
     {
         try {
-            $autoriaDAO = new autoriaDAO();
             if ($livro->getIdtbLivro() != "") {
                 $statement = conexao::getInstance()->prepare("UPDATE tb_livro SET titulo=:titulo,
                                                                                             isbn=:isbn,
@@ -44,11 +43,9 @@ class livroDAO
                                                                                             tb_categoria_idtb_categoria=:categoria
                                                                                             WHERE idtb_livro=:id");
                 $statement->bindValue(":id", $livro->getIdtbLivro());
-                $autoriaDAO->atualizar($livro->getIdtbLivro(), $autores);
             } else {
                 $statement = conexao::getInstance()->prepare("INSERT INTO tb_livro(titulo, isbn, edicao, ano, upload, tb_editora_idtb_editora, tb_categoria_idtb_categoria) 
                                                                         VALUES (:titulo, :isbn, :edicao, :ano, :upload, :editora, :categoria)");
-                $autoriaDAO->salvar($livro->getIdtbLivro(), $autores);
             }
             $statement->bindValue(":titulo", $livro->getTitulo());
             $statement->bindValue(":isbn", $livro->getIsbn());
@@ -60,9 +57,13 @@ class livroDAO
 
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
-                    return "<script> alert('Dados cadastrados com sucesso!'); </script>";
+                    if ($livro->getIdtbLivro() != "") {
+                        return $livro->getIdtbLivro();
+                    } else {
+                        return conexao::getInstance()->lastInsertId();
+                    }
                 } else {
-                    return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+                    return "Erro";
                 }
             } else {
                 var_dump($statement->errorInfo());
