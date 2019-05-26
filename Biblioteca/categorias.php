@@ -5,11 +5,11 @@ require_once "dao/categoriaDAO.php";
 require_once "modelo/categoria.php";
 require_once "db/conexao.php";
 
-$object = new categoriaDAO();
+$categoriaDAO = new categoriaDAO();
 
 template::header();
 template::sidebar("categorias");
-template::mainpanel();
+template::mainpanel("Categorias");
 
 // Verificar se foi enviando dados via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -22,21 +22,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != "") {
-    $resultado = $object->buscarCategoria($id);
+    $resultado = $categoriaDAO->buscarCategoria($id);
     $id = $resultado->getIdtbCategoria();
     $nome = $resultado->getNomeCategoria();
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" ) {
     $categoria = new categoria($id, $nome);
-    $msg = $object->salvarAtualizar($categoria);
+    $msg = $categoriaDAO->salvarAtualizar($categoria);
     $id = null;
     $nome = null;
 
 }
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
-    $categoria = $object->buscarCategoria($id);
-    $msg = $object->remover($categoria);
+    $categoria = $categoriaDAO->buscarCategoria($id);
+    $msg = $categoriaDAO->remover($categoria);
     $id = null;
 }
 ?>
@@ -48,8 +48,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                     <div class='card'>
                         <div class='header'>
                             <h4 class='title'>Categorias</h4>
-                            <p class='category'>Lista de Categorias do Sistema</p>
-
                         </div>
                         <div class='content table-responsive'>
                             <form action="?act=save&id=" method="POST" name="form1">
@@ -65,20 +63,21 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                                 ?>" required/>
                                 <br/>
                                 <input class="btn btn-success" type="submit" value="REGISTRAR">
-                                <hr>
                             </form>
                             <?php
-                            echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
-                            //chamada a paginação
-                            $object->tabelapaginada();
+                                echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
                             ?>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php
+                //chamada a paginação
+                $categoriaDAO->tabelapaginada();
+            ?>
         </div>
     </div>
 
 <?php
-template::footer();
+template::footer("Categorias");
 ?>

@@ -39,6 +39,23 @@ class usuarioDAO
         }
     }
 
+    public function recuperarSenha(usuario $usuario) {
+        try {
+            $statement = conexao::getInstance()->prepare("UPDATE tb_usuario SET recuperar=:recuperar WHERE idtb_usuario=:id");
+            $statement->bindValue(":id", $usuario->getIdtbUsuario());
+            $statement->bindValue(":recuperar", 1);
+
+            if ($statement->execute()) {
+                $result = $statement->fetch(PDO::FETCH_OBJ);
+                return $result==null ? false : true;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " .$erro->getMessage();
+        }
+    }
+
     public function remover(usuario $usuario)
     {
         try {
@@ -61,17 +78,18 @@ class usuarioDAO
                 $statement = conexao::getInstance()->prepare("UPDATE tb_usuario SET nomeUsuario=:nomeUsuario,
                                                                                             tipo=:tipo,
                                                                                             email=:email,
-                                                                                            senha=:senha
+                                                                                            recuperar=:recuperar
                                                                                             WHERE idtb_usuario=:id");
                 $statement->bindValue(":id", $usuario->getIdtbUsuario());
             } else {
-                $statement = conexao::getInstance()->prepare("INSERT INTO tb_usuario(nomeUsuario, tipo, email, senha) 
-                                                                        VALUES (:nomeUsuario, :tipo, :email, :senha)");
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_usuario(nomeUsuario, tipo, email, senha, recuperar) 
+                                                                        VALUES (:nomeUsuario, :tipo, :email, :senha, :recuperar)");
+                $statement->bindValue(":senha", $usuario->getSenha());
             }
             $statement->bindValue(":nomeUsuario", $usuario->getNomeUsuario());
             $statement->bindValue(":tipo", $usuario->getTipo());
             $statement->bindValue(":email", $usuario->getEmail());
-            $statement->bindValue(":senha", $usuario->getSenha());
+            $statement->bindValue(":recuperar", $usuario->getRecuperar());
 
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
@@ -90,12 +108,12 @@ class usuarioDAO
     public function buscarUsuario($id)
     {
         try {
-            $statement = conexao::getInstance()->prepare("SELECT idtb_usuario, nomeUsuario, tipo, email, senha 
+            $statement = conexao::getInstance()->prepare("SELECT idtb_usuario, nomeUsuario, tipo, email, senha, recuperar 
                                                                     FROM tb_usuario WHERE idtb_usuario=:id");
             $statement->bindValue(":id", $id);
             if ($statement->execute()) {
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha);
+                $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha, $rs->recuperar);
                 return $usuario;
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
@@ -112,7 +130,7 @@ class usuarioDAO
             if($statement->execute()){
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
                 if($rs != null){
-                    $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha);
+                    $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha, $rs->recuperar);
                 } else {
                     $usuario = null;
                 }
@@ -131,7 +149,7 @@ class usuarioDAO
             if ($statement->execute()) {
                 $usuarios = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
-                    $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha);
+                    $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha, $rs->recuperar);
                     array_push($usuarios, $usuario);
                 }
                 return $usuarios;
@@ -195,28 +213,34 @@ class usuarioDAO
         $exibir_botao_final = ($range_final > $pagina_atual) ? '' : 'disabled';
 
         if (!empty($dados)):
-            echo "
-             <table class='table table-striped table-bordered'>
+            echo "<div class='row'>
+                 <div class='col-md-12'>
+                 <div class='card'>
+                 <div class='header'>
+                    <p class='category'>Lista de Usuários do Sistema</p>
+                 </div>
+                 <div class='content table-responsive table-full-width'>
+             <table class='table table-hover table-striped'>
              <thead>
-               <tr style='text-transform: uppercase;' class='active'>
-                <th style='text-align: center; font-weight: bolder;'>ID</th>
-                <th style='text-align: center; font-weight: bolder;'>Nome</th>
-                <th style='text-align: center; font-weight: bolder;'>Tipo</th>
-                <th style='text-align: center; font-weight: bolder;'>Email</th>
-                <!--<th style='text-align: center; font-weight: bolder;'>Senha</th>-->
-                <th style='text-align: center; font-weight: bolder;' colspan='2'>Ações</th>
+               <tr style='text-transform: uppercase;'>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Email</th>
+                <!--<th>Senha</th>-->
+                <th class='col-xs-1 col-sm-1 col-md-1 col-lg-1' colspan='2'>Ações</th>
                </tr>
              </thead>
              <tbody>";
             foreach ($dados as $acti):
                 echo "<tr>
-                    <td style='text-align: center'>$acti->idtb_usuario</td>
-                    <td style='text-align: center'>$acti->nomeUsuario</td>
-                    <td style='text-align: center'>" . $this->tipos()[$acti->tipo] . "</td>
-                    <td style='text-align: center'>$acti->email</td>
-                    <!--<td style='text-align: center'>$acti->senha</td>-->
-                    <td style='text-align: center'><a href='?act=upd&id=$acti->idtb_usuario' title='Alterar'><i class='ti-reload'></i></a></td>
-                    <td style='text-align: center'><a href='?act=del&id=$acti->idtb_usuario' title='Remover'><i class='ti-close'></i></a></td>
+                    <td>$acti->idtb_usuario</td>
+                    <td>$acti->nomeUsuario</td>
+                    <td>" . $this->tipos()[$acti->tipo] . "</td>
+                    <td>$acti->email</td>
+                    <!--<td>$acti->senha</td>-->
+                    <td><a href='?act=upd&id=$acti->idtb_usuario' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
+                    <td><a href='?act=del&id=$acti->idtb_usuario' title='Remover'><i class='pe-7s-trash'></i></a></td>
                    </tr>";
             endforeach;
             echo "
@@ -224,20 +248,24 @@ class usuarioDAO
              </table>
              <nav class='text-center'>
                 <ul class='pagination' style='text-align: center'>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-prev' href='$endereco?page=$primeira_pagina' title='Primeira Página'></a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-left-arrow' href='$endereco?page=$pagina_anterior' title='Página Anterior'></a></li>
              ";
             /* Loop para montar a páginação central com os números */
             for ($i = $range_inicial; $i <= $range_final; $i++):
                 $destaque = ($i == $pagina_atual) ? 'active' : '';
                 echo "<li class='page-item $destaque' ><a class='page-link' href='$endereco?page=$i'> $i </a></li>";
             endfor;
-            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
-                  <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
+            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-right-arrow' href='$endereco?page=$proxima_pagina' title='Próxima Página'></a></li>
+                  <li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-next' href='$endereco?page=$ultima_pagina'  title='Última Página'></a></li>
                 </ul>
              <nav/>";
         else:
-            echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
+            echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>
+                </div>
+                </div>
+                </div>
+                </div>";
         endif;
     }
 

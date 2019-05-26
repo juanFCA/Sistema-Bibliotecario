@@ -5,35 +5,39 @@ require_once "dao/usuarioDAO.php";
 require_once "modelo/usuario.php";
 require_once "db/conexao.php";
 
-$object = new usuarioDAO();
-$tipos = $object->tipos();
+$usuarioDAO = new usuarioDAO();
+$tipos = $usuarioDAO->tipos();
 
 template::header();
 template::sidebar("usuarios");
-template::mainpanel();
+template::mainpanel("Usuários");
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     $usuario = new usuario("",
         $_POST["nome"],
         $_POST["tipo"],
         $_POST["email"],
-        md5($_POST["senha"]));
+        "",
+        "0");
     if(isset($_POST["id"])){
         $usuario->setIdtbUsuario($_POST["id"]);
     }
-    $msg = $object->salvarAtualizar($usuario);
+    if(isset($_POST["senha"])){
+        $usuario->setSenha(md5($_POST["senha"]));
+    }
+    $msg = $usuarioDAO->salvarAtualizar($usuario);
     unset($usuario);
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
-    $usuario = $object->buscarUsuario($id);
+    $usuario = $usuarioDAO->buscarUsuario($id);
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
-    $usuario = $object->buscarUsuario($id);
-    $msg = $object->remover($usuario);
+    $usuario = $usuarioDAO->buscarUsuario($id);
+    $msg = $usuarioDAO->remover($usuario);
     unset($usuario);
 }
 ?>
@@ -69,24 +73,27 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                 <Label>Email</Label>
                                 <input class="form-control" type="text" size="100" name="email" value="<?php if(!empty($usuario)) {echo $usuario->getEmail();}?>" required/>
                                 <br/>
+                                <?php if(empty($usuario)) { ?>
                                 <Label>Senha</Label>
-                                <input class="form-control" type="password" size="20" name="senha" value="<?php if(!empty($usuario)) {echo $usuario->getSenha();}?>" required/>
+                                <input class="form-control" type="password" size="20" name="senha" value="" required/>
                                 <br/>
+                                <?php } ?>
                                 <input class="btn btn-success" type="submit" value="REGISTRAR">
-                                <hr>
                             </form>
                             <?php
-                            echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
-                            //chamada a paginação
-                            $object->tabelapaginada();
+                                echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
                             ?>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php
+                //chamada a paginação
+                $usuarioDAO->tabelapaginada();
+            ?>
         </div>
     </div>
 
 <?php
-template::footer();
+template::footer("Usuários");
 ?>

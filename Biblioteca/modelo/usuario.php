@@ -8,14 +8,16 @@
         private $tipo;
         private $email;
         private $senha;
+        private $recuperar;
 
-        public function __construct($idtb_usuario, $nomeUsuario, $tipo, $email, $senha)
+        public function __construct($idtb_usuario, $nomeUsuario, $tipo, $email, $senha, $recuperar)
         {
             $this->idtb_usuario = $idtb_usuario;
             $this->nomeUsuario = $nomeUsuario;
             $this->tipo = $tipo;
             $this->email = $email;
             $this->senha = $senha;
+            $this->recuperar = $recuperar;
         }
 
         public function getIdtbUsuario()
@@ -66,6 +68,16 @@
         public function setSenha($senha)
         {
             $this->senha = $senha;
+        }
+
+        public function getRecuperar()
+        {
+            return $this->recuperar;
+        }
+
+        public function setRecuperar($recuperar): void
+        {
+            $this->recuperar = $recuperar;
         }
 
     }

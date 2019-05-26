@@ -204,19 +204,25 @@ class livroDAO
         $editoraDAO = new editoraDAO();
 
         if (!empty($dados)):
-            echo "
-             <table class='table table-striped table-bordered'>
+            echo "<div class='row'>
+                 <div class='col-md-12'>
+                 <div class='card'>
+                 <div class='header'>
+                    <p class='category'>Lista de Livros do Sistema</p>
+                 </div>
+                 <div class='content table-responsive table-full-width'>
+             <table class='table table-hover table-striped'>
              <thead>
-               <tr style='text-transform: uppercase;' class='active'>
-                <th style='text-align: center; font-weight: bolder;'>ID</th>
-                <th style='text-align: center; font-weight: bolder;'>Titulo</th>
-                <th style='text-align: center; font-weight: bolder;'>ISBN</th>
-                <th style='text-align: center; font-weight: bolder;'>Edição</th>
-                <th style='text-align: center; font-weight: bolder;'>Ano</th>
-                <th style='text-align: center; font-weight: bolder;'>Upload</th>
-                <th style='text-align: center; font-weight: bolder;'>Editora</th>
-                <th style='text-align: center; font-weight: bolder;'>Categoria</th>
-                <th style='text-align: center; font-weight: bolder;' colspan='2'>Ações</th>
+               <tr style='text-transform: uppercase;'>
+                <th>ID</th>
+                <th>Titulo</th>
+                <th>ISBN</th>
+                <th>Edição</th>
+                <th>Ano</th>
+                <th>Upload</th>
+                <th>Editora</th>
+                <th>Categoria</th>
+                <th class='col-xs-1 col-sm-1 col-md-1 col-lg-1' colspan='2'>Ações</th>
                </tr>
              </thead>
              <tbody>";
@@ -224,16 +230,16 @@ class livroDAO
                 $editora = $editoraDAO->buscarEditora($acti->tb_editora_idtb_editora);
                 $categoria = $categoriaDAO->buscarCategoria($acti->tb_categoria_idtb_categoria);
                 echo "<tr>
-                    <td style='text-align: center'>$acti->idtb_livro</td>
-                    <td style='text-align: center'>$acti->titulo</td>
-                    <td style='text-align: center'>$acti->isbn</td>
-                    <td style='text-align: center'>$acti->edicao</td>
-                    <td style='text-align: center'>$acti->ano</td>
-                    <td style='text-align: center'>$acti->upload</td>
-                    <td style='text-align: center'>". $editora->getNomeEditora()."</td>
-                    <td style='text-align: center'>". $categoria->getNomeCategoria() ."</td>
-                    <td style='text-align: center'><a href='?act=upd&id=$acti->idtb_livro' title='Alterar'><i class='ti-reload'></i></a></td>
-                    <td style='text-align: center'><a href='?act=del&id=$acti->idtb_livro' title='Remover'><i class='ti-close'></i></a></td>
+                    <td>$acti->idtb_livro</td>
+                    <td>$acti->titulo</td>
+                    <td>$acti->isbn</td>
+                    <td>$acti->edicao</td>
+                    <td>$acti->ano</td>
+                    <td>$acti->upload</td>
+                    <td>". $editora->getNomeEditora()."</td>
+                    <td>". $categoria->getNomeCategoria() ."</td>
+                    <td><a href='?act=upd&id=$acti->idtb_livro' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
+                    <td><a href='?act=del&id=$acti->idtb_livro' title='Remover'><i class='pe-7s-trash'></i></a></td>
                    </tr>";
             endforeach;
             echo "
@@ -241,20 +247,23 @@ class livroDAO
              </table>
              <nav class='text-center'>
                 <ul class='pagination justify-content-center' style='text-align: center'>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-prev' href='$endereco?page=$pagina_anterior' title='Página Anterior'></a></li>
              ";
             /* Loop para montar a páginação central com os números */
             for ($i = $range_inicial; $i <= $range_final; $i++):
                 $destaque = ($i == $pagina_atual) ? 'active' : '';
                 echo "<li class='page-item $destaque' ><a class='page-link' href='$endereco?page=$i'> $i </a></li>";
             endfor;
-            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
-                  <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
+            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-right-arrow' href='$endereco?page=$proxima_pagina' title='Próxima Página'></a></li>
+                  <li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-next' href='$endereco?page=$ultima_pagina'  title='Última Página'></a></li>
                 </ul>
              <nav/>";
         else:
-            echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
+            echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>
+            </div>
+            </div>
+            </div>
+            </div>";
         endif;
     }
 

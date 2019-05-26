@@ -7,15 +7,14 @@ require_once "modelo/exemplar.php";
 require_once "dao/livroDAO.php";
 require_once "modelo/livro.php";
 
-$object = new exemplarDAO();
-$tipos =$object->tipos();
+$exemplarDAO = new exemplarDAO();
+$livroDAO = new livroDAO();
 
-$livro = new livroDAO();
-$livros = $livro->buscarTodos();
+$tipos =$exemplarDAO->tipos();
 
 template::header();
 template::sidebar("exemplares");
-template::mainpanel();
+template::mainpanel("Exemplares");
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     $exemplar = new exemplar("",
@@ -24,19 +23,19 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     if(isset($_POST["id"])){
         $exemplar->setIdtbExemplar($_POST["id"]);
     }
-    $msg = $object->salvarAtualizar($exemplar);
+    $msg = $exemplarDAO->salvarAtualizar($exemplar);
     unset($exemplar);
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
-    $exemplar = $object->buscarExemplar($id);
+    $exemplar = $exemplarDAO->buscarExemplar($id);
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
-    $exemplar = $object->buscarExemplar($id);
-    $msg = $object->remover($exemplar);
+    $exemplar = $exemplarDAO->buscarExemplar($id);
+    $msg = $exemplarDAO->remover($exemplar);
     unset($exemplar);
 }
 ?>
@@ -48,8 +47,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                     <div class='card'>
                         <div class='header'>
                             <h4 class='title'>Exemplares</h4>
-                            <p class='category'>Lista de Exemplares do Sistema</p>
-
                         </div>
                         <div class='content table-responsive'>
                             <form action="?act=save&id=" method="POST" name="form1">
@@ -59,7 +56,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                 <select name="livro" class="form-control">
                                     <option value="" selected disabled hidden >Selecione o Livro</option>
                                     <?php
-                                    $livroDAO = new livroDAO();
                                     $livros = $livroDAO->buscarTodos();
                                     foreach($livros as $livro){
                                         if(!empty($exemplar) && $exemplar->getTbLivroIdtbLivro()== $livro->getIdtbLivro()){
@@ -80,20 +76,21 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                     </select>
                                 </div>
                                 <input class="btn btn-success" type="submit" value="REGISTRAR">
-                                <hr>
                             </form>
                             <?php
-                            echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
-                            //chamada a paginação
-                            $object->tabelapaginada();
+                                echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
                             ?>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php
+                //chamada a paginação
+                $exemplarDAO->tabelapaginada();
+            ?>
         </div>
     </div>
 
 <?php
-template::footer();
+template::footer("Exemplares");
 ?>

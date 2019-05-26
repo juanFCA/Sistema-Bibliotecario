@@ -5,11 +5,11 @@ require_once "dao/editoraDAO.php";
 require_once "modelo/editora.php";
 require_once "db/conexao.php";
 
-$object = new editoraDAO();
+$editoraDAO = new editoraDAO();
 
 template::header();
 template::sidebar("editoras");
-template::mainpanel();
+template::mainpanel("Editoras");
 
 // Verificar se foi enviando dados via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != "") {
-    $editora = $object->buscarEditora($id);
+    $editora = $editoraDAO->buscarEditora($id);
     $id = $editora->getIdtbEditora();
     $nome = $editora->getNomeEditora();
 
@@ -30,14 +30,14 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != "") {
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" ) {
     $editora = new editora($id, $nome);
-    $msg = $object->salvarAtualizar($editora);
+    $msg = $editoraDAO->salvarAtualizar($editora);
     $id = null;
     $nome = null;
 
 }
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
-    $editora = $object->buscarEditora($id);
-    $msg = $object->remover($editora);
+    $editora = $editoraDAO->buscarEditora($id);
+    $msg = $editoraDAO->remover($editora);
     $id = null;
 }
 ?>
@@ -49,8 +49,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                     <div class='card'>
                         <div class='header'>
                             <h4 class='title'>Editoras</h4>
-                            <p class='category'>Lista de Editoras do Sistema</p>
-
                         </div>
                         <div class='content table-responsive'>
                             <form action="?act=save&id=" method="POST" name="form1">
@@ -66,20 +64,21 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                                 ?>" required/>
                                 <br/>
                                 <input class="btn btn-success" type="submit" value="REGISTRAR">
-                                <hr>
                             </form>
                             <?php
-                            echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
-                            //chamada a paginação
-                            $object->tabelapaginada();
+                                echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
                             ?>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php
+                //chamada a paginação
+                $editoraDAO->tabelapaginada();
+            ?>
         </div>
     </div>
 
 <?php
-template::footer();
+template::footer("Editoras");
 ?>

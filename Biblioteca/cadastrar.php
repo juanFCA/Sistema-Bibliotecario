@@ -11,15 +11,17 @@ require_once 'modelo/usuario.php';
 
 // session_start inicia a sessão https://pt.stackoverflow.com/questions/247026/exibir-um-alert-e-redirecionar-a-p%C3%A1gina
 session_start();
+
+$usuarioDAO = new usuarioDAO();
+
 // as variáveis login e senha recebem os dados digitados na página anterior
 $login = $_POST['login'];
 $email = $_POST['email'];
 $senha = md5($_POST['senha']);
-$tipo = 3;
+$tipo = $usuarioDAO->tipos()[4];
 
 $usuario = new usuario('', $login, $tipo, $email, $senha);
 
-$usuarioDAO = new usuarioDAO();
 $validado = $usuarioDAO->salvarAtualizar($usuario);
 
 if ($validado == true) {

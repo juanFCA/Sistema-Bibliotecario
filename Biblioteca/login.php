@@ -40,6 +40,6 @@
   </div>
 </div>
 </body>
-    <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
     <script src="assets/js/rendered.js" type="text/javascript"></script>
 </html>

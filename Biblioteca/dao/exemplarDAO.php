@@ -153,25 +153,31 @@ class exemplarDAO
         $livroDAO = new livroDAO();
 
         if (!empty($dados)):
-            echo "
-             <table class='table table-striped table-bordered'>
+            echo "<div class='row'>
+                 <div class='col-md-12'>
+                 <div class='card'>
+                 <div class='header'>
+                    <p class='category'>Lista de Exemplares do Sistema</p>
+                 </div>
+                 <div class='content table-responsive table-full-width'>
+             <table class='table table-hover table-striped'>
              <thead>
-               <tr style='text-transform: uppercase;' class='active'>
-                <th style='text-align: center; font-weight: bolder;'>ID</th>
-                <th style='text-align: center; font-weight: bolder;'>Livro</th>
-                <th style='text-align: center; font-weight: bolder;'>Tipo</th>
-                <th style='text-align: center; font-weight: bolder;' colspan='2'>Ações</th>
+               <tr style='text-transform: uppercase;'>
+                <th>ID</th>
+                <th>Livro</th>
+                <th>Tipo</th>
+                <th class='col-xs-1 col-sm-1 col-md-1 col-lg-1' colspan='2'>Ações</th>
                </tr>
              </thead>
              <tbody>";
             foreach ($dados as $acti):
                 $livro = $livroDAO->buscarLivro($acti->tb_livro_idtb_livro);
                 echo "<tr>
-                    <td style='text-align: center'>$acti->idtb_exemplar</td>
-                    <td style='text-align: center'>". $livro->getTitulo() ."</td>
-                    <td style='text-align: center'>" . $this->tipos()[$acti->tipoExemplar] . "</td>
-                    <td style='text-align: center'><a href='?act=upd&id=$acti->idtb_exemplar' title='Alterar'><i class='ti-reload'></i></a></td>
-                    <td style='text-align: center'><a href='?act=del&id=$acti->idtb_exemplar' title='Remover'><i class='ti-close'></i></a></td>
+                    <td>$acti->idtb_exemplar</td>
+                    <td>". $livro->getTitulo() ."</td>
+                    <td>" . $this->tipos()[$acti->tipoExemplar] . "</td>
+                    <td><a href='?act=upd&id=$acti->idtb_exemplar' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
+                    <td><a href='?act=del&id=$acti->idtb_exemplar' title='Remover'><i class='pe-7s-trash'></i></a></td>
                    </tr>";
             endforeach;
             echo "
@@ -179,20 +185,24 @@ class exemplarDAO
              </table>
              <nav class='text-center'>
                 <ul class='pagination' style='text-align: center'>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-prev' href='$endereco?page=$primeira_pagina' title='Primeira Página'></a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-left-arrow' href='$endereco?page=$pagina_anterior' title='Página Anterior'></a></li>
              ";
             /* Loop para montar a páginação central com os números */
             for ($i = $range_inicial; $i <= $range_final; $i++):
                 $destaque = ($i == $pagina_atual) ? 'active' : '';
                 echo "<li class='page-item $destaque' ><a class='page-link' href='$endereco?page=$i'> $i </a></li>";
             endfor;
-            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
-                  <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
+            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-right-arrow' href='$endereco?page=$proxima_pagina' title='Próxima Página'></a></li>
+                  <li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-next' href='$endereco?page=$ultima_pagina'  title='Última Página'></a></li>
                 </ul>
              <nav/>";
         else:
-            echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
+            echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>
+                </div>
+                </div>
+                </div>
+                </div>";
         endif;
     }
 

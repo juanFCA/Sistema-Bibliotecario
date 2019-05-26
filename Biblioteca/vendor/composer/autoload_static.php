@@ -53,16 +53,6 @@ class ComposerStaticInit6cb6db5d01f2ed6e7c2688d919f0bd68
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'M' => 
-        array (
-            'Monolog' => 
-            array (
-                0 => __DIR__ . '/..' . '/monolog/monolog/src',
-            ),
-        ),
-    );
-
     public static $classMap = array (
         'PHPlot' => __DIR__ . '/..' . '/davefx/phplot/phplot/phplot.php',
         'PHPlot_truecolor' => __DIR__ . '/..' . '/davefx/phplot/phplot/phplot.php',
@@ -73,7 +63,6 @@ class ComposerStaticInit6cb6db5d01f2ed6e7c2688d919f0bd68
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit6cb6db5d01f2ed6e7c2688d919f0bd68::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit6cb6db5d01f2ed6e7c2688d919f0bd68::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit6cb6db5d01f2ed6e7c2688d919f0bd68::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit6cb6db5d01f2ed6e7c2688d919f0bd68::$classMap;
 
         }, null, ClassLoader::class);

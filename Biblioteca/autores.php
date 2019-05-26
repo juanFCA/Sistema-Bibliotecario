@@ -5,11 +5,11 @@ require_once "dao/autorDAO.php";
 require_once "modelo/autor.php";
 require_once "db/conexao.php";
 
-$object = new autorDAO();
+$autorDAO = new autorDAO();
 
 template::header();
 template::sidebar("autores");
-template::mainpanel();
+template::mainpanel("Autores");
 
 // Verificar se foi enviando dados via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -22,21 +22,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != "") {
-    $autor = $object->buscarAutor($id);
+    $autor = $autorDAO->buscarAutor($id);
     $id = $autor->getIdtbAutor();
     $nome = $autor->getNomeAutor();
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" ) {
     $autor = new autor($id, $nome);
-    $msg = $object->salvarAtualizar($autor);
+    $msg = $autorDAO->salvarAtualizar($autor);
     $id = null;
     $nome = null;
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
-    $autor = $object->buscarAutor($id);
-    $msg = $object->remover($autor);
+    $autor = $autorDAO->buscarAutor($id);
+    $msg = $autorDAO->remover($autor);
     $id = null;
 }
 ?>
@@ -47,13 +47,10 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                 <div class='col-md-12'>
                     <div class='card'>
                         <div class='header'>
-                            <h4 class='title'>Autores</h4>
-                            <p class='category'>Lista de Autores do Sistema</p>
-
+                            <h4 class='title'>Dados do Autor</h4>
                         </div>
                         <div class='content table-responsive'>
                             <form action="?act=save&id=" method="POST" name="form1">
-
                                 <input type="hidden" name="id" value="<?php
                                 // Preenche o id no campo id com um valor "value"
                                 echo (isset($id) && ($id != null || $id != "")) ? $id : '';
@@ -65,20 +62,21 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                                 ?>" required/>
                                 <br/>
                                 <input class="btn btn-success" type="submit" value="REGISTRAR">
-                                <hr>
                             </form>
                             <?php
                                 echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
-                                //chamada a paginação
-                                $object->tabelapaginada();
                             ?>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php
+                //chamada a paginação
+                $autorDAO->tabelapaginada();
+            ?>
         </div>
     </div>
 
 <?php
-template::footer();
+template::footer("Autores");
 ?>

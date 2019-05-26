@@ -4,7 +4,7 @@ require_once "view/template.php";
 
 template::header();
 template::sidebar("index");
-template::mainpanel();
+template::mainpanel("Dashboard");
 ?>
 
 <div class='content' xmlns="http://www.w3.org/1999/html">
@@ -27,5 +27,5 @@ template::mainpanel();
 </div>
 
 <?php
-template::footer();
+template::footer("Principal");
 ?>

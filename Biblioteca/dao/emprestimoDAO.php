@@ -131,26 +131,26 @@ class emprestimoDAO
         $exibir_botao_final = ($range_final > $pagina_atual) ? '' : 'disabled';
 
         if (!empty($dados)):
-            echo "
-             <table class='table table-striped table-bordered'>
+            echo "<div class='content table-responsive table-full-width'>
+             <table class='table table-hover table-striped'>
              <thead>
                <tr style='text-transform: uppercase;' class='active'>
-                <th style='text-align: center; font-weight: bolder;'>ID Usuario</th>
-                <th style='text-align: center; font-weight: bolder;'>ID Exemplar</th>
-                <th style='text-align: center; font-weight: bolder;'>Data Emprestimo</th>
-                <th style='text-align: center; font-weight: bolder;'>Observações</th>
-                <th style='text-align: center; font-weight: bolder;' colspan='2'>Ações</th>
+                <th>ID Usuario</th>
+                <th>ID Exemplar</th>
+                <th>Data Emprestimo</th>
+                <th>Observações</th>
+                <th class='col-xs-1 col-sm-1 col-md-1 col-lg-1' colspan='2'>Ações</th>
                </tr>
              </thead>
              <tbody>";
             foreach ($dados as $acti):
                 echo "<tr>
-                    <td style='text-align: center'>$acti->tb_usuario_idtb_usuario</td>
-                    <td style='text-align: center'>$acti->tb_exemplar_idtb_exemplar</td>
-                    <td style='text-align: center'>$acti->dataEmprestimo</td>
-                    <td style='text-align: center'>$acti->observacoes</td>
-                    <td style='text-align: center'><a href='?act=upd&id=$acti->id_action' title='Alterar'><i class='ti-reload'></i></a></td>
-                    <td style='text-align: center'><a href='?act=del&id=$acti->id_action' title='Remover'><i class='ti-close'></i></a></td>
+                    <td>$acti->tb_usuario_idtb_usuario</td>
+                    <td>$acti->tb_exemplar_idtb_exemplar</td>
+                    <td>$acti->dataEmprestimo</td>
+                    <td>$acti->observacoes</td>
+                    <td><a href='?act=upd&id=$acti->id_action' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
+                    <td><a href='?act=del&id=$acti->id_action' title='Remover'><i class='pe-7s-trash'></i></a></td>
                    </tr>";
             endforeach;
             echo "

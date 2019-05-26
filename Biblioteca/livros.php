@@ -12,7 +12,7 @@ require_once "modelo/autor.php";
 require_once "dao/autorDAO.php";
 require_once "dao/autoriaDAO.php";
 
-$object = new livroDAO();
+$livroDAO = new livroDAO();
 $autoriaDAO = new autoriaDAO();
 $autorDAO = new autorDAO();
 $categoriaDAO = new categoriaDAO();
@@ -20,7 +20,7 @@ $editoraDAO = new editoraDAO();
 
 template::header();
 template::sidebar("livros");
-template::mainpanel();
+template::mainpanel("Livros");
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     $livro = new livro("",
@@ -35,7 +35,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
         $livro->setIdtbLivro($_POST["id"]);
     }
     $autoresPost = $_POST["autores"];
-    $idLivro = $object->salvarAtualizar($livro);
+    $idLivro = $livroDAO->salvarAtualizar($livro);
     if ($idLivro == "Erro") {
         $msg = "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
     } else {
@@ -50,15 +50,15 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
-    $livro = $object->buscarLivro($id);
+    $livro = $livroDAO->buscarLivro($id);
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
     $id = $_REQUEST["id"];
-    $livro = $object->buscarLivro($id);
+    $livro = $livroDAO->buscarLivro($id);
     $autoresAutoria = $autoriaDAO->buscarAutores($id);
     $msg1 = $autoriaDAO->remover($id, $autoresAutoria);
-    $msg = $object->remover($livro);
+    $msg = $livroDAO->remover($livro);
     unset($livro);
 }
 ?>
@@ -70,8 +70,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                 <div class='card'>
                     <div class='header'>
                         <h4 class='title'>Livros</h4>
-                        <p class='category'>Lista de Livros do Sistema</p>
-
                     </div>
                     <div class='content table-responsive'>
                         <form action="?act=save&id=" method="POST" name="form1">
@@ -139,27 +137,28 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                     <?php }
                                 } ?>
                             </select>
-                            <br/>
+                            <br/><br/>
                             <Label>Upload de Arquivo Digital</Label>
-                            <input class="form-control" type="file" name="upload" value="<?php if(isset($livro) && $livro != null) {echo $livro->getUpload();}?>"/>
+                            <input type="file" name="upload" value="<?php if(isset($livro) && $livro != null) {echo $livro->getUpload();}?>"/>
                             <br/>
                             <input class="btn btn-success" type="submit" value="REGISTRAR">
-                            <hr>
                         </form>
                         <?php
-                        echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
-                        echo (isset($msg1) && ($msg1 != null || $msg1 != "")) ? $msg1 : '';
-                        echo (isset($msg2) && ($msg2 != null || $msg2 != "")) ? $msg2 : '';
-                        //chamada a paginação
-                        $object->tabelapaginada();
+                            echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
+                            echo (isset($msg1) && ($msg1 != null || $msg1 != "")) ? $msg1 : '';
+                            echo (isset($msg2) && ($msg2 != null || $msg2 != "")) ? $msg2 : '';
                         ?>
                     </div>
                 </div>
             </div>
         </div>
+        <?php
+            //chamada a paginação
+            $livroDAO->tabelapaginada();
+        ?>
     </div>
 </div>
 
 <?php
-template::footer();
+template::footer("Livros");
 ?>
