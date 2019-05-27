@@ -18,7 +18,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
         $_POST["tipo"],
         $_POST["email"],
         "",
-        "0");
+        0);
     if(isset($_POST["id"])){
         $usuario->setIdtbUsuario($_POST["id"]);
     }

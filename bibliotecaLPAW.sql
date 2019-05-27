@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 14/05/2019 às 18:48
+-- Tempo de geração: 26/05/2019 às 21:17
 -- Versão do servidor: 10.1.38-MariaDB
 -- Versão do PHP: 7.3.4
 
@@ -119,7 +119,8 @@ CREATE TABLE `tb_usuario` (
   `nomeUsuario` varchar(255) NOT NULL,
   `tipo` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `senha` varchar(255) NOT NULL
+  `senha` varchar(255) NOT NULL,
+  `recuperar` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -210,6 +211,12 @@ ALTER TABLE `tb_editora`
 --
 ALTER TABLE `tb_livro`
   MODIFY `idtb_livro` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `tb_exemplar`
+--
+ALTER TABLE `tb_exemplar`
+  MODIFY `idtb_exemplar` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `tb_usuario`

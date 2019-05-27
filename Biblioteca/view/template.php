@@ -48,6 +48,8 @@ class Template
                     
             <!-- Bootstrap multiselection -->
             <link href='vendor/mrohnstock/bootstrap-multiselect/css/bootstrap-multiselect.css' rel='stylesheet'/>
+            
+            <link href=\"assets/css/rendered.css\" rel=\"stylesheet\" />
 
             </head>
         <body>";
@@ -85,13 +87,13 @@ class Template
             <script src=\"assets/js/bootstrap.min.js\" type=\"text/javascript\"></script>
         
             <!--  Charts Plugin -->
-            <script src=\"assets/js/chartist.min.js\"></script>
+            <script src=\"assets/js/chartist.min.js\" type=\"text/javascript\"></script>
         
             <!--  Notifications Plugin    -->
-            <script src=\"assets/js/bootstrap-notify.js\"></script>
+            <script src=\"assets/js/bootstrap-notify.js\" type=\"text/javascript\"></script>
         
             <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-            <script src=\"assets/js/light-bootstrap-dashboard.js?v=1.4.0\"></script>
+            <script src=\"assets/js/light-bootstrap-dashboard.js\" type=\"text/javascript\"></script>
         
             <!-- Bootstrap multiselection -->
             <script src=\"vendor/mrohnstock/bootstrap-multiselect/js/bootstrap-multiselect.js\" type=\"text/javascript\"></script>
@@ -188,7 +190,7 @@ class Template
 
                     <ul class=\"nav navbar-nav navbar-right\">
                         <li>
-                            <a href=\"\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" aria-expanded=\"false\">
+                            <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" aria-expanded=\"false\">
                                 <p>
 								    ". $_SESSION['login'] ."
 								<b class=\"caret\"></b>

@@ -52,3 +52,17 @@ $(document).ready(function() {
         }
     });
 });
+
+function notificacao (cor, mensagem, icone) {
+    return $.notify({
+        icon: icone,
+        message: mensagem
+    }, {
+        type: cor,
+        timer: 4000,
+        placement: {
+            from: "top",
+            align: "center"
+        }
+    });
+};

@@ -131,12 +131,20 @@ class emprestimoDAO
         $exibir_botao_final = ($range_final > $pagina_atual) ? '' : 'disabled';
 
         if (!empty($dados)):
-            echo "<div class='content table-responsive table-full-width'>
+            echo "<div class='row'>
+                 <div class='col-md-12'>
+                 <div class='card'>
+                 <div class='header'>
+                    <p class='category'>Lista de Emprestimos do Sistema</p>
+                 </div>
+                 <div class='content table-responsive table-full-width'>
+                 <table class='table table-hover table-striped'>
              <table class='table table-hover table-striped'>
              <thead>
                <tr style='text-transform: uppercase;' class='active'>
-                <th>ID Usuario</th>
+                <th>Usuario</th>
                 <th>ID Exemplar</th>
+                <th>Livro</th>
                 <th>Data Emprestimo</th>
                 <th>Observações</th>
                 <th class='col-xs-1 col-sm-1 col-md-1 col-lg-1' colspan='2'>Ações</th>
@@ -146,6 +154,7 @@ class emprestimoDAO
             foreach ($dados as $acti):
                 echo "<tr>
                     <td>$acti->tb_usuario_idtb_usuario</td>
+                    <td>$acti->tb_exemplar_idtb_exemplar</td>
                     <td>$acti->tb_exemplar_idtb_exemplar</td>
                     <td>$acti->dataEmprestimo</td>
                     <td>$acti->observacoes</td>
@@ -158,20 +167,24 @@ class emprestimoDAO
              </table>
              <nav class='text-center'>
                 <ul class='pagination' style='text-align: center'>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$primeira_pagina' title='Primeira Página'>First</a></li>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link' href='$endereco?page=$pagina_anterior' title='Página Anterior'>Previous</a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-prev $exibir_botao_inicio' href='$endereco?page=$primeira_pagina' title='Primeira Página'></a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-left-arrow $exibir_botao_inicio' href='$endereco?page=$pagina_anterior' title='Página Anterior'></a></li>
              ";
             /* Loop para montar a páginação central com os números */
             for ($i = $range_inicial; $i <= $range_final; $i++):
                 $destaque = ($i == $pagina_atual) ? 'active' : '';
                 echo "<li class='page-item $destaque' ><a class='page-link' href='$endereco?page=$i'> $i </a></li>";
             endfor;
-            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$proxima_pagina' title='Próxima Página'>Next</a></li>
-                  <li class='page-item $exibir_botao_final' ><a  class='page-link' href='$endereco?page=$ultima_pagina'  title='Última Página'>Last</a></li>
+            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-right-arrow $exibir_botao_final' href='$endereco?page=$proxima_pagina' title='Próxima Página'></a></li>
+                  <li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-next $exibir_botao_final' href='$endereco?page=$ultima_pagina'  title='Última Página'></a></li>
                 </ul>
              <nav/>";
         else:
-            echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>";
+            echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>
+                </div>
+                </div>
+                </div>
+                </div>";
         endif;
     }
 

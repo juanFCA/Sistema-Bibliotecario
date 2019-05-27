@@ -18,9 +18,8 @@ $usuarioDAO = new usuarioDAO();
 $login = $_POST['login'];
 $email = $_POST['email'];
 $senha = md5($_POST['senha']);
-$tipo = $usuarioDAO->tipos()[4];
 
-$usuario = new usuario('', $login, $tipo, $email, $senha);
+$usuario = new usuario('', $login, 4, $email, $senha,0);
 
 $validado = $usuarioDAO->salvarAtualizar($usuario);
 

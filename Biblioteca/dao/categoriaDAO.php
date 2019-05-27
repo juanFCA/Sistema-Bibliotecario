@@ -168,16 +168,16 @@ class categoriaDAO
              </table>
              <nav class='text-center'>
                 <ul class='pagination' style='text-align: center'>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-prev' href='$endereco?page=$primeira_pagina' title='Primeira Página'></a></li>
-                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-left-arrow' href='$endereco?page=$pagina_anterior' title='Página Anterior'></a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-prev $exibir_botao_inicio' href='$endereco?page=$primeira_pagina' title='Primeira Página'></a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-left-arrow $exibir_botao_inicio' href='$endereco?page=$pagina_anterior' title='Página Anterior'></a></li>
              ";
             /* Loop para montar a páginação central com os números */
             for ($i = $range_inicial; $i <= $range_final; $i++):
                 $destaque = ($i == $pagina_atual) ? 'active' : '';
                 echo "<li class='page-item $destaque' ><a class='page-link' href='$endereco?page=$i'> $i </a></li>";
             endfor;
-            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-right-arrow' href='$endereco?page=$proxima_pagina' title='Próxima Página'></a></li>
-                  <li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-next' href='$endereco?page=$ultima_pagina'  title='Última Página'></a></li>
+            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-right-arrow $exibir_botao_final' href='$endereco?page=$proxima_pagina' title='Próxima Página'></a></li>
+                  <li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-next $exibir_botao_final' href='$endereco?page=$ultima_pagina'  title='Última Página'></a></li>
                 </ul>
             <nav/>";
         else:
