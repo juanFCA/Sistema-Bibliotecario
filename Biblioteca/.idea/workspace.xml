@@ -2,23 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="206f0991-84e4-4e10-bdfd-1c29177b816a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/css/rendered.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Biblioteca.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Biblioteca.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/js/rendered.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/rendered.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cadastrar.php" beforeDir="false" afterPath="$PROJECT_DIR$/cadastrar.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autores.php" beforeDir="false" afterPath="$PROJECT_DIR$/autores.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/categorias.php" beforeDir="false" afterPath="$PROJECT_DIR$/categorias.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dao/autorDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/dao/autorDAO.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dao/autoriaDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/dao/autoriaDAO.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dao/categoriaDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/dao/categoriaDAO.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dao/editoraDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/dao/editoraDAO.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dao/emprestimoDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/dao/emprestimoDAO.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dao/exemplarDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/dao/exemplarDAO.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dao/livroDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/dao/livroDAO.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dao/usuarioDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/dao/usuarioDAO.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/editoras.php" beforeDir="false" afterPath="$PROJECT_DIR$/editoras.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/emprestimos.php" beforeDir="false" afterPath="$PROJECT_DIR$/emprestimos.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exemplares.php" beforeDir="false" afterPath="$PROJECT_DIR$/exemplares.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/livros.php" beforeDir="false" afterPath="$PROJECT_DIR$/livros.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/usuarios.php" beforeDir="false" afterPath="$PROJECT_DIR$/usuarios.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/view/template.php" beforeDir="false" afterPath="$PROJECT_DIR$/view/template.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bibliotecaLPAW.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../bibliotecaLPAW.sql" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,17 +37,21 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dao/autorDAO.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+            <state relative-caret-position="146">
+              <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+              <folding>
+                <element signature="n#style#0;n#tr#0;n#thead#0;n#table#0;n#div#1;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#ul#0;n#nav#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/autores.php">
+        <entry file="file://$PROJECT_DIR$/view/template.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="78" selection-start-line="78" selection-end-line="78" />
+            <state relative-caret-position="690">
+              <caret line="99" column="84" lean-forward="true" selection-start-line="99" selection-start-column="84" selection-end-line="99" selection-end-column="84" />
             </state>
           </provider>
         </entry>
@@ -55,8 +59,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/assets/js/rendered.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="67" column="2" lean-forward="true" selection-start-line="67" selection-start-column="2" selection-end-line="67" selection-end-column="2" />
+            <state relative-caret-position="435">
+              <caret line="71" column="2" selection-start-line="71" selection-start-column="2" selection-end-line="71" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -132,9 +136,9 @@
         <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/view/template.php" />
         <option value="$PROJECT_DIR$/login.php" />
-        <option value="$PROJECT_DIR$/assets/js/rendered.js" />
         <option value="$PROJECT_DIR$/autores.php" />
         <option value="$PROJECT_DIR$/dao/autorDAO.php" />
+        <option value="$PROJECT_DIR$/assets/js/rendered.js" />
       </list>
     </option>
   </component>
@@ -164,7 +168,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -183,10 +186,21 @@
               <item name="assets" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Biblioteca" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Biblioteca" type="462c0819:PsiDirectoryNode" />
+              <item name="dao" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Biblioteca" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Biblioteca" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -238,16 +252,18 @@
       <workItem from="1558819784721" duration="694000" />
       <workItem from="1558883785787" duration="21383000" />
       <workItem from="1558905457071" duration="4888000" />
+      <workItem from="1558992190074" duration="400000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="91911000" />
+    <option name="totallyTimeSpent" value="92311000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="47" y="25" width="1553" height="875" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20968813" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2123424" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -586,13 +602,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/view/template.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="99" column="84" lean-forward="true" selection-start-line="99" selection-start-column="84" selection-end-line="99" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Downloads/light-bootstrap-dashboard-master/notifications.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-657">
@@ -607,13 +616,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/autores.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="78" selection-start-line="78" selection-end-line="78" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cadastrar.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
@@ -621,17 +623,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/autores.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="78" selection-start-line="78" selection-end-line="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/view/template.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="99" column="84" lean-forward="true" selection-start-line="99" selection-start-column="84" selection-end-line="99" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dao/autorDAO.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        <state relative-caret-position="146">
+          <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding>
+            <element signature="n#style#0;n#tr#0;n#thead#0;n#table#0;n#div#1;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#ul#0;n#nav#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/rendered.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="67" column="2" lean-forward="true" selection-start-line="67" selection-start-column="2" selection-end-line="67" selection-end-column="2" />
+        <state relative-caret-position="435">
+          <caret line="71" column="2" selection-start-line="71" selection-start-column="2" selection-end-line="71" selection-end-column="2" />
         </state>
       </provider>
     </entry>

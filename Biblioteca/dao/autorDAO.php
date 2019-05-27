@@ -18,9 +18,9 @@ class autorDAO
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_autor WHERE idtb_autor=:id");
             $statement->bindValue(":id", $autor->getIdtbAutor());
             if ($statement->execute()) {
-                return "<script> notificacao('danger','Registro foi excluído com êxito!','pe-7s-gift');</script>";
+                return "<script> notificacao('pe-7s-info', 'Autor', 'Registro foi removido com êxito', 'success'); </script>";
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                return "<script> notificacao('pe-7s-info', 'Autor', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
             }
         } catch (PDOException $erro) {
             return "Erro: " . $erro->getMessage();
@@ -39,15 +39,15 @@ class autorDAO
             $statement->bindValue(":nomeAutor", $autor->getNomeAutor());
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
-                    return "<script> alert('Dados cadastrados com sucesso!'); </script>";
+                    return "<script> notificacao('pe-7s-info', 'Autor', 'Registro foi inserido com êxito', 'success'); </script>";
                 } else {
-                    return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+                    return "<script> notificacao('pe-7s-info', 'Autor', 'Falha ao tentar inserir o Registro', 'danger'); </script>";                
                 }
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " .$erro->getMessage();
+            return "Erro: " . $erro->getMessage();
         }
     }
 

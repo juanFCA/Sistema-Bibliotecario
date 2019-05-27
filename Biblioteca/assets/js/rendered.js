@@ -53,16 +53,20 @@ $(document).ready(function() {
     });
 });
 
-function notificacao (cor, mensagem, icone) {
+function notificacao(icon, titulo, texto, tipo){
     return $.notify({
-        icon: icone,
-        message: mensagem
-    }, {
-        type: cor,
-        timer: 4000,
+        // opções
+        icon: icon,
+        title: titulo,
+        message: texto 
+    },{
+        // configurações
+        type: tipo,
         placement: {
             from: "top",
             align: "center"
-        }
+        },
+        delay: 5000,
+	    timer: 1000
     });
 };

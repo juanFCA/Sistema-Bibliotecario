@@ -18,9 +18,9 @@ class editoraDAO
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_editora WHERE idtb_editora=:id");
             $statement->bindValue(":id", $editora->getIdtbEditora());
             if ($statement->execute()) {
-                return "<script> alert('Registro foi excluído com êxito!'); </script>";
+                return "<script> notificacao('pe-7s-info', 'Autor', 'Registro foi removido com êxito', 'success'); </script>";                
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                return "<script> notificacao('pe-7s-info', 'Autor', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
             }
         } catch (PDOException $erro) {
             return "Erro: " . $erro->getMessage();
@@ -40,9 +40,9 @@ class editoraDAO
 
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
-                    return "<script> alert('Dados cadastrados com sucesso!'); </script>";
+                    return "<script> notificacao('pe-7s-info', 'Editora', 'Registro foi inserido com êxito', 'success'); </script>";
                 } else {
-                    return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+                    return "<script> notificacao('pe-7s-info', 'Editora', 'Falha ao tentar inserir o Registro', 'danger'); </script>";                
                 }
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");

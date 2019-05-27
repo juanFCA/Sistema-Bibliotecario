@@ -19,4 +19,5 @@ template::mainpanel("Emprestimos");
 
 <?php
 template::footer("Emprestimos");
+echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
 ?>

@@ -11,7 +11,6 @@ class Template
 
     public static function header()
     {
-
         session_start();
         if((!isset ($_SESSION['login']) == true) and (!isset ($_SESSION['senha']) == true))
         {
@@ -97,6 +96,7 @@ class Template
         
             <!-- Bootstrap multiselection -->
             <script src=\"vendor/mrohnstock/bootstrap-multiselect/js/bootstrap-multiselect.js\" type=\"text/javascript\"></script>
+            
             <script src=\"assets/js/rendered.js\" type=\"text/javascript\"></script>
         
         </html>";
