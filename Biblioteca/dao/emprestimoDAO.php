@@ -19,9 +19,9 @@ class emprestimoDAO
             $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
             $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
             if ($statement->execute()) {
-                return "<script> alert('Registro foi excluído com êxito!'); </script>";
+                return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Registro foi removido com êxito', 'success'); </script>";                
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
             }
         } catch (PDOException $erro) {
             return "Erro: " . $erro->getMessage();
@@ -43,9 +43,9 @@ class emprestimoDAO
 
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
-                    return "<script> alert('Dados cadastrados com sucesso!'); </script>";
+                    return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Registro foi inserido com êxito', 'success'); </script>";
                 } else {
-                    return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+                    return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Falha ao tentar inserir o Registro', 'danger'); </script>";                
                 }
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");

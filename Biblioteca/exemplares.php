@@ -77,9 +77,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                 </div>
                                 <input class="btn btn-success" type="submit" value="REGISTRAR">
                             </form>
-                            <?php
-                                echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
-                            ?>
                         </div>
                     </div>
                 </div>
@@ -93,4 +90,5 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
 
 <?php
 template::footer("Exemplares");
+echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
 ?>

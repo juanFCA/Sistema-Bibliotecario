@@ -21,9 +21,9 @@ class livroDAO
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_livro WHERE idtb_livro=:id");
             $statement->bindValue(":id", $livro->getIdtbLivro());
             if ($statement->execute()) {
-                return "<script> alert('Registro foi excluído com êxito!'); </script>";
+                return "<script> notificacao('pe-7s-info', 'Livro', 'Registro foi removido com êxito', 'success'); </script>";                
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                return "<script> notificacao('pe-7s-info', 'Livro', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
             }
         } catch (PDOException $erro) {
             return "Erro: " . $erro->getMessage();
@@ -62,7 +62,8 @@ class livroDAO
                     } else {
                         return conexao::getInstance()->lastInsertId();
                     }
-                } else {
+                } 
+                else {
                     return "Erro";
                 }
             } else {

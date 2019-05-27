@@ -25,9 +25,9 @@ class exemplarDAO
             $statement->bindValue(":idExemplar", $exemplar->getIdtbExemplar());
             $statement->bindValue(":idLivro", $exemplar->getTbLivroIdtbLivro());
             if ($statement->execute()) {
-                return "<script> alert('Registro foi excluído com êxito!'); </script>";
+                return "<script> notificacao('pe-7s-info', 'Exemplar', 'Registro foi removido com êxito', 'success'); </script>";                
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                return "<script> notificacao('pe-7s-info', 'Exemplar', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
             }
         } catch (PDOException $erro) {
             return "Erro: " . $erro->getMessage();
@@ -48,9 +48,9 @@ class exemplarDAO
 
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
-                    return "<script> alert('Dados cadastrados com sucesso!'); </script>";
+                    return "<script> notificacao('pe-7s-info', 'Exemplar', 'Registro foi inserido com êxito', 'success'); </script>";
                 } else {
-                    return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+                    return "<script> notificacao('pe-7s-info', 'Exemplar', 'Falha ao tentar inserir o Registro', 'danger'); </script>";                
                 }
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");

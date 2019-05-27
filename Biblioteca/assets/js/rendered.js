@@ -52,3 +52,21 @@ $(document).ready(function() {
         }
     });
 });
+
+function notificacao(icon, titulo, texto, tipo){
+    return $.notify({
+        // opções
+        icon: icon,
+        title: titulo,
+        message: texto 
+    },{
+        // configurações
+        type: tipo,
+        placement: {
+            from: "top",
+            align: "center"
+        },
+        delay: 5000,
+	    timer: 1000
+    });
+};

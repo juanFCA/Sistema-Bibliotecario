@@ -29,9 +29,9 @@ class autoriaDAO
                 }
             }
             if (count($autores) == $acerto) {
-                return "<script> alert('Registro foi excluído com êxito!'); </script>";
+                return "<script> notificacao('pe-7s-info', 'Autoria', 'Registro foi removido com êxito', 'success'); </script>";
             } else {
-                return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+                return "<script> notificacao('pe-7s-info', 'Autoria', 'Falha ao tentar remover o Registro', 'danger'); </script>";                
             }
         }catch (PDOException $erro) {
             return "Erro: " . $erro->getMessage();
@@ -57,9 +57,9 @@ class autoriaDAO
                 }
             }
             if (count($autores) == $acerto) {
-                return "<script> alert('Dados cadastrados com sucesso!'); </script>";
+                return "<script> notificacao('pe-7s-info', 'Autoria', 'Registro foi inserido com êxito', 'success'); </script>";
             } else {
-                return "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+                return "<script> notificacao('pe-7s-info', 'Autoria', 'Falha ao tentar inserir o Registro', 'danger'); </script>";                
             }
         }catch (PDOException $erro) {
             return "Erro: " .$erro->getMessage();

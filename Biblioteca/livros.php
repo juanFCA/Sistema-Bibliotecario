@@ -37,11 +37,12 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     $autoresPost = $_POST["autores"];
     $idLivro = $livroDAO->salvarAtualizar($livro);
     if ($idLivro == "Erro") {
-        $msg = "<script> alert('Erro ao tentar efetivar cadastro!'); </script>";
+        $msg = "<script> notificacao('pe-7s-info', 'Livro', 'Falha ao tentar inserir o Registro', 'danger'); </script>";
     } else {
         $autoresBD = $autoriaDAO->buscarAutores($idLivro);
         $adicionados = array_diff($autoresPost, $autoresBD);
         $removidos = array_diff($autoresBD, $autoresPost);
+        $msg = "<script> notificacao('pe-7s-info', 'Livro', 'Registro foi inserido com êxito', 'success'); </script>";
         $msg1 = $autoriaDAO->remover($idLivro, $removidos);
         $msg2 = $autoriaDAO->salvar($idLivro, $adicionados);
     }
@@ -143,11 +144,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                             <br/>
                             <input class="btn btn-success" type="submit" value="REGISTRAR">
                         </form>
-                        <?php
-                            echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
-                            echo (isset($msg1) && ($msg1 != null || $msg1 != "")) ? $msg1 : '';
-                            echo (isset($msg2) && ($msg2 != null || $msg2 != "")) ? $msg2 : '';
-                        ?>
                     </div>
                 </div>
             </div>
@@ -161,4 +157,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
 
 <?php
 template::footer("Livros");
+echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
+echo (isset($msg1) && ($msg1 != null || $msg1 != "")) ? $msg1 : '';
+echo (isset($msg2) && ($msg2 != null || $msg2 != "")) ? $msg2 : '';                        
 ?>
