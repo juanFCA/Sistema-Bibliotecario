@@ -25,31 +25,39 @@ $(document).ready(function() {
     $('#autores').multiselect({
         inheritClass: true,
         enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
         filterPlaceholder: 'Buscar Autor(es)...',
         includeSelectAllOption: true,
         selectAllText: 'Selecionar Tudo',
-        buttonWidth: '300px',
+        buttonWidth: '100%',
         maxHeight: 200,
-        buttonText: function(options, select) {
-            if (options.length === 0) {
-                return 'Selecione o(s) Autor(es)';
-            }
-            else if (options.length > 4) {
-                return 'Mais de 4 Autores selecionados!';
-            }
-            else {
-                var labels = [];
-                options.each(function() {
-                    if ($(this).attr('label') !== undefined) {
-                        labels.push($(this).attr('label'));
-                    }
-                    else {
-                        labels.push($(this).html());
-                    }
-                });
-                return labels.join(', ') + '';
-            }
-        }
+        nonSelectedText: 'Selecione o(s) Autor(es)',
+        nSelectedText: ' - Autores selecionados',
+        allSelectedText: 'Todos foram Selecionados'
+    });
+});
+
+$(document).ready(function() {
+    $('#categoria').multiselect({
+        inheritClass: true,
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        filterPlaceholder: 'Buscar Categoria...',
+        buttonWidth: '100%',
+        maxHeight: 200,
+        nonSelectedText: 'Selecione a Categoria',
+    });
+});
+
+$(document).ready(function() {
+    $('#editora').multiselect({
+        inheritClass: true,
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        filterPlaceholder: 'Buscar Editora...',
+        buttonWidth: '100%',
+        maxHeight: 200,
+        nonSelectedText: 'Selecione a Editora',
     });
 });
 

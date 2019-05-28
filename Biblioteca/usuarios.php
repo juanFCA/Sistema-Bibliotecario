@@ -48,7 +48,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                 <div class='col-md-12'>
                     <div class='card'>
                         <div class='header'>
-                            <h4 class='title'>Usuários</h4>
+                            <h4 class='title'>Dados do Usuário</h4>
                             <p class='category'>Lista de Usuários do Sistema</p>
 
                         </div>

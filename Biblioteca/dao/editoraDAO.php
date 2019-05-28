@@ -88,6 +88,20 @@ class editoraDAO
         }
     }
 
+    public function totalEditoras() {
+        try {
+            $statement = conexao::getInstance()->prepare("SELECT COUNT(*) AS total FROM tb_editora");
+            if ($statement->execute()) {
+                $rs = $statement->fetch(PDO::FETCH_OBJ);
+                return $rs->total;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
     public function tabelapaginada()
     {
         //carrega o banco

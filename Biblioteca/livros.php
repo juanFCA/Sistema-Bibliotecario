@@ -70,77 +70,107 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
             <div class='col-md-12'>
                 <div class='card'>
                     <div class='header'>
-                        <h4 class='title'>Livros</h4>
+                        <h4 class='title'>Dados do Livro</h4>
                     </div>
-                    <div class='content table-responsive'>
+                    <div class='content'>
                         <form action="?act=save&id=" method="POST" name="form1">
-
                             <input type="hidden" name="id" value="<?php if(!empty($livro)) {echo $livro->getIdtbLivro();}?>"/>
-                            <Label>Título</Label>
-                            <input class="form-control" type="text" size="50" name="titulo" value="<?php if(!empty($livro)) {echo $livro->getTitulo();}?>" required/>
-                            <br/>
-                            <Label>ISBN</Label>
-                            <input class="form-control" type="text" size="50" name="isbn" value="<?php if(!empty($livro)) {echo $livro->getIsbn();}?>" required/>
-                            <br/>
-                            <Label>Edição</Label>
-                            <input class="form-control" type="text" size="50" name="edicao" value="<?php if(!empty($livro)) {echo $livro->getEdicao();}?>" required/>
-                            <br/>
-                            <Label>Ano</Label>
-                            <input class="form-control" type="number" size="4" name="ano" value="<?php if(!empty($livro)) {echo $livro->getAno();}?>" required/>
-                            <br/>
-                            <label>Editora</label>
-                            <select name="editora" class="form-control">
-                                <option value="" selected disabled hidden >Selecione a Editora</option>
-                                <?php
-                                $editoras = $editoraDAO->buscarTodos();
-                                foreach($editoras as $editora){
-                                    if( !empty($livro) && $editora->getIdtbEditora() == $livro->getTbEditoraIdtbEditora()){
-                                        ?>
-                                        <option value="<?php echo $editora->getIdtbEditora() ?>" selected><?php echo $editora->getNomeEditora()?></option>
-                                        <?php
-                                    }else{ ?>
-                                        <option value="<?php echo $editora->getIdtbEditora() ?>"><?php echo $editora->getNomeEditora()?></option>
-                                    <?php }
-                                } ?>
-                            </select>
-                            <br/>
-                            <label>Categoria</label>
-                            <select name="categoria" class="form-control">
-                                <option value="" selected disabled hidden >Selecione a Categoria</option>
-                                <?php
-                                $categorias = $categoriaDAO->buscarTodos();
-                                foreach($categorias as $categoria){
-                                    if(!empty($livro) && $categoria->getIdtbCategoria() == $livro->getTbCategoriaIdtbCategoria()){
-                                        ?>
-                                        <option value="<?php echo $categoria->getIdtbCategoria() ?>" selected><?php echo $categoria->getNomeCategoria()?></option>
-                                        <?php
-                                    }else{ ?>
-                                        <option value="<?php echo $categoria->getIdtbCategoria() ?>"><?php echo $categoria->getNomeCategoria()?></option>
-                                    <?php }
-                                } ?>
-                            </select>
-                            <br/>
-                            <label>Autor(es)</label>
-                            <select id="autores" name="autores[]" class="form-control" aria-multiselectable="true" multiple>
-                                <?php
-                                $autores = $autorDAO->buscarTodos();
-                                if(!empty($livro)) {
-                                    $autoria = $autoriaDAO->buscarAutores($livro->getIdtbLivro());
-                                }
-                                foreach($autores as $autor){
-                                    if(!empty($livro)){
-                                        ?>
-                                        <option value="<?php echo $autor->getIdtbAutor()?>"<?php if (in_array($autor->getIdtbAutor(), $autoria)) { echo "selected"; }?>>
-                                            <?php echo $autor->getNomeAutor()?></option>
-                                        <?php
-                                    }else{ ?>
-                                        <option value="<?php echo $autor->getIdtbAutor() ?>"><?php echo $autor->getNomeAutor()?></option>
-                                    <?php }
-                                } ?>
-                            </select>
-                            <br/><br/>
-                            <Label>Upload de Arquivo Digital</Label>
-                            <input type="file" name="upload" value="<?php if(isset($livro) && $livro != null) {echo $livro->getUpload();}?>"/>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <Label>Título</Label>
+                                        <input class="form-control" type="text" size="50" name="titulo" value="<?php if(!empty($livro)) {echo $livro->getTitulo();}?>" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <Label>ISBN</Label>
+                                        <input class="form-control" type="text" size="50" name="isbn" value="<?php if(!empty($livro)) {echo $livro->getIsbn();}?>" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <Label>Edição</Label>
+                                        <input class="form-control" type="text" size="50" name="edicao" value="<?php if(!empty($livro)) {echo $livro->getEdicao();}?>" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <Label>Ano</Label>
+                                        <input class="form-control" type="number" size="4" name="ano" value="<?php if(!empty($livro)) {echo $livro->getAno();}?>" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Editora</label>
+                                        <select id="editora" name="editora" class="form-control">
+                                            <option value="" selected disabled hidden >Selecione a Editora</option>
+                                            <?php
+                                            $editoras = $editoraDAO->buscarTodos();
+                                            foreach($editoras as $editora){
+                                                if( !empty($livro) && $editora->getIdtbEditora() == $livro->getTbEditoraIdtbEditora()){
+                                                    ?>
+                                                    <option value="<?php echo $editora->getIdtbEditora() ?>" selected><?php echo $editora->getNomeEditora()?></option>
+                                                    <?php
+                                                }else{ ?>
+                                                    <option value="<?php echo $editora->getIdtbEditora() ?>"><?php echo $editora->getNomeEditora()?></option>
+                                                <?php }
+                                            } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Categoria</label>
+                                        <select id="categoria" name="categoria" class="form-control">
+                                            <option value="" selected disabled hidden >Selecione a Categoria</option>
+                                            <?php
+                                            $categorias = $categoriaDAO->buscarTodos();
+                                            foreach($categorias as $categoria){
+                                                if(!empty($livro) && $categoria->getIdtbCategoria() == $livro->getTbCategoriaIdtbCategoria()){
+                                                    ?>
+                                                    <option value="<?php echo $categoria->getIdtbCategoria() ?>" selected><?php echo $categoria->getNomeCategoria()?></option>
+                                                    <?php
+                                                }else{ ?>
+                                                    <option value="<?php echo $categoria->getIdtbCategoria() ?>"><?php echo $categoria->getNomeCategoria()?></option>
+                                                <?php }
+                                            } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Autor(es)</label>
+                                        <select id="autores" name="autores[]" class="form-control" aria-multiselectable="true" multiple>
+                                            <?php
+                                            $autores = $autorDAO->buscarTodos();
+                                            if(!empty($livro)) {
+                                                $autoria = $autoriaDAO->buscarAutores($livro->getIdtbLivro());
+                                            }
+                                            foreach($autores as $autor){
+                                                if(!empty($livro)){
+                                                    ?>
+                                                    <option value="<?php echo $autor->getIdtbAutor()?>"<?php if (in_array($autor->getIdtbAutor(), $autoria)) { echo "selected"; }?>>
+                                                        <?php echo $autor->getNomeAutor()?></option>
+                                                    <?php
+                                                }else{ ?>
+                                                    <option value="<?php echo $autor->getIdtbAutor() ?>"><?php echo $autor->getNomeAutor()?></option>
+                                                <?php }
+                                            } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <Label>Upload de Arquivo Digital</Label>
+                                        <input type="file" name="upload" value="<?php if(isset($livro) && $livro != null) {echo $livro->getUpload();}?>"/>
+                                    </div>
+                                </div>
+                            </div>
                             <br/>
                             <input class="btn btn-success" type="submit" value="REGISTRAR">
                         </form>

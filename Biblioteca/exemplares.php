@@ -46,7 +46,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                 <div class='col-md-12'>
                     <div class='card'>
                         <div class='header'>
-                            <h4 class='title'>Exemplares</h4>
+                            <h4 class='title'>Dados do Exemplar</h4>
                         </div>
                         <div class='content table-responsive'>
                             <form action="?act=save&id=" method="POST" name="form1">
