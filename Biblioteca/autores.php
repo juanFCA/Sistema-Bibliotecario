@@ -49,19 +49,29 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                         <div class='header'>
                             <h4 class='title'>Dados do Autor</h4>
                         </div>
-                        <div class='content table-responsive'>
+                        <div class='content'>
                             <form action="?act=save&id=" method="POST" name="form1">
                                 <input type="hidden" name="id" value="<?php
                                 // Preenche o id no campo id com um valor "value"
                                 echo (isset($id) && ($id != null || $id != "")) ? $id : '';
                                 ?>"/>
-                                <Label>Nome</Label>
-                                <input class="form-control" type="text" size="50" name="nome" value="<?php
-                                // Preenche o nome no campo nome com um valor "value"
-                                echo (isset($nome) && ($nome != null || $nome != "")) ? $nome : '';
-                                ?>" required/>
-                                <br/>
-                                <input class="btn btn-success" type="submit" value="REGISTRAR">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <Label>Nome</Label>
+                                            <input class="form-control" type="text" size="50" name="nome" value="<?php
+                                            // Preenche o nome no campo nome com um valor "value"
+                                            echo (isset($nome) && ($nome != null || $nome != "")) ? $nome : '';
+                                            ?>" required/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <div class="form-group">
+                                            <br>
+                                            <input class="btn btn-success" type="submit" value="REGISTRAR">
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

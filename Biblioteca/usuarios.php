@@ -54,31 +54,49 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                         </div>
                         <div class='content table-responsive'>
                             <form action="?act=save&id=" method="POST" name="form1">
-
                                 <input type="hidden" name="id" value="<?php if(!empty($usuario)) {echo $usuario->getIdtbUsuario();}?>"/>
-                                <Label>Nome</Label>
-                                <input class="form-control" type="text" size="50" name="nome" value="<?php if(!empty($usuario)) {echo $usuario->getNomeUsuario();}?>" required/>
-                                <br/>
-                                <Label>Tipo</Label>
-                                <div class="form-group">
-                                    <select class="form-control" name="tipo" required>
-                                        <option value="" selected disabled hidden >Selecione o Tipo</option>
-                                        <option value="1" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 1) ? 'selected':'';}?>><?php echo $tipos[1] ?></option>
-                                        <option value="2" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 2) ? 'selected':'';}?>><?php echo $tipos[2] ?></option>
-                                        <option value="3" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 3) ? 'selected':'';}?>><?php echo $tipos[3] ?></option>
-                                        <option value="4" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 4) ? 'selected':'';}?>><?php echo $tipos[4] ?></option>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <Label>Nome</Label>
+                                            <input class="form-control" type="text" size="50" name="nome" value="<?php if(!empty($usuario)) {echo $usuario->getNomeUsuario();}?>" required/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <Label>Email</Label>
+                                            <input class="form-control" type="text" size="100" name="email" value="<?php if(!empty($usuario)) {echo $usuario->getEmail();}?>" required/>
+                                        </div>
+                                    </div>
                                 </div>
-                                <br/>
-                                <Label>Email</Label>
-                                <input class="form-control" type="text" size="100" name="email" value="<?php if(!empty($usuario)) {echo $usuario->getEmail();}?>" required/>
-                                <br/>
-                                <?php if(empty($usuario)) { ?>
-                                <Label>Senha</Label>
-                                <input class="form-control" type="password" size="20" name="senha" value="" required/>
-                                <br/>
-                                <?php } ?>
-                                <input class="btn btn-success" type="submit" value="REGISTRAR">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <Label>Tipo</Label>
+                                            <select class="form-control" name="tipo" required>
+                                                <option value="" selected disabled hidden >Selecione o Tipo</option>
+                                                <option value="1" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 1) ? 'selected':'';}?>><?php echo $tipos[1] ?></option>
+                                                <option value="2" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 2) ? 'selected':'';}?>><?php echo $tipos[2] ?></option>
+                                                <option value="3" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 3) ? 'selected':'';}?>><?php echo $tipos[3] ?></option>
+                                                <option value="4" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 4) ? 'selected':'';}?>><?php echo $tipos[4] ?></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <?php if(empty($usuario)) { ?>
+                                                <Label>Senha</Label>
+                                                <input class="form-control" type="password" size="20" name="senha" value="" required/>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <div class="form-group">
+                                            <br>
+                                            <input class="btn btn-success" type="submit" value="REGISTRAR">
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

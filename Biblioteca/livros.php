@@ -74,7 +74,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                     </div>
                     <div class='content'>
                         <form action="?act=save&id=" method="POST" name="form1">
-                            <input type="hidden" name="id" value="<?php if(!empty($livro)) {echo $livro->getIdtbLivro();}?>"/>
+                            <input type="hidden" name="id" value="<?php if(!empty($livro)) {echo $livro->getIdtbLivro();}?>" required/>
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
@@ -105,7 +105,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Editora</label>
-                                        <select id="editora" name="editora" class="form-control">
+                                        <select id="editora" name="editora" class="form-control" required>
                                             <option value="" selected disabled hidden >Selecione a Editora</option>
                                             <?php
                                             $editoras = $editoraDAO->buscarTodos();
@@ -124,7 +124,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Categoria</label>
-                                        <select id="categoria" name="categoria" class="form-control">
+                                        <select id="categoria" name="categoria" class="form-control" required>
                                             <option value="" selected disabled hidden >Selecione a Categoria</option>
                                             <?php
                                             $categorias = $categoriaDAO->buscarTodos();
@@ -143,7 +143,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Autor(es)</label>
-                                        <select id="autores" name="autores[]" class="form-control" aria-multiselectable="true" multiple>
+                                        <select id="autores" name="autores[]" class="form-control" aria-multiselectable="true" multiple required>
                                             <?php
                                             $autores = $autorDAO->buscarTodos();
                                             if(!empty($livro)) {
@@ -164,15 +164,18 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <div class="form-group">
                                         <Label>Upload de Arquivo Digital</Label>
                                         <input type="file" name="upload" value="<?php if(isset($livro) && $livro != null) {echo $livro->getUpload();}?>"/>
                                     </div>
                                 </div>
+                                <div class="col-md-4 text-right">
+                                    <div class="form-group">
+                                        <input class="btn btn-success" type="submit" value="REGISTRAR">
+                                    </div>
+                                </div>
                             </div>
-                            <br/>
-                            <input class="btn btn-success" type="submit" value="REGISTRAR">
                         </form>
                     </div>
                 </div>
