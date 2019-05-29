@@ -21,12 +21,12 @@
       <form class="register-form" method="post" action="cadastrar.php" id="formregister" name="formregister">
           <input type="text" placeholder="Nome de Usuario" name="login" id="login"/>
           <input type="password" placeholder="Senha" name="senha" id="senha"/>
-          <input type="text" placeholder="Endereço de E-mail" name="email" id="email"/>
+          <input type="email" placeholder="Endereço de E-mail" name="email" id="email"/>
           <button>Registrar</button>
           <p class="message">Já possui Registro? <a href="#" id="logregister">Logar Agora</a></p>
       </form>
       <form class="recover-form" method="post" action="recuperar.php" id="formrecover" name="formrecover">
-          <input type="text" placeholder="Endereço de E-mail" name="email" id="email"/>
+          <input type="email" placeholder="Endereço de E-mail" name="email" id="email"/>
           <button>Recuperar</button>
           <p class="message">Já recuperou a Senha? <a href="#" id="logrecover">Logar Agora</a></p>
       </form>

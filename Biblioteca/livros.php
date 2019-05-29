@@ -97,7 +97,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <Label>Ano</Label>
-                                        <input class="form-control" type="number" size="4" name="ano" value="<?php if(!empty($livro)) {echo $livro->getAno();}?>" required/>
+                                        <input class="form-control" type="number" size="4" min="0000" max="9999" name="ano" value="<?php if(!empty($livro)) {echo $livro->getAno();}?>" required/>
                                     </div>
                                 </div>
                             </div>

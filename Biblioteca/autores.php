@@ -39,6 +39,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
     $msg = $autorDAO->remover($autor);
     $id = null;
 }
+
 ?>
 
     <div class='content' xmlns="http://www.w3.org/1999/html">
@@ -56,7 +57,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                                 echo (isset($id) && ($id != null || $id != "")) ? $id : '';
                                 ?>"/>
                                 <div class="row">
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <Label>Nome</Label>
                                             <input class="form-control" type="text" size="50" name="nome" value="<?php
@@ -65,7 +66,12 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                                             ?>" required/>
                                         </div>
                                     </div>
-                                    <div class="col-md-7 text-right">
+                                    <div class="col-md-3 text-right">
+                                        <div class="form-group">
+                                            <br>
+                                            <input class="btn btn-success" type="button" onclick='document.location="relatorio/pdf.php"' value="RELATORIO">                                        </div>
+                                    </div>
+                                    <div class="col-md-3 text-right">
                                         <div class="form-group">
                                             <br>
                                             <input class="btn btn-success" type="submit" value="REGISTRAR">

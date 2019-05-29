@@ -65,7 +65,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <Label>Email</Label>
-                                            <input class="form-control" type="text" size="100" name="email" value="<?php if(!empty($usuario)) {echo $usuario->getEmail();}?>" required/>
+                                            <input class="form-control" type="email" name="email" value="<?php if(!empty($usuario)) {echo $usuario->getEmail();}?>" required/>
                                         </div>
                                     </div>
                                 </div>
