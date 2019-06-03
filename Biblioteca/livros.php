@@ -11,6 +11,7 @@ require_once "dao/editoraDAO.php";
 require_once "modelo/autor.php";
 require_once "dao/autorDAO.php";
 require_once "dao/autoriaDAO.php";
+require_once "modelo/usuario.php";
 
 $livroDAO = new livroDAO();
 $autoriaDAO = new autoriaDAO();

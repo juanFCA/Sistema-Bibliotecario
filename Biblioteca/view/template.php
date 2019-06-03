@@ -12,10 +12,9 @@ class Template
     public static function header()
     {
         session_start();
-        if((!isset ($_SESSION['login']) == true) and (!isset ($_SESSION['senha']) == true))
+        if(!isset ($_SESSION['usuario']) == true)
         {
-            unset($_SESSION['login']);
-            unset($_SESSION['senha']);
+            unset($_SESSION['usuario']);
             header('location:login.php');
         }
 
@@ -182,8 +181,14 @@ class Template
                     <ul class=\"nav navbar-nav navbar-left\">
                         <li>
                             <a href=\"index.php\">
-                                <i class=\"fa fa-dashboard\"></i>
-                                <p class=\"hidden-lg hidden-md\">Dashboard</p>
+                                <i class=\"fa fa-home\" title=\"Principal\"></i>
+                                <p class=\"hidden-lg hidden-md\">Principal</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href=\"relatorio/pdf.php\">
+                                <i class=\"fa fa-list-alt\" title=\"Relatórios\"></i>
+                                <p class=\"hidden-lg hidden-md\">Relatórios</p>
                             </a>
                         </li>
                     </ul>
@@ -192,7 +197,7 @@ class Template
                         <li>
                             <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" aria-expanded=\"false\">
                                 <p>
-								    ". $_SESSION['login'] ."
+								    ". $_SESSION['usuario']->getNomeUsuario() ."
 								<b class=\"caret\"></b>
 							    </p>
                             </a>

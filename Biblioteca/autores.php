@@ -4,6 +4,7 @@ require_once "view/template.php";
 require_once "dao/autorDAO.php";
 require_once "modelo/autor.php";
 require_once "db/conexao.php";
+require_once "modelo/usuario.php";
 
 $autorDAO = new autorDAO();
 

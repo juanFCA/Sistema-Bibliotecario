@@ -6,6 +6,7 @@ require_once "dao/exemplarDAO.php";
 require_once "modelo/exemplar.php";
 require_once "dao/livroDAO.php";
 require_once "modelo/livro.php";
+require_once "modelo/usuario.php";
 
 $exemplarDAO = new exemplarDAO();
 $livroDAO = new livroDAO();

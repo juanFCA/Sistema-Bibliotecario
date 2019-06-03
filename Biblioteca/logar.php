@@ -11,21 +11,20 @@ require_once 'dao/usuarioDAO.php';
 // session_start inicia a sessão
 session_start();
 // as variáveis login e senha recebem os dados digitados na página anterior
-$login = $_POST['login'];
+$email = $_POST['email'];
 $senha = md5($_POST['senha']);
 
-$usuario = new usuarioDAO();
-$valido = $usuario->logar($login, $senha);
+$usuarioDAO = new usuarioDAO();
+$valido = $usuarioDAO->logar($email, $senha);
 
 if( $valido == true)
 {
-    $_SESSION['login'] = $login;
-    $_SESSION['senha'] = $senha;
+    $usuario = $usuarioDAO->buscarPorEmail($email);
+    $_SESSION['usuario'] = $usuario;
     header('location:index.php');
 }
 else{
-    unset ($_SESSION['login']);
-    unset ($_SESSION['senha']);
+    unset ($_SESSION['usuario']);
     header('location:index.php');
 
 }

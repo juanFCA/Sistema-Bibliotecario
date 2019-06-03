@@ -31,7 +31,7 @@
           <p class="message">Já recuperou a Senha? <a href="#" id="logrecover">Logar Agora</a></p>
       </form>
       <form class="login-form" method="post" action="logar.php" id="formlogin" name="formlogin">
-          <input type="text" placeholder="Nome de Usuário" name="login" id="login"/>
+          <input type="email" placeholder="Endereço de E-mail" name="email" id="email"/>
           <input type="password" placeholder="Senha " name="senha" id="senha"/>
           <button>Logar</button>
           <p class="message">Esqueceu a Senha? <a href="#" id="recover">Recuperar Conta</a></p>

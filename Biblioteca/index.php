@@ -9,8 +9,8 @@ require_once "dao/usuarioDAO.php";
 require_once "dao/categoriaDAO.php";
 
 template::header();
-template::sidebar("index");
-template::mainpanel("Dashboard");
+template::sidebar("principal");
+template::mainpanel("Principal");
 
 $livroDAO = new livroDAO();
 $autorDAO = new autorDAO();
@@ -30,126 +30,126 @@ $totalCategorias = $categoriaDAO->totalCategorias();
 
 <div class='content' xmlns="http://www.w3.org/1999/html">
     <div class='container-fluid'>
-        <div class="row">
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="header">
-                        <h5 class="title text-center">Livros</h5>
-                    </div>
-                    <div class="content">
-                        <div class="stats">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <i class="pe-7s-bookmarks fa-3x"></i>
+        <?php if($_SESSION['usuario']->getTipo() == 1) { ?>
+            <div class="row">
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-md-2">
+                    <div class="card">
+                        <div class="header">
+                            <h5 class="title text-center">Livros</h5>
+                        </div>
+                        <div class="content">
+                            <div class="stats">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <i class="pe-7s-bookmarks fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4 class="title text-center text-info"><?php  echo $totalLivros; ?></h4>
+                                    </div>
                                 </div>
-                                <div class="col-md-8">
-                                    <h4 class="title text-center text-info"><?php  echo $totalLivros; ?></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card">
+                        <div class="header">
+                            <h5 class="title text-center">Categorias</h5>
+                        </div>
+                        <div class="content">
+                            <div class="stats">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <i class="pe-7s-albums fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4 class="title text-center text-info"><?php  echo $totalCategorias; ?></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card">
+                        <div class="header">
+                            <h5 class="title text-center">Exemplares</h5>
+                        </div>
+                        <div class="content">
+                            <div class="stats">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <i class="pe-7s-notebook fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4 class="title text-center text-info"><?php  echo $totalExemplares; ?></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card">
+                        <div class="header">
+                            <h5 class="title text-center">Autores</h5>
+                        </div>
+                        <div class="content">
+                            <div class="stats">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <i class="pe-7s-id fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4 class="title text-center text-info"><?php  echo $totalAutores; ?></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card">
+                        <div class="header">
+                            <h5 class="title text-center">Editoras</h5>
+                        </div>
+                        <div class="content">
+                            <div class="stats">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <i class="pe-7s-culture fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4 class="title text-center text-info"><?php  echo $totalEditoras; ?></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card">
+                        <div class="header">
+                            <h5 class="title text-center">Usuários</h5>
+                        </div>
+                        <div class="content">
+                            <div class="stats">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <i class="pe-7s-users fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4 class="title text-center text-info"><?php  echo $totalUsuarios; ?></h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="header">
-                        <h5 class="title text-center">Categorias</h5>
-                    </div>
-                    <div class="content">
-                        <div class="stats">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <i class="pe-7s-albums fa-3x"></i>
-                                </div>
-                                <div class="col-md-8">
-                                    <h4 class="title text-center text-info"><?php  echo $totalCategorias; ?></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="header">
-                        <h5 class="title text-center">Exemplares</h5>
-                    </div>
-                    <div class="content">
-                        <div class="stats">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <i class="pe-7s-notebook fa-3x"></i>
-                                </div>
-                                <div class="col-md-8">
-                                    <h4 class="title text-center text-info"><?php  echo $totalExemplares; ?></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="header">
-                        <h5 class="title text-center">Autores</h5>
-                    </div>
-                    <div class="content">
-                        <div class="stats">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <i class="pe-7s-id fa-3x"></i>
-                                </div>
-                                <div class="col-md-8">
-                                    <h4 class="title text-center text-info"><?php  echo $totalAutores; ?></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="header">
-                        <h5 class="title text-center">Editoras</h5>
-                    </div>
-                    <div class="content">
-                        <div class="stats">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <i class="pe-7s-culture fa-3x"></i>
-                                </div>
-                                <div class="col-md-8">
-                                    <h4 class="title text-center text-info"><?php  echo $totalEditoras; ?></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="header">
-                        <h5 class="title text-center">Usuários</h5>
-                    </div>
-                    <div class="content">
-                        <div class="stats">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <i class="pe-7s-users fa-3x"></i>
-                                </div>
-                                <div class="col-md-8">
-                                    <h4 class="title text-center text-info"><?php  echo $totalUsuarios; ?></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
-
             <div class="col-md-4">
                 <div class="card">
                     <div class="header">
@@ -172,7 +172,6 @@ $totalCategorias = $categoriaDAO->totalCategorias();
                     </div>
                 </div>
             </div>
-
             <div class="col-md-8">
                 <div class="card">
                     <div class="header">
@@ -195,8 +194,9 @@ $totalCategorias = $categoriaDAO->totalCategorias();
                     </div>
                 </div>
             </div>
-
         </div>
+        <?php } ?>
+
     </div>
 </div>
 

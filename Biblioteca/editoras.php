@@ -4,6 +4,7 @@ require_once "view/template.php";
 require_once "dao/editoraDAO.php";
 require_once "modelo/editora.php";
 require_once "db/conexao.php";
+require_once "modelo/usuario.php";
 
 $editoraDAO = new editoraDAO();
 

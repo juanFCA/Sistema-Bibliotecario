@@ -19,14 +19,14 @@ class usuarioDAO
     }
 
     /**
-     * @param $login
+     * @param $email
      * @param $senha
      * @return array|string
      */
-    public function logar($login, $senha){
+    public function logar($email, $senha){
         try {
-            $statement = conexao::getInstance()->prepare("SELECT * FROM tb_usuario WHERE nomeUsuario=:nome AND senha =:senha");
-            $statement->bindValue(":nome", $login);
+            $statement = conexao::getInstance()->prepare("SELECT * FROM tb_usuario WHERE email=:email AND senha =:senha");
+            $statement->bindValue(":email", $email);
             $statement->bindValue(":senha", $senha);
             if ($statement->execute()) {
                 $result = $statement->fetch(PDO::FETCH_OBJ);
