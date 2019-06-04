@@ -14,8 +14,9 @@ class usuarioDAO
     public function tipos() {
         return array( 1 => 'Administrador', 
                 2 => 'Bibliotecário',
-                3 => 'Docente',
-                4 => 'Discente');
+                3 => 'Funcionário',
+                4 => 'Docente',
+                5 => 'Discente');
     }
 
     /**
@@ -253,8 +254,8 @@ class usuarioDAO
                     <td>" . $this->tipos()[$acti->tipo] . "</td>
                     <td>$acti->email</td>
                     <!--<td>$acti->senha</td>-->
-                    <td><a href='?act=upd&id=$acti->idtb_usuario' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
-                    <td><a href='?act=del&id=$acti->idtb_usuario' title='Remover'><i class='pe-7s-trash'></i></a></td>
+                    <td><a href='?act=upd&id=$acti->idtb_usuario' title='Alterar'><i class='pe-7s-refresh text-warning'></i></a></td>
+                    <td><a href='?act=del&id=$acti->idtb_usuario' title='Remover'><i class='pe-7s-trash text-danger'></i></a></td>
                    </tr>";
             endforeach;
             echo "

@@ -173,8 +173,8 @@ class categoriaDAO
                 echo "<tr>
                     <td>$acti->idtb_categoria</td>
                     <td>$acti->nomeCategoria</td>
-                    <td><a href='?act=upd&id=$acti->idtb_categoria' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
-                    <td><a href='?act=del&id=$acti->idtb_categoria' title='Remover'><i class='pe-7s-trash'></i></a></td>
+                    <td><a href='?act=upd&id=$acti->idtb_categoria' title='Alterar'><i class='pe-7s-refresh text-warning'></i></a></td>
+                    <td><a href='?act=del&id=$acti->idtb_categoria' title='Remover'><i class='pe-7s-trash text-danger'></i></a></td>
                    </tr>";
             endforeach;
             echo "

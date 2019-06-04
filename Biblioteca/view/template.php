@@ -8,10 +8,14 @@
 
 class Template
 {
+    public static function session() {
+        return session_start();
+    }
 
     public static function header()
     {
-        session_start();
+        Template::session();
+
         if(!isset ($_SESSION['usuario']) == true)
         {
             unset($_SESSION['usuario']);
@@ -150,6 +154,12 @@ class Template
                             <p>Exemplares</p>
                         </a>
                     </li>
+                    <li class="; echo (!empty($janela) && $janela == "emprestimos") ? "active" : "deactive"; echo">
+                        <a href='emprestimos.php'>
+                            <i class=\"pe-7s-news-paper\"></i>
+                            <p>Emprestimos</p>
+                        </a>
+                    </li>
                     <li class="; echo (!empty($janela) && $janela == "usuarios") ? "active" : "deactive"; echo">
                         <a href='usuarios.php'>
                             <i class=\"pe-7s-users\"></i>
@@ -184,14 +194,16 @@ class Template
                                 <i class=\"fa fa-home\" title=\"Principal\"></i>
                                 <p class=\"hidden-lg hidden-md\">Principal</p>
                             </a>
-                        </li>
-                        <li>
-                            <a href=\"relatorio/pdf.php\">
-                                <i class=\"fa fa-list-alt\" title=\"Relatórios\"></i>
-                                <p class=\"hidden-lg hidden-md\">Relatórios</p>
+                        </li>";
+                    if ($janela != "Principal" && $_SESSION['usuario']->getTipo() == 1) {
+                        echo "<li>
+                            <a href=\"relatorio/gerar.php?tipo=$janela\" target=\"_blank\">
+                                <i class=\"fa fa-list-alt\" title=\"Relatório - $janela\"></i>
+                                <p class=\"hidden-lg hidden-md\">Relatório - $janela</p>
                             </a>
-                        </li>
-                    </ul>
+                        </li>";
+                    }
+                    echo " </ul>
 
                     <ul class=\"nav navbar-nav navbar-right\">
                         <li>

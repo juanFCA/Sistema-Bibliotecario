@@ -61,6 +61,30 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function() {
+    $('#exemplar').multiselect({
+        inheritClass: true,
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        filterPlaceholder: 'Buscar Exemplar-Livro...',
+        buttonWidth: '100%',
+        maxHeight: 200,
+        nonSelectedText: 'Selecione o Exemplar',
+    });
+});
+
+$(document).ready(function() {
+    $('#usuario').multiselect({
+        inheritClass: true,
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        filterPlaceholder: 'Buscar Usuário...',
+        buttonWidth: '100%',
+        maxHeight: 200,
+        nonSelectedText: 'Selecione o Usuário',
+    });
+});
+
 function notificacao(icon, titulo, texto, tipo){
     return $.notify({
         // opções

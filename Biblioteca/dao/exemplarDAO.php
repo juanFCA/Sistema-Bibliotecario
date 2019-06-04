@@ -8,7 +8,6 @@
 
 require_once "db/conexao.php";
 require_once "modelo/exemplar.php";
-require_once "dao/livroDAO.php";
 
 class exemplarDAO
 {
@@ -129,7 +128,10 @@ class exemplarDAO
         $linha_inicial = ($pagina_atual - 1) * QTDE_REGISTROS;
 
         /* Instrução de consulta para paginação com MySQL */
-        $sql = "SELECT idtb_exemplar, tb_livro_idtb_livro, tipoExemplar FROM tb_exemplar LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
+        $sql = "SELECT e.idtb_exemplar, l.titulo, e.tipoExemplar 
+                  FROM tb_exemplar e
+            INNER JOIN tb_livro l ON e.tb_livro_idtb_livro = l.idtb_livro 
+                 LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
         $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
@@ -163,9 +165,6 @@ class exemplarDAO
 
         /* Verifica se vai exibir o botão "Anterior" e "Último" */
         $exibir_botao_final = ($range_final > $pagina_atual) ? '' : 'disabled';
-        
-        /* Verifica nome do livro */
-        $livroDAO = new livroDAO();
 
         if (!empty($dados)):
             echo "<div class='row'>
@@ -186,13 +185,12 @@ class exemplarDAO
              </thead>
              <tbody>";
             foreach ($dados as $acti):
-                $livro = $livroDAO->buscarLivro($acti->tb_livro_idtb_livro);
                 echo "<tr>
                     <td>$acti->idtb_exemplar</td>
-                    <td>". $livro->getTitulo() ."</td>
+                    <td>$acti->titulo</td>
                     <td>" . $this->tipos()[$acti->tipoExemplar] . "</td>
-                    <td><a href='?act=upd&id=$acti->idtb_exemplar' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
-                    <td><a href='?act=del&id=$acti->idtb_exemplar' title='Remover'><i class='pe-7s-trash'></i></a></td>
+                    <td><a href='?act=upd&id=$acti->idtb_exemplar' title='Alterar'><i class='pe-7s-refresh text-warning'></i></a></td>
+                    <td><a href='?act=del&id=$acti->idtb_exemplar' title='Remover'><i class='pe-7s-trash text-danger'></i></a></td>
                    </tr>";
             endforeach;
             echo "

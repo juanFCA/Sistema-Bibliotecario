@@ -26,6 +26,7 @@
           <p class="message">Já possui Registro? <a href="#" id="logregister">Logar Agora</a></p>
       </form>
       <form class="recover-form" method="post" action="recuperar.php" id="formrecover" name="formrecover">
+          <input hidden type="number" value="1" name="tipo" id="tipo">
           <input type="email" placeholder="Endereço de E-mail" name="email" id="email"/>
           <button>Recuperar</button>
           <p class="message">Já recuperou a Senha? <a href="#" id="logrecover">Logar Agora</a></p>

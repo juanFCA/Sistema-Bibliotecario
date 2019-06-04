@@ -4,58 +4,73 @@
  * Created by PhpStorm.
  * User: juan
  * Date: 2019-05-29
- * Time: 11:30
+ * Time: 10:17
  */
 
-require_once "../db/conexao.php";
+require "../vendor/autoload.php";
+require_once "../view/template.php";
+require_once "../modelo/usuario.php";
+require_once "relatorio.php";
 
-class gerar {
-        
-    public function listaAutores() {
+template::session();
 
-        $sqlLista = "SELECT * FROM tb_autor";
-        $statement = conexao::getInstance()->prepare($sqlLista);
-        $statement->execute();
-        $dados = $statement->fetchAll(PDO::FETCH_ASSOC);
+$tipo = $_GET['tipo'];
 
-        $relatorio = '
-            <div class=\'row\'>
-                <div class=\'col-md-12\'>
-                    <div class=\'card\'>
-                        <div class=\'header\'>
-                            <p class=\'category\'>Listagem de Autores no Sistema</p>
-                        </div>
-                        <div class=\'content\'>
-                            <table class=\'table table-hover table-striped\'>
-                                <thead>
-                                    <tr style=\'text-transform: uppercase;\'>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-        ';
-        foreach ($dados as $key => $value) {
-            $relatorio .= '
-                                    <tr class=\'text-center\'>
-                                        <td>'.$value['idtb_autor'].'</td>
-                                        <td>'.$value['nomeAutor'].'</td>
-                                    </tr>
-            ';
-        }
-        $relatorio .= '    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            <div>  
-        ';
-
-        return $relatorio;
-        
+class MEUPDF extends TCPDF{
+    // Page footer
+    public function Footer() {
+        // Position at 15 mm from bottom
+        $this->SetY(-15);
+        // Set font
+        $this->SetFont('helvetica', 'I', 8);
+        // Page number
+        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
-
 }
+
+$relatorio = new relatorio();
+$pdf = new MEUPDF();
+
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetAuthor(''. $_SESSION['usuario']->getNomeUsuario());
+$pdf->SetTitle('Sistema Biblioteca Digital');
+$pdf->SetSubject('Relatorio de'. $tipo);
+$pdf->SetKeywords('Biblioteca, PDF, Relatório,'. $tipo );
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+$pdf->AddPage();
+
+//$html = '<style>'.file_get_contents('../assets/css/bootstrap.min.css').'</style>';
+
+switch ($tipo) {
+    case 'Autores':
+        $html = $relatorio->listaAutores();
+        break;
+    case 'Categorias':
+        $html = $relatorio->listaCategorias();
+        break;
+    case 'Editoras':
+        $html = $relatorio->listaEditoras();
+        break;
+    case 'Emprestimos':
+        break;
+    case 'Exemplares':
+        $html = $relatorio->listaExemplares();
+        break;
+    case 'Livros':
+        $html = $relatorio->listaLivros();
+        break;
+    case 'Usuários':
+        $html = $relatorio->listaUsuarios();
+        break;
+    default:
+        break;
+}
+
+$html.= '<pre>'. $_SESSION['usuario']->getNomeUsuario() .'</pre>';
+
+$pdf->writeHTML($html);
+
+ob_end_clean();
+$pdf->Output('autores.pdf', 'I');
 
 ?>

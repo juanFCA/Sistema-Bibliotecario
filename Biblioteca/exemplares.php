@@ -11,7 +11,7 @@ require_once "modelo/usuario.php";
 $exemplarDAO = new exemplarDAO();
 $livroDAO = new livroDAO();
 
-$tipos =$exemplarDAO->tipos();
+$tipos = $exemplarDAO->tipos();
 
 template::header();
 template::sidebar("exemplares");

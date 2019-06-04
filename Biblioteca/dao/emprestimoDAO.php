@@ -28,18 +28,31 @@ class emprestimoDAO
         }
     }
 
-    public function salvar(emprestimo $emprestimo)
+    public function salvarAtualizar(emprestimo $emprestimo)
     {
         try {
-            if ($emprestimo->getTbUsuarioIdtbUsuario() != "" or $emprestimo->getTbExemplarIdtbExemplar() != "") {
+            if ($emprestimo->getTbUsuarioIdtbUsuario() != "" and $emprestimo->getTbExemplarIdtbExemplar() != "") {
                 $statement = conexao::getInstance()->prepare("UPDATE tb_emprestimo SET dataEmprestimo=:dataEmprestimo, observacoes=:observacoes WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
-                $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
-                $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
             } else {
-                $statement = conexao::getInstance()->prepare("INSERT INTO tb_emprestimo(dataEmprestimo, observacoes) VALUES (:dataEnprestimo, :observacoes)");
+                $statement = conexao::getInstance()->prepare("INSERT INTO tb_emprestimo(tb_usuario_idtb_usuario, 
+                                                                                                tb_exemplar_idtb_exemplar, 
+                                                                                                dataEmprestimo, 
+                                                                                                observacoes,
+                                                                                                dataVencimento,
+                                                                                                reserva) 
+                                                                             VALUES (:idUsuario,
+                                                                                     :idExemplar,
+                                                                                     :dataEnprestimo, 
+                                                                                     :observacoes,
+                                                                                     :dataVencimento,
+                                                                                     :reserva)");
             }
+            $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
+            $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
             $statement->bindValue(":dataEmprestimo", $emprestimo->getDataEmprestimo());
             $statement->bindValue(":observacoes", $emprestimo->getObservacoes());
+            $statement->bindValue(":dataVencimento", $emprestimo->getDataVencimento());
+            $statement->bindValue(":reserva", $emprestimo->getReserva());
 
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
@@ -52,28 +65,6 @@ class emprestimoDAO
             }
         } catch (PDOException $erro) {
             return "Erro: " .$erro->getMessage();
-        }
-    }
-
-    public function atualizar(emprestimo $emprestimo)
-    {
-        try {
-            $statement = conexao::getInstance()->prepare("SELECT tb_usuario_idtb_usuario, tb_exemplar_idtb_exemplar, dataEmprestimo, observacoes FROM tb_emprestimo WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
-            $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
-            $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
-
-            if ($statement->execute()) {
-                $rs = $statement->fetch(PDO::FETCH_OBJ);
-                $emprestimo->setTbUsuarioIdtbUsuario($rs->tb_usuario_idtb_usuario);
-                $emprestimo->setTbExemplarIdtbExemplar($rs->tb_exemplar_idtb_exemplar);
-                $emprestimo->setDataEmprestimo($rs->dataEmprestimo);
-                $emprestimo->setObservacoes($rs->observacoes);
-                return $emprestimo;
-            } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
-            }
-        } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
         }
     }
 
@@ -158,8 +149,8 @@ class emprestimoDAO
                     <td>$acti->tb_exemplar_idtb_exemplar</td>
                     <td>$acti->dataEmprestimo</td>
                     <td>$acti->observacoes</td>
-                    <td><a href='?act=upd&id=$acti->id_action' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
-                    <td><a href='?act=del&id=$acti->id_action' title='Remover'><i class='pe-7s-trash'></i></a></td>
+                    <td><a href='?act=upd&id=$acti->tb_usuario_idtb_usuario' title='Alterar'><i class='pe-7s-refresh text-warning'></i></a></td>
+                    <td><a href='?act=del&id=$acti->tb_usuario_idtb_usuario' title='Remover'><i class='pe-7s-trash text-danger'></i></a></td>
                    </tr>";
             endforeach;
             echo "

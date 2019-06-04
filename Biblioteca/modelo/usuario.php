@@ -75,7 +75,7 @@
             return $this->recuperar;
         }
 
-        public function setRecuperar($recuperar): void
+        public function setRecuperar($recuperar)
         {
             $this->recuperar = $recuperar;
         }

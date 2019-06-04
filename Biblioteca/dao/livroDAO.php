@@ -8,8 +8,6 @@
 
 require_once "db/conexao.php";
 require_once "modelo/livro.php";
-require_once "dao/editoraDAO.php";
-require_once "dao/categoriaDAO.php";
 require_once "dao/autoriaDAO.php";
 
 
@@ -179,7 +177,13 @@ class livroDAO
         $linha_inicial = ($pagina_atual - 1) * QTDE_REGISTROS;
 
         /* Instrução de consulta para paginação com MySQL */
-        $sql = "SELECT idtb_livro, titulo, isbn, edicao, ano, upload, tb_editora_idtb_editora, tb_categoria_idtb_categoria FROM tb_livro LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
+        $sql = "SELECT l.idtb_livro, l.titulo, l.isbn, l.edicao, l.ano, l.upload, e.nomeEditora, c.nomeCategoria
+                  FROM tb_livro l 
+            INNER JOIN tb_editora e
+                    ON l.tb_editora_idtb_editora = e.idtb_editora
+            INNER JOIN tb_categoria c
+                    ON l.tb_categoria_idtb_categoria = c.idtb_categoria
+                 LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
         $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
@@ -214,10 +218,6 @@ class livroDAO
         /* Verifica se vai exibir o botão "Anterior" e "Último" */
         $exibir_botao_final = ($range_final > $pagina_atual) ? '' : 'disabled';
 
-        //verifica nome de categoria e editora
-        $categoriaDAO = new categoriaDAO();
-        $editoraDAO = new editoraDAO();
-
         if (!empty($dados)):
             echo "<div class='row'>
                  <div class='col-md-12'>
@@ -242,8 +242,6 @@ class livroDAO
              </thead>
              <tbody>";
             foreach ($dados as $acti):
-                $editora = $editoraDAO->buscarEditora($acti->tb_editora_idtb_editora);
-                $categoria = $categoriaDAO->buscarCategoria($acti->tb_categoria_idtb_categoria);
                 echo "<tr>
                     <td>$acti->idtb_livro</td>
                     <td>$acti->titulo</td>
@@ -251,10 +249,10 @@ class livroDAO
                     <td>$acti->edicao</td>
                     <td>$acti->ano</td>
                     <td>$acti->upload</td>
-                    <td>". $editora->getNomeEditora()."</td>
-                    <td>". $categoria->getNomeCategoria() ."</td>
-                    <td><a href='?act=upd&id=$acti->idtb_livro' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
-                    <td><a href='?act=del&id=$acti->idtb_livro' title='Remover'><i class='pe-7s-trash'></i></a></td>
+                    <td>$acti->nomeEditora</td>
+                    <td>$acti->nomeCategoria</td>
+                    <td><a href='?act=upd&id=$acti->idtb_livro' title='Alterar'><i class='pe-7s-refresh text-warning'></i></a></td>
+                    <td><a href='?act=del&id=$acti->idtb_livro' title='Remover'><i class='pe-7s-trash text-danger'></i></a></td>
                    </tr>";
             endforeach;
             echo "

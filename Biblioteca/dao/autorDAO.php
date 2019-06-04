@@ -173,8 +173,8 @@ class autorDAO
                 echo "<tr>
                     <td>$acti->idtb_autor</td>
                     <td>$acti->nomeAutor</td>
-                    <td><a href='?act=upd&id=$acti->idtb_autor' title='Alterar'><i class='pe-7s-refresh'></i></a></td>
-                    <td><a href='?act=del&id=$acti->idtb_autor' title='Remover'><i class='pe-7s-trash'></i></a></td>
+                    <td><a href='?act=upd&id=$acti->idtb_autor' title='Alterar'><i class='pe-7s-refresh text-warning'></i></a></td>
+                    <td><a href='?act=del&id=$acti->idtb_autor' title='Remover'><i class='pe-7s-trash text-danger'></i></a></td>
                    </tr>";
             endforeach;
             echo "

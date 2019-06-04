@@ -49,8 +49,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                     <div class='card'>
                         <div class='header'>
                             <h4 class='title'>Dados do Usuário</h4>
-                            <p class='category'>Lista de Usuários do Sistema</p>
-
                         </div>
                         <div class='content table-responsive'>
                             <form action="?act=save&id=" method="POST" name="form1">
@@ -75,10 +73,9 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                             <Label>Tipo</Label>
                                             <select class="form-control" name="tipo" required>
                                                 <option value="" selected disabled hidden >Selecione o Tipo</option>
-                                                <option value="1" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 1) ? 'selected':'';}?>><?php echo $tipos[1] ?></option>
-                                                <option value="2" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 2) ? 'selected':'';}?>><?php echo $tipos[2] ?></option>
-                                                <option value="3" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 3) ? 'selected':'';}?>><?php echo $tipos[3] ?></option>
-                                                <option value="4" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == 4) ? 'selected':'';}?>><?php echo $tipos[4] ?></option>
+                                                <?php for ($i = 1; $i <= sizeof($tipos); $i++) {?>
+                                                <option value=" <?php $i ?>" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == $i) ? 'selected':'';}?>><?php echo $tipos[$i] ?></option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                     </div>
