@@ -241,7 +241,7 @@ class usuarioDAO
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Tipo</th>
-                <th>Email</th>
+                <th>E-mail</th>
                 <!--<th>Senha</th>-->
                 <th class='col-xs-1 col-sm-1 col-md-1 col-lg-1' colspan='2'>Ações</th>
                </tr>

@@ -12,7 +12,7 @@ require_once "modelo/emprestimo.php";
 class emprestimoDAO
 {
 
-    public function remover(emprestimo $emprestimo)
+    public function cancelarReserva(emprestimo $emprestimo)
     {
         try {
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_emprestimo WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
@@ -31,40 +31,86 @@ class emprestimoDAO
     public function salvarAtualizar(emprestimo $emprestimo)
     {
         try {
-            if ($emprestimo->getTbUsuarioIdtbUsuario() != "" and $emprestimo->getTbExemplarIdtbExemplar() != "") {
-                $statement = conexao::getInstance()->prepare("UPDATE tb_emprestimo SET dataEmprestimo=:dataEmprestimo, observacoes=:observacoes WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
-            } else {
-                $statement = conexao::getInstance()->prepare("INSERT INTO tb_emprestimo(tb_usuario_idtb_usuario, 
-                                                                                                tb_exemplar_idtb_exemplar, 
-                                                                                                dataEmprestimo, 
-                                                                                                observacoes,
-                                                                                                dataVencimento,
-                                                                                                reserva) 
+            $statement = conexao::getInstance()->prepare("INSERT INTO tb_emprestimo(tb_usuario_idtb_usuario, 
+                                                                                    tb_exemplar_idtb_exemplar, 
+                                                                                    dataEmprestimo, 
+                                                                                    observacoes,
+                                                                                    dataVencimento,
+                                                                                    dataDevolucao,
+                                                                                    reserva) 
                                                                              VALUES (:idUsuario,
                                                                                      :idExemplar,
-                                                                                     :dataEnprestimo, 
+                                                                                     :dataEmprestimo, 
                                                                                      :observacoes,
                                                                                      :dataVencimento,
+                                                                                     :dataDevolucao,
                                                                                      :reserva)");
-            }
+
             $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
             $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
             $statement->bindValue(":dataEmprestimo", $emprestimo->getDataEmprestimo());
             $statement->bindValue(":observacoes", $emprestimo->getObservacoes());
             $statement->bindValue(":dataVencimento", $emprestimo->getDataVencimento());
+            $statement->bindValue(":dataDevolucao", $emprestimo->getDataDevolucao());
             $statement->bindValue(":reserva", $emprestimo->getReserva());
 
+            var_dump($statement);
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
                     return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Registro foi inserido com êxito', 'success'); </script>";
                 } else {
-                    return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Falha ao tentar inserir o Registro', 'danger'); </script>";                
+                    return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Falha ao tentar inserir o Registro', 'danger'); </script>";
                 }
             } else {
                 throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
             }
         } catch (PDOException $erro) {
             return "Erro: " .$erro->getMessage();
+        }
+    }
+
+    public function realizarEmprestimo(emprestimo $emprestimo) {
+        try {
+            $statement = Conexao::getInstance()->prepare("UPDATE tb_emprestimo SET dataEmprestimo=:dataEmprestimo,
+                                                                                             dataVencimento=:dataVencimento,
+                                                                                             reserva=:reserva 
+                                                                                       WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
+            $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
+            $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
+            $statement->bindValue(":dataEmprestimo", $emprestimo->getDataEmprestimo());
+            $statement->bindValue(":dataVencimento", $emprestimo->getDataVencimento());
+            $statement->bindValue(":reserva", $emprestimo->getReserva());
+            if($statement->execute()){
+                if($statement->rowCount() > 0){
+                    return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Emprestimo Realizado com Sucesso', 'success'); </script>";
+                }else{
+                    return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Falha ao tentar Realizar o Emprestimo', 'danger'); </script>";
+                }
+            }else{
+                throw new PDOException("<script>alert('Não foi possível executar a declaração SQL !')</script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
+    public function devolverEmprestimo(emprestimo $emprestimo) {
+        try {
+            $statement = Conexao::getInstance()->prepare("UPDATE tb_emprestimo SET dataDevolucao=NOW()
+                                                                                       WHERE tb_usuario_idtb_usuario=:idUsuario AND tb_exemplar_idtb_exemplar=:idExemplar");
+            $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
+            $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
+            if($statement->execute()){
+                if($statement->rowCount() > 0){
+                    return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Devolução Realizada com Sucesso', 'success'); </script>";
+                }else{
+                    return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Falha ao tentar Realizar a Devolução', 'danger'); </script>";
+                }
+            }else{
+                throw new PDOException("<script>alert('Não foi possível executar a declaração SQL !')</script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
         }
     }
 
@@ -86,7 +132,25 @@ class emprestimoDAO
         $linha_inicial = ($pagina_atual - 1) * QTDE_REGISTROS;
 
         /* Instrução de consulta para paginação com MySQL */
-        $sql = "SELECT tb_usuario_idtb_usuario, tb_exemplar_idtb_exemplar, dataEmprestimo, observacoes FROM tb_emprestimo LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
+        $sql = "SELECT u.nomeUsuario AS usuario, 
+                       l.titulo AS livro, 
+                       em.dataEmprestimo AS dataEmprestimo, 
+                       em.dataDevolucao AS dataDevolucao,
+                       em.observacoes AS observacoes,
+                       em.dataVencimento AS dataVencimento,
+                       em.reserva AS reserva,
+                       em.tb_usuario_idtb_usuario AS idUsuario,
+                       em.tb_exemplar_idtb_exemplar AS idExemplar
+                   FROM tb_emprestimo em
+             INNER JOIN tb_usuario u 
+                     ON em.tb_usuario_idtb_usuario = u.idtb_usuario
+             INNER JOIN tb_exemplar ex
+                     ON em.tb_exemplar_idtb_exemplar = ex.idtb_exemplar
+             INNER JOIN tb_livro l
+                     ON ex.tb_livro_idtb_livro = l.idtb_livro
+               ORDER BY em.dataEmprestimo DESC
+                 LIMIT {$linha_inicial}," . QTDE_REGISTROS;
+
         $statement = conexao::getInstance()->prepare($sql);
         $statement->execute();
         $dados = $statement->fetchAll(PDO::FETCH_OBJ);
@@ -133,10 +197,12 @@ class emprestimoDAO
              <table class='table table-hover table-striped'>
              <thead>
                <tr style='text-transform: uppercase;' class='active'>
-                <th>Usuario</th>
-                <th>ID Exemplar</th>
+                <th>Usuário</th>
                 <th>Livro</th>
                 <th>Data Emprestimo</th>
+                <th>Situação</th>   
+                <th>Data Devolução</th>       
+                <th>Data Vencimento</th>
                 <th>Observações</th>
                 <th class='col-xs-1 col-sm-1 col-md-1 col-lg-1' colspan='2'>Ações</th>
                </tr>
@@ -144,14 +210,18 @@ class emprestimoDAO
              <tbody>";
             foreach ($dados as $acti):
                 echo "<tr>
-                    <td>$acti->tb_usuario_idtb_usuario</td>
-                    <td>$acti->tb_exemplar_idtb_exemplar</td>
-                    <td>$acti->tb_exemplar_idtb_exemplar</td>
+                    <td>$acti->usuario</td>
+                    <td>$acti->livro</td>
                     <td>$acti->dataEmprestimo</td>
-                    <td>$acti->observacoes</td>
-                    <td><a href='?act=upd&id=$acti->tb_usuario_idtb_usuario' title='Alterar'><i class='pe-7s-refresh text-warning'></i></a></td>
-                    <td><a href='?act=del&id=$acti->tb_usuario_idtb_usuario' title='Remover'><i class='pe-7s-trash text-danger'></i></a></td>
-                   </tr>";
+                    <td>"; echo ($acti->reserva == 1) ?  'RESERVADO' : (($acti->dataDevolucao == null) ? 'EMPRESTADO' : 'DEVOLVIDO'); echo "</td>
+                    <td>$acti->dataDevolucao</td>
+                    <td>$acti->dataVencimento</td>
+                    <td>$acti->observacoes</td>";
+                    echo ($acti->reserva == 0) ? '<td><a href="?act=emp&idUsuario='.$acti->idUsuario.'&idExemplar='.$acti->idExemplar.'" title="Devolver Emprestimo"><i class="pe-7s-refresh text-warning"></i></a></td>'
+                    : '<td><a href="?act=upd&idUsuario='.$acti->idUsuario.'&idExemplar='.$acti->idExemplar.'" title="Realizar Emprestimo"><i class="pe-7s-refresh text-warning"></i></a></td>';
+                    echo ($acti->reserva == 0) ? '<td></td>' :
+                    '<td><a href="?act=del&idUsuario='.$acti->idUsuario.'&idExemplar='.$acti->idExemplar.'" title="Cancelar Reserva"><i class="pe-7s-trash text-danger"></i></a></td>';
+                    echo "</tr>";
             endforeach;
             echo "
              </tbody>

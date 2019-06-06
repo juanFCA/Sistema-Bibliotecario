@@ -234,7 +234,7 @@ class livroDAO
                 <th>ISBN</th>
                 <th>Edição</th>
                 <th>Ano</th>
-                <th>Upload</th>
+                <th>Arq. Digital</th>
                 <th>Editora</th>
                 <th>Categoria</th>
                 <th class='col-xs-1 col-sm-1 col-md-1 col-lg-1' colspan='2'>Ações</th>
@@ -248,7 +248,7 @@ class livroDAO
                     <td>$acti->isbn</td>
                     <td>$acti->edicao</td>
                     <td>$acti->ano</td>
-                    <td>$acti->upload</td>
+                    <td>"; echo !empty($acti->upload) ?  'Sim' : 'Não'; echo "</td>
                     <td>$acti->nomeEditora</td>
                     <td>$acti->nomeCategoria</td>
                     <td><a href='?act=upd&id=$acti->idtb_livro' title='Alterar'><i class='pe-7s-refresh text-warning'></i></a></td>

@@ -25,14 +25,35 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
                                  $_POST["idExemplar"],
                                  $_POST["dataEmprestimo"],
                                  $_POST["observacoes"],
-                                 "",
-                                 "",
+                                 null,
+                                 null,
                                  $_POST["reserva"]
     );
 
     $usuario = $usuarioDAO->buscarUsuario($_POST['idUsuario']);
 
-    $date = new DateTime($_POST["dataEmprestimo"]);
+    if ($_POST["reserva"] == 0) {
+        $date = new DateTime($_POST["dataEmprestimo"]);
+        $interval = new DateInterval('P10D');
+        if ($usuario->getTipo() == 4) {
+            $interval = new DateInterval('P15D');
+        }
+        $date->add($interval);
+        $emprestimo->setDataVencimento($date->format('Y-m-d'));
+    }
+
+    $msg = $emprestimoDAO->salvarAtualizar($emprestimo);
+    unset($emprestimo);
+}
+
+if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
+    $emprestimo = new emprestimo($_GET["idUsuario"], $_GET["idExemplar"], null,null,null,null, 0);
+
+    $dateNow = date('Y-m-d');
+    $emprestimo->setDataEmprestimo($dateNow);
+    $usuario = $usuarioDAO->buscarUsuario($_GET['idUsuario']);
+
+    $date = new DateTime($dateNow);
     $interval = new DateInterval('P10D');
     if($usuario->getTipo() == 4) {
         $interval = new DateInterval('P15D');
@@ -40,7 +61,20 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     $date->add($interval);
 
     $emprestimo->setDataVencimento($date->format('Y-m-d'));
-    $msg = $emprestimoDAO->salvarAtualizar($emprestimo);
+
+    $msg = $emprestimoDAO->realizarEmprestimo($emprestimo);
+    unset($emprestimo);
+}
+
+if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "emp" && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
+    $emprestimo = new emprestimo($_GET["idUsuario"], $_GET["idExemplar"], "", "", "", "", "");
+    $msg = $emprestimoDAO->devolverEmprestimo($emprestimo);
+    unset($emprestimo);
+}
+
+if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
+    $emprestimo = new emprestimo($_GET["idUsuario"], $_GET["idExemplar"], "", "", "", "", "");
+    $msg = $emprestimoDAO->cancelarReserva($emprestimo);
     unset($emprestimo);
 }
 

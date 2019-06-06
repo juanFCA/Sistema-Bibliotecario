@@ -62,7 +62,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <Label>Email</Label>
+                                            <Label>E-mail</Label>
                                             <input class="form-control" type="email" name="email" value="<?php if(!empty($usuario)) {echo $usuario->getEmail();}?>" required/>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                                             <select class="form-control" name="tipo" required>
                                                 <option value="" selected disabled hidden >Selecione o Tipo</option>
                                                 <?php for ($i = 1; $i <= sizeof($tipos); $i++) {?>
-                                                <option value=" <?php $i ?>" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == $i) ? 'selected':'';}?>><?php echo $tipos[$i] ?></option>
+                                                <option value=" <?=$i?>" <?php if(!empty($usuario)) {echo ($usuario->getTipo() == $i) ? 'selected':'';}?>><?php echo $tipos[$i] ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>

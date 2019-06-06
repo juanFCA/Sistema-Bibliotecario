@@ -195,6 +195,14 @@ class Template
                                 <p class=\"hidden-lg hidden-md\">Principal</p>
                             </a>
                         </li>";
+                    if ($_SESSION['usuario']->getTipo() == 1) {
+                        echo "<li>
+                            <a href=\"dashboard.php\">
+                                <i class=\"fa fa-dashboard\" title=\"Dashboard\"></i>
+                                    <p class=\"hidden-lg hidden-md\">Dashboard</p>
+                             </a>
+                        </li>";
+                    }
                     if ($janela != "Principal" && $_SESSION['usuario']->getTipo() == 1) {
                         echo "<li>
                             <a href=\"relatorio/gerar.php?tipo=$janela\" target=\"_blank\">

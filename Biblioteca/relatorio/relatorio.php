@@ -292,7 +292,7 @@ class relatorio {
                                         <th width="20px">ID</th>
                                         <th width="200px">NOME</th>
                                         <th width="90px">TIPO</th>
-                                        <th width="200px">EMAIL</th>
+                                        <th width="200px">E-MAIL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
