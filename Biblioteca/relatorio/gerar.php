@@ -52,6 +52,8 @@ switch ($tipo) {
         $html = $relatorio->listaEditoras();
         break;
     case 'Emprestimos':
+        $html = $relatorio->listaEmprestimos();
+        $pdf->setPageOrientation('L');
         break;
     case 'Exemplares':
         $html = $relatorio->listaExemplares();
@@ -66,7 +68,7 @@ switch ($tipo) {
         break;
 }
 
-$html.= '<pre>'. $_SESSION['usuario']->getNomeUsuario() .'</pre>';
+//$html.= '<pre>'. $_SESSION['usuario']->getNomeUsuario() .'</pre>';
 
 $pdf->writeHTML($html);
 

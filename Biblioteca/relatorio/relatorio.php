@@ -318,6 +318,79 @@ class relatorio {
 
         return $relatorio;
     }
+
+    public function listaEmprestimos() {
+
+        $sqlLista = "SELECT u.nomeUsuario AS usuario, 
+                            l.titulo AS livro, 
+                            em.dataEmprestimo AS dataEmprestimo, 
+                            em.dataDevolucao AS dataDevolucao,
+                            em.observacoes AS observacoes,
+                            em.dataVencimento AS dataVencimento,
+                            em.reserva AS reserva,
+                            em.tb_usuario_idtb_usuario AS idUsuario,
+                            em.tb_exemplar_idtb_exemplar AS idExemplar
+                       FROM tb_emprestimo em
+                 INNER JOIN tb_usuario u 
+                         ON em.tb_usuario_idtb_usuario = u.idtb_usuario
+                 INNER JOIN tb_exemplar ex
+                         ON em.tb_exemplar_idtb_exemplar = ex.idtb_exemplar
+                 INNER JOIN tb_livro l
+                         ON ex.tb_livro_idtb_livro = l.idtb_livro
+                   ORDER BY em.dataEmprestimo";
+
+        $statement = conexao::getInstance()->prepare($sqlLista);
+        $statement->execute();
+        $dados = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $relatorio = '
+            <div class=\'row\'>
+                <div class=\'col-md-12\'>
+                    <div class=\'card\'>
+                        <div class=\'header\'>
+                            <p class=\'category\'>Listagem de Emprestimos no Sistema</p>
+                        </div>
+                        <div class=\'content\'>
+                            <table class=\'table table-hover table-striped\'>
+                                <thead>
+                                    <tr style=\'text-transform: uppercase;\'>
+                                        <th width="130px">USUÁRIO</th>
+                                        <th width="130px">LIVRO</th>
+                                        <th width="100px">EMPRESTIMO</th>
+                                        <th width="100px">SITUAÇÃO</th>   
+                                        <th width="100px">DEVOLUÇÃO</th>       
+                                        <th width="100px">VENCIMENTO</th>
+                                        <th>OBSERVAÇÕES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+        ';
+        foreach ($dados as $key => $value) {
+            $relatorio .= '
+                                    <tr class=\'text-center\'>
+                                        <td width="130px">'.$value['usuario'].'</td>
+                                        <td width="130px">'.$value['livro'].'</td>
+                                        <td width="100px">'.$value['dataEmprestimo'].'</td>
+                                        <td width="100px">'; 
+            $relatorio .= ($value['reserva'] == 1) ?  'RESERVADO' : (($value['dataDevolucao'] == null) ? 'EMPRESTADO' : 'DEVOLVIDO'); 
+            $relatorio .= '</td>
+                                        <td width="100px">'.$value['dataDevolucao'].'</td>
+                                        <td width="100px">'.$value['dataVencimento'].'</td>
+                                        <td>'.$value['observacoes'].'</td>
+                                    </tr>';
+        }
+        $relatorio .= '    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            <div>  
+        ';
+
+        return $relatorio;
+    }
+
 }
 
 ?>
