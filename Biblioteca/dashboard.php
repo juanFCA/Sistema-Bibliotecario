@@ -150,37 +150,89 @@ $totalCategorias = $categoriaDAO->totalCategorias();
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="header">
-                            <h4 class="title">Reservas de Livros por Mês</h4>
+                            <h4 class="title">Total de Reservas e Emprestimos</h4>
                         </div>
                         <div class="content">
-                            <canvas id="chartreservames"></canvas>
+                            <canvas id="charttotalresemp"></canvas>
                             <div class="footer">
                                 <div class="stats">
-                                    <i class="fa fa-clock-o"></i> Considerando apemas os 3 últimos Meses!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="header">
-                            <h4 class="title">Emprestimos de Livros por Mês</h4>
-                        </div>
-                        <div class="content">
-                            <canvas id="chartemprestimomes"></canvas>
-                            <div class="footer">
-                                <div class="stats">
-                                    <i class="fa fa-clock-o"></i> Considerando apemas os 3 últimos Meses!
+                                    <i class="fa fa-clock-o"></i> Considerando apenas o Mês Atual!
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Reservas por Mês</h4>
+                        </div>
+                        <div class="content">
+                            <canvas id="chartreservames"></canvas>
+                            <div class="footer">
+                                <div class="stats">
+                                    <i class="fa fa-clock-o"></i> Considerando apenas os 3 últimos Meses!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Emprestimos por Mês</h4>
+                        </div>
+                        <div class="content">
+                            <canvas id="chartemprestimomes"></canvas>
+                            <div class="footer">
+                                <div class="stats">
+                                    <i class="fa fa-clock-o"></i> Considerando apenas os 3 últimos Meses!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Reservas por Categoria</h4>
+                        </div>
+                        <div class="content">
+                            <canvas id="chartreservacategoria"></canvas>
+                            <div class="footer">
+                                <div class="stats">
+                                    <i class="fa fa-clock-o"></i> Considerando apenas os 3 últimos Meses!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Emprestimos por Categoria</h4>
+                        </div>
+                        <div class="content">
+                            <canvas id="chartemprestimocategoria"></canvas>
+                            <div class="footer">
+                                <div class="stats">
+                                    <i class="fa fa-clock-o"></i> Considerando apenas os 3 últimos Meses!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 

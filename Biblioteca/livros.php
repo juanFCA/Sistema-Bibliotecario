@@ -30,8 +30,8 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
                         $_POST["edicao"],
                         $_POST["ano"],
                         $_POST["upload"],
-                        $_POST["categoria"],
-                        $_POST["editora"]);
+                        $_POST["editora"],
+                        $_POST["categoria"]);
     if(isset($_POST["id"])){
         $livro->setIdtbLivro($_POST["id"]);
     }
