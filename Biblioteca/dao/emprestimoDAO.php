@@ -11,6 +11,20 @@ require_once "modelo/emprestimo.php";
 
 class emprestimoDAO
 {
+    public function nomeMeses() {
+        return array('Janeiro',
+                    'Fevereiro',
+                    'Março',
+                    'Abril',
+                    'Maio',
+                    'Junho',
+                    'Julho',
+                    'Agosto',
+                    'Setembro',
+                    'Outubro',
+                    'Novembro',
+                    'Dezembro');
+    }
 
     public function cancelarReserva(emprestimo $emprestimo)
     {
@@ -54,7 +68,6 @@ class emprestimoDAO
             $statement->bindValue(":dataDevolucao", $emprestimo->getDataDevolucao());
             $statement->bindValue(":reserva", $emprestimo->getReserva());
 
-            var_dump($statement);
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
                     return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Registro foi inserido com êxito', 'success'); </script>";
@@ -105,6 +118,68 @@ class emprestimoDAO
                     return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Devolução Realizada com Sucesso', 'success'); </script>";
                 }else{
                     return "<script> notificacao('pe-7s-info', 'Emprestimo', 'Falha ao tentar Realizar a Devolução', 'danger'); </script>";
+                }
+            }else{
+                throw new PDOException("<script>alert('Não foi possível executar a declaração SQL !')</script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
+    public function retornaEmprestimosMes(){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT EXTRACT(MONTH FROM dataEmprestimo) AS mes, 
+                                                                           COUNT(dataEmprestimo) AS livrosMes 
+                                                                      FROM tb_emprestimo 
+                                                                     WHERE EXTRACT(MONTH FROM dataEmprestimo) 
+                                                                   BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL 3 MONTH) 
+                                                                       AND EXTRACT(MONTH FROM CURDATE()) 
+                                                                       AND reserva = 0 
+                                                                  GROUP BY mes");
+            if($statement->execute()){
+                if($statement->rowCount() > 0){
+                    $labels = array();
+                    $series = array();
+                    while($rs = $statement->fetch(PDO::FETCH_OBJ)){
+                        array_push($labels, $this->nomeMeses()[$rs->mes -1]);
+                        array_push($series, $rs->livrosMes);
+                    }
+                    $dados = array($labels, $series);
+                    return $dados;
+                }else{
+                    return "<script>alert('Erro ao buscar os Dados!')</script>";
+                }
+            }else{
+                throw new PDOException("<script>alert('Não foi possível executar a declaração SQL !')</script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
+    public function retornaReservasMes(){
+        try {
+            $statement = Conexao::getInstance()->prepare("SELECT EXTRACT(MONTH FROM dataEmprestimo) AS mes, 
+                                                                           COUNT(dataEmprestimo) AS livrosMes 
+                                                                      FROM tb_emprestimo 
+                                                                     WHERE EXTRACT(MONTH FROM dataEmprestimo) 
+                                                                   BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL 3 MONTH) 
+                                                                       AND EXTRACT(MONTH FROM CURDATE()) 
+                                                                       AND reserva = 1 
+                                                                  GROUP BY mes");
+            if($statement->execute()){
+                if($statement->rowCount() > 0){
+                    $labels = array();
+                    $series = array();
+                    while($rs = $statement->fetch(PDO::FETCH_OBJ)){
+                        array_push($labels, $this->nomeMeses()[$rs->mes -1]);
+                        array_push($series, $rs->livrosMes);
+                    }
+                    $dados = array($labels, $series);
+                    return $dados;
+                }else{
+                    return "<script>alert('Erro ao buscar os Dados!')</script>";
                 }
             }else{
                 throw new PDOException("<script>alert('Não foi possível executar a declaração SQL !')</script>");

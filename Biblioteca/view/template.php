@@ -89,7 +89,7 @@ class Template
             <script src=\"assets/js/bootstrap.min.js\" type=\"text/javascript\"></script>
         
             <!--  Charts Plugin -->
-            <script src=\"assets/js/chartist.min.js\" type=\"text/javascript\"></script>
+            <script src=\"assets/js/charts.min.js\" type=\"text/javascript\"></script>
         
             <!--  Notifications Plugin    -->
             <script src=\"assets/js/bootstrap-notify.js\" type=\"text/javascript\"></script>
@@ -101,6 +101,7 @@ class Template
             <script src=\"vendor/mrohnstock/bootstrap-multiselect/js/bootstrap-multiselect.js\" type=\"text/javascript\"></script>
             
             <script src=\"assets/js/rendered.js\" type=\"text/javascript\"></script>
+            <script src=\"assets/js/graphs.js\" type=\"text/javascript\"></script>
         
         </html>";
 

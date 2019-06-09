@@ -96,6 +96,33 @@ class exemplarDAO
         }
     }
 
+    public function buscarDisponiveisEmprestimo() {
+        try {
+            $statement = conexao::getInstance()->prepare("SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro 
+                                                                      FROM tb_exemplar ex 
+                                                                INNER JOIN tb_emprestimo em ON ex.idtb_exemplar = em.tb_exemplar_idtb_exemplar 
+                                                                     WHERE em.dataDevolucao IS NOT null 
+                                                                     UNION 
+                                                                    SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro 
+                                                                      FROM tb_exemplar ex 
+                                                                 LEFT JOIN tb_emprestimo emp ON ex.idtb_exemplar = emp.tb_exemplar_idtb_exemplar 
+                                                                     WHERE emp.tb_exemplar_idtb_exemplar IS null 
+                                                                  ORDER BY idtb_exemplar");
+            if ($statement->execute()) {
+                $exemplares = [];
+                while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
+                    $exemplar = new exemplar($rs->idtb_exemplar, $rs->tb_livro_idtb_livro, $rs->tipoExemplar);
+                    array_push($exemplares, $exemplar);
+                }
+                return $exemplares;
+            } else {
+                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return "Erro: " . $erro->getMessage();
+        }
+    }
+
     public function totalExemplares() {
         try {
             $statement = conexao::getInstance()->prepare("SELECT COUNT(*) AS total FROM tb_exemplar");

@@ -97,7 +97,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["idUsuario
                                             <select id="exemplar" name="idExemplar" class="form-control" required>
                                                 <option value="" selected disabled hidden >Selecione o Exemplar</option>
                                                 <?php
-                                                $exemplares = $exemplarDAO->buscarTodos();
+                                                $exemplares = $exemplarDAO->buscarDisponiveisEmprestimo();
                                                 foreach($exemplares as $exemplar){
                                                     if( !empty($emprestimo) && $emprestimo->getTbExemplarIdtbExemplar() == $exemplar->getIdtbExemplar()){
                                                         ?>
