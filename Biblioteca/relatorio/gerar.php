@@ -64,6 +64,8 @@ switch ($tipo) {
     case 'Usuários':
         $html = $relatorio->listaUsuarios();
         break;
+    case 'Exportar':
+        break;
     default:
         break;
 }

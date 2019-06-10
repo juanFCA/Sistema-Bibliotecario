@@ -32,12 +32,20 @@ $(document).ready(function(){
                     }]
                 },
                 options: {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 1
+                            }
+                        }]
+                    },
                     legend: {
                         display: true,
                         labels: {
-                            display: false
+                            display: true
                         }
-                    },
+                    }
                 }
             });
         }
@@ -66,7 +74,7 @@ $(document).ready(function(){
                         labels: {
                             display: false
                         }
-                    },
+                    }
                 }
             });
         }
@@ -95,7 +103,7 @@ $(document).ready(function(){
                         labels: {
                             display: false
                         }
-                    },
+                    }
                 }
             });
         }
@@ -124,7 +132,7 @@ $(document).ready(function(){
                         labels: {
                             display: false
                         }
-                    },
+                    }
                 }
             });
         }
@@ -153,7 +161,7 @@ $(document).ready(function(){
                         labels: {
                             display: false
                         }
-                    },
+                    }
                 }
             });
         }

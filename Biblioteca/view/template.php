@@ -65,7 +65,7 @@ class Template
                     <nav class=\"pull-left\">
                         <ul>
                             <li>
-                                <a href=''>
+                                <a>
                                     ". $janela ."
                                 </a>
                             </li>
@@ -101,7 +101,6 @@ class Template
             <script src=\"vendor/mrohnstock/bootstrap-multiselect/js/bootstrap-multiselect.js\" type=\"text/javascript\"></script>
             
             <script src=\"assets/js/rendered.js\" type=\"text/javascript\"></script>
-            <script src=\"assets/js/graphs.js\" type=\"text/javascript\"></script>
         
         </html>";
 
@@ -186,7 +185,7 @@ class Template
                         <span class=\"icon-bar\"></span>
                         <span class=\"icon-bar\"></span>
                     </button>
-                    <a class=\"navbar-brand\" href=\"\">$janela</a>
+                    <a class=\"navbar-brand\">$janela</a>
                 </div>
                 <div class=\"collapse navbar-collapse\">
                     <ul class=\"nav navbar-nav navbar-left\">
@@ -204,12 +203,29 @@ class Template
                              </a>
                         </li>";
                     }
-                    if ($janela != "Principal" && $_SESSION['usuario']->getTipo() == 1) {
+                    if ($janela != "Principal" && $janela != "Dashboard" && $_SESSION['usuario']->getTipo() == 1) {
                         echo "<li>
                             <a href=\"relatorio/gerar.php?tipo=$janela\" target=\"_blank\">
                                 <i class=\"fa fa-list-alt\" title=\"Relatório - $janela\"></i>
                                 <p class=\"hidden-lg hidden-md\">Relatório - $janela</p>
                             </a>
+                        </li>";
+                    }
+                    if ($janela == "Dashboard" && $_SESSION['usuario']->getTipo() == 1) {
+                        echo "<li>
+                                <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" aria-expanded=\"false\">
+                                    <i class=\"fa fa-list-alt\" title=\"Relatórios - $janela\"></i>
+                                    <p class=\"hidden-lg hidden-md\">Relatórios - $janela</p>
+                                </a>
+                                <ul class=\"dropdown-menu\">
+                                    <li><a href=\"relatorio/gerar.php?tipo=LivroExemplares\" target=\"_blank\">Total de Exemplares por Livro</a></li>
+                                    <li><a href=\"relatorio/gerar.php?tipo=Emprestados\" target=\"_blank\">Livros Emprestados</a></li>
+                                    <li><a href=\"relatorio/gerar.php?tipo=Reservados\" target=\"_blank\">Livros Reservados</a></li>
+                                    <li><a href=\"relatorio/gerar.php?tipo=Devolucao\" target=\"_blank\">Livros com Devolução em Atraso</a></li>
+                                    <li><a href=\"relatorio/gerar.php?tipo=Usuários\" target=\"_blank\">Usuários e seus Dados Cadastrais</a></li>
+                                    <li class=\"divider\"></li>
+                                    <li><a href=\"relatorio/gerar.php?tipo=Exportar\" target=\"_blank\">Exportar Todos os Gráficos</a></li>
+                                </ul>
                         </li>";
                     }
                     echo " </ul>
@@ -223,7 +239,7 @@ class Template
 							    </p>
                             </a>
                             <ul class=\"dropdown-menu\">
-                                <li><a href=\"#\">Action</a></li>
+                                <li><a href=\"#\">Perfil</a></li>
                                 <li class=\"divider\"></li>
                                 <li><a href=\"logout.php\">Logout</a></li>
                             </ul>
