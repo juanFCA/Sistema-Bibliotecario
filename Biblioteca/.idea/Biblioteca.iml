@@ -4,7 +4,6 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/vendor/components/jquery" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/davefx/phplot" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mpdf/mpdf" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mrohnstock/bootstrap-multiselect" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
