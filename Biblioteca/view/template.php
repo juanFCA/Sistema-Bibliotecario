@@ -157,7 +157,13 @@ class Template
                     <li class="; echo (!empty($janela) && $janela == "emprestimos") ? "active" : "deactive"; echo">
                         <a href='emprestimos.php'>
                             <i class=\"pe-7s-news-paper\"></i>
-                            <p>Emprestimos</p>
+                            <p>Empréstimos</p>
+                        </a>
+                    </li>
+                    <li class="; echo (!empty($janela) && $janela == "reservas") ? "active" : "deactive"; echo">
+                        <a href='reservas.php'>
+                            <i class=\"pe-7s-news-paper\"></i>
+                            <p>Reservas</p>
                         </a>
                     </li>
                     <li class="; echo (!empty($janela) && $janela == "usuarios") ? "active" : "deactive"; echo">

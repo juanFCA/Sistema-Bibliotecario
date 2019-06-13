@@ -18,7 +18,7 @@ $livroDAO = new livroDAO();
 
 template::header();
 template::sidebar("emprestimos");
-template::mainpanel("Emprestimos");
+template::mainpanel("Empréstimos");
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     $emprestimo = new emprestimo($_POST["idUsuario"],
@@ -86,7 +86,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["idUsuario
                 <div class='col-md-12'>
                     <div class='card'>
                         <div class='header'>
-                            <h4 class='title'>Dados do Emprestimo</h4>
+                            <h4 class='title'>Dados do Empréstimo</h4>
                         </div>
                         <div class='content table-responsive'>
                             <form action="?act=save&id=" method="POST" name="form1">

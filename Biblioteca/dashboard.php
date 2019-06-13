@@ -1,31 +1,15 @@
 <?php
 
 require_once "view/template.php";
-require_once "dao/livroDAO.php";
-require_once "dao/autorDAO.php";
-require_once "dao/editoraDAO.php";
-require_once "dao/exemplarDAO.php";
-require_once "dao/usuarioDAO.php";
-require_once "dao/categoriaDAO.php";
+require_once "db/consulta.php";
 require_once "modelo/usuario.php";
 
 template::header();
 template::sidebar("Dashboard");
 template::mainpanel("Dashboard");
 
-$livroDAO = new livroDAO();
-$autorDAO = new autorDAO();
-$editoraDAO = new editoraDAO();
-$exemplarDAO = new exemplarDAO();
-$usuarioDAO = new usuarioDAO();
-$categoriaDAO = new categoriaDAO();
-
-$totalLivros = $livroDAO->totalLivros();
-$totalAutores = $autorDAO->totalAutores();
-$totalEditoras = $editoraDAO->totalEditoras();
-$totalExemplares = $exemplarDAO->totalExemplares();
-$totalUsuarios = $usuarioDAO->totalUsuarios();
-$totalCategorias = $categoriaDAO->totalCategorias();
+$consulta = new consulta();
+$numRegistros = $consulta->retornaCountRegistros();
 
 ?>
 
@@ -49,7 +33,7 @@ $totalCategorias = $categoriaDAO->totalCategorias();
                                                 <i class="pe-7s-bookmarks fa-3x"></i>
                                             </div>
                                             <div class="col-md-6">
-                                                <h3 class="title text-center text-info"><?php  echo $totalLivros; ?></h3>
+                                                <h3 class="title text-center text-info"><?php  echo $numRegistros[1][6]; ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +52,7 @@ $totalCategorias = $categoriaDAO->totalCategorias();
                                                 <i class="pe-7s-albums fa-3x"></i>
                                             </div>
                                             <div class="col-md-6">
-                                                <h3 class="title text-center text-info"><?php  echo $totalCategorias; ?></h3>
+                                                <h3 class="title text-center text-info"><?php  echo $numRegistros[1][2]; ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -90,7 +74,7 @@ $totalCategorias = $categoriaDAO->totalCategorias();
                                                 <i class="pe-7s-notebook fa-3x"></i>
                                             </div>
                                             <div class="col-md-6">
-                                                <h3 class="title text-center text-info"><?php  echo $totalExemplares; ?></h3>
+                                                <h3 class="title text-center text-info"><?php  echo $numRegistros[1][5]; ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -109,7 +93,7 @@ $totalCategorias = $categoriaDAO->totalCategorias();
                                                 <i class="pe-7s-id fa-3x"></i>
                                             </div>
                                             <div class="col-md-6">
-                                                <h3 class="title text-center text-info"><?php  echo $totalAutores; ?></h3>
+                                                <h3 class="title text-center text-info"><?php  echo $numRegistros[1][0]; ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -131,7 +115,7 @@ $totalCategorias = $categoriaDAO->totalCategorias();
                                                 <i class="pe-7s-culture fa-3x"></i>
                                             </div>
                                             <div class="col-md-6">
-                                                <h3 class="title text-center text-info"><?php  echo $totalEditoras; ?></h3>
+                                                <h3 class="title text-center text-info"><?php  echo $numRegistros[1][3]; ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -150,7 +134,7 @@ $totalCategorias = $categoriaDAO->totalCategorias();
                                                 <i class="pe-7s-users fa-3x"></i>
                                             </div>
                                             <div class="col-md-6">
-                                                <h3 class="title text-center text-info"><?php  echo $totalUsuarios; ?></h3>
+                                                <h3 class="title text-center text-info"><?php  echo $numRegistros[1][8]; ?></h3>
                                             </div>
                                         </div>
                                     </div>

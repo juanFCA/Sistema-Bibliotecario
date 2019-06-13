@@ -51,7 +51,7 @@ switch ($tipo) {
     case 'Editoras':
         $html = $relatorio->listaEditoras();
         break;
-    case 'Emprestimos':
+    case 'Empréstimos':
         $html = $relatorio->listaEmprestimos();
         $pdf->setPageOrientation('L');
         break;
@@ -60,9 +60,24 @@ switch ($tipo) {
         break;
     case 'Livros':
         $html = $relatorio->listaLivros();
+        $pdf->setPageOrientation('L');
         break;
     case 'Usuários':
         $html = $relatorio->listaUsuarios();
+        break;
+    case 'LivroExemplares':
+        $html = $relatorio->listaLivroExemplares();
+        $pdf->setPageOrientation('L');
+        break;
+    case 'Emprestados':
+        $html = $relatorio->listaEmprestados();
+        $pdf->setPageOrientation('L');
+        break;
+    case 'Reservados':
+        $html = $relatorio->listaReservados();
+        $pdf->setPageOrientation('L');
+        break;
+    case 'Devolucao':
         break;
     case 'Exportar':
         break;

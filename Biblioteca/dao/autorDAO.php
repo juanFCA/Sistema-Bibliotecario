@@ -44,10 +44,10 @@ class autorDAO
                     return "<script> notificacao('pe-7s-info', 'Autor', 'Falha ao tentar inserir o Registro', 'danger'); </script>";                
                 }
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Autor', 'Falha ao tentar inserir o Registro', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -60,10 +60,10 @@ class autorDAO
                 $autor = new autor($rs->idtb_autor, $rs->nomeAutor);
                 return $autor;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Autor', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -78,10 +78,10 @@ class autorDAO
                 }
                 return $autores;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Autor', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -92,10 +92,10 @@ class autorDAO
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
                 return $rs->total;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Autor', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 

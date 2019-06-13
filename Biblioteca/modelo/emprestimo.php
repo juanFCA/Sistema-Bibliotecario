@@ -2,25 +2,37 @@
 
     class emprestimo
     {
+        private $idtb_emprestimo;
         private $tb_usuario_idtb_usuario;
         private $tb_exemplar_idtb_exemplar;
         private $dataEmprestimo;
         private $observacoes;
         private $dataVencimento;
         private $dataDevolucao;
-        private $reserva;
+        private $situacao;
 
-        public function __construct($tb_usuario_idtb_usuario, $tb_exemplar_idtb_exemplar, $dataEmprestimo, $observacoes, $dataVencimento, $dataDevolucao, $reserva)
+        public function __construct($idtb_emprestimo, $tb_usuario_idtb_usuario, $tb_exemplar_idtb_exemplar, $dataEmprestimo, $observacoes, $dataVencimento, $dataDevolucao, $situacao)
         {
+            $this->idtb_emprestimo = $idtb_emprestimo;
             $this->tb_usuario_idtb_usuario = $tb_usuario_idtb_usuario;
             $this->tb_exemplar_idtb_exemplar = $tb_exemplar_idtb_exemplar;
             $this->dataEmprestimo = $dataEmprestimo;
             $this->observacoes = $observacoes;
             $this->dataVencimento = $dataVencimento;
             $this->dataDevolucao = $dataDevolucao;
-            $this->reserva = $reserva;
+            $this->situacao = $situacao;
         }
 
+
+        public function getIdtbEmprestimo()
+        {
+            return $this->idtb_emprestimo;
+        }
+
+        public function setIdtbEmprestimo($idtb_emprestimo)
+        {
+            $this->idtb_emprestimo = $idtb_emprestimo;
+        }
 
         public function getTbUsuarioIdtbUsuario()
         {
@@ -82,14 +94,14 @@
             $this->dataDevolucao = $dataDevolucao;
         }
 
-        public function getReserva()
+        public function getSituacao()
         {
-            return $this->reserva;
+            return $this->situacao;
         }
 
-        public function setReserva($reserva)
+        public function setSituacao($situacao)
         {
-            $this->reserva = $reserva;
+            $this->situacao = $situacao;
         }
     }
 
