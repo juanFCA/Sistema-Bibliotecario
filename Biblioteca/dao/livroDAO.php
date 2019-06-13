@@ -19,12 +19,16 @@ class livroDAO
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_livro WHERE idtb_livro=:id");
             $statement->bindValue(":id", $livro->getIdtbLivro());
             if ($statement->execute()) {
-                return "<script> notificacao('pe-7s-info', 'Livro', 'Registro foi removido com êxito', 'success'); </script>";                
+                if ($statement->rowCount() > 0) {
+                    return "<script> notificacao('pe-7s-info', 'Livro', 'Registro foi removido com êxito', 'success'); </script>";                
+                } else {
+                    return "<script> notificacao('pe-7s-info', 'Livro', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
+                } 
             } else {
-                return "<script> notificacao('pe-7s-info', 'Livro', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Livro', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -55,21 +59,16 @@ class livroDAO
 
             if ($statement->execute()) {
                 if ($statement->rowCount() > 0) {
-                    if ($livro->getIdtbLivro() != "") {
-                        return $livro->getIdtbLivro();
-                    } else {
-                        return conexao::getInstance()->lastInsertId();
-                    }
+                    return "<script> notificacao('pe-7s-info', 'Livro', 'Registro foi inserido com êxito', 'success'); </script>";
                 } 
                 else {
-                    return "Erro";
+                    return "<script> notificacao('pe-7s-info', 'Livro', 'Falha ao tentar inserir o Registro', 'danger'); </script>";
                 }
             } else {
-                var_dump($statement->errorInfo());
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Livro', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " .$erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -89,7 +88,7 @@ class livroDAO
                                                                 INNER JOIN tb_categoria c 
                                                                         ON a.tb_categoria_idtb_categoria = c.idtb_categoria ");
             if ($statement->execute()) {
-                $livros = [];
+                $livros = array();
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
                     $livro = new livro($rs->id,
                                         $rs->titulo,
@@ -103,10 +102,10 @@ class livroDAO
                 }
                 return $livros;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Livro', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -138,10 +137,10 @@ class livroDAO
                                         $rs->categoria);
                 return $livro;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Livro', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -152,11 +151,15 @@ class livroDAO
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
                 return $rs->total;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Livro', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
+    }
+
+    public function ultimoIdInserido() {
+        return conexao::getInstance()->lastInsertId();
     }
 
     public function tabelapaginada()

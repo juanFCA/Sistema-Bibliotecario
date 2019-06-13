@@ -46,8 +46,8 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     unset($emprestimo);
 }
 
-if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
-    $emprestimo = new emprestimo($_GET["idUsuario"], $_GET["idExemplar"], null,null,null,null, 0);
+if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"] && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
+    $emprestimo = new emprestimo($_GET["id"], $_GET["idUsuario"], $_GET["idExemplar"], null,null,null,null, 0);
 
     $dateNow = date('Y-m-d');
     $emprestimo->setDataEmprestimo($dateNow);

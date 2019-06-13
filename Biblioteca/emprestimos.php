@@ -21,60 +21,33 @@ template::sidebar("emprestimos");
 template::mainpanel("Empréstimos");
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
-    $emprestimo = new emprestimo($_POST["idUsuario"],
+    $emprestimo = new emprestimo("",
+                                 $_POST["idUsuario"],
                                  $_POST["idExemplar"],
                                  $_POST["dataEmprestimo"],
                                  $_POST["observacoes"],
                                  null,
                                  null,
-                                 $_POST["reserva"]
+                                 1
     );
 
     $usuario = $usuarioDAO->buscarUsuario($_POST['idUsuario']);
 
-    if ($_POST["reserva"] == 0) {
-        $date = new DateTime($_POST["dataEmprestimo"]);
-        $interval = new DateInterval('P10D');
-        if ($usuario->getTipo() == 4) {
-            $interval = new DateInterval('P15D');
-        }
-        $date->add($interval);
-        $emprestimo->setDataVencimento($date->format('Y-m-d'));
+    $date = new DateTime($_POST["dataEmprestimo"]);
+    $interval = new DateInterval('P10D');
+    if ($usuario->getTipo() == 4) {
+        $interval = new DateInterval('P15D');
     }
+    $date->add($interval);
+    $emprestimo->setDataVencimento($date->format('Y-m-d'));
 
-    $msg = $emprestimoDAO->salvarAtualizar($emprestimo);
+    $msg = $emprestimoDAO->salvar($emprestimo);
     unset($emprestimo);
 }
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
-    $emprestimo = new emprestimo($_GET["idUsuario"], $_GET["idExemplar"], null,null,null,null, 0);
-
-    $dateNow = date('Y-m-d');
-    $emprestimo->setDataEmprestimo($dateNow);
-    $usuario = $usuarioDAO->buscarUsuario($_GET['idUsuario']);
-
-    $date = new DateTime($dateNow);
-    $interval = new DateInterval('P10D');
-    if($usuario->getTipo() == 4) {
-        $interval = new DateInterval('P15D');
-    }
-    $date->add($interval);
-
-    $emprestimo->setDataVencimento($date->format('Y-m-d'));
-
-    $msg = $emprestimoDAO->realizarEmprestimo($emprestimo);
-    unset($emprestimo);
-}
-
-if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "emp" && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
-    $emprestimo = new emprestimo($_GET["idUsuario"], $_GET["idExemplar"], "", "", "", "", "");
+    $emprestimo = new emprestimo($_GET["id"], $_GET["idUsuario"], $_GET["idExemplar"], "", "", "", "", 2);
     $msg = $emprestimoDAO->devolverEmprestimo($emprestimo);
-    unset($emprestimo);
-}
-
-if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
-    $emprestimo = new emprestimo($_GET["idUsuario"], $_GET["idExemplar"], "", "", "", "", "");
-    $msg = $emprestimoDAO->cancelarReserva($emprestimo);
     unset($emprestimo);
 }
 
@@ -90,6 +63,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["idUsuario
                         </div>
                         <div class='content table-responsive'>
                             <form action="?act=save&id=" method="POST" name="form1">
+                            <input type="hidden" name="id" value="<?php if(!empty($emprestimo)) {echo $emprestimo->getIdtbEmprestimo();}?>" required/>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -143,17 +117,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["idUsuario
                                         <div class="form-group">
                                             <Label>Data do Empréstimo</Label>
                                             <input type="date" class="form-control" name="dataEmprestimo">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="">Tipo</label><br>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="reserva" value="0" checked> Emprestimo
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="reserva" value="1"> Reserva
-                                            </label>
                                         </div>
                                     </div>
                                     <div class="col-md-6 text-right">

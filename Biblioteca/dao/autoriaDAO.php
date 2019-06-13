@@ -92,7 +92,7 @@ class autoriaDAO
                                                             FROM tb_autoria 
                                                            WHERE tb_livro_idtb_livro=". $idLivro);
             if ($statement->execute()) {
-                $autorias = [];
+                $autorias = array();
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
                     $autoria = new autoria($rs->tb_livro_idtb_livro, $rs->tb_autor_idtb_autor);
                     array_push($autorias, $autoria);
@@ -110,7 +110,7 @@ class autoriaDAO
         try {
             $statement = conexao::getInstance()->prepare("SELECT * FROM tb_autoria");
             if ($statement->execute()) {
-                $autorias = [];
+                $autorias = array();
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
                     $autoria = new autoria($rs->tb_livro_idtb_livro, $rs->tb_autor_idtb_autor);
                     array_push($autorias, $autoria);
@@ -131,7 +131,7 @@ class autoriaDAO
                                                             FROM tb_autoria 
                                                            WHERE tb_livro_idtb_livro=". $idLivro);
             if ($statement->execute()) {
-                $autores = [];
+                $autores = array();
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
                     array_push($autores, $rs->tb_autor_idtb_autor);
                 }
@@ -151,7 +151,7 @@ class autoriaDAO
                                                             FROM tb_autoria 
                                                            WHERE tb_autor_idtb_autor=". $idAutor);
             if ($statement->execute()) {
-                $livros = [];
+                $livros = array();
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
                     array_push($livros, $rs->tb_livro_idtb_livro);
                 }

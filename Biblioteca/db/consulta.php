@@ -4,6 +4,21 @@ require_once "conexao.php";
 
 class consulta
 {
+    public function nomeMeses() {
+        return array('Janeiro',
+                    'Fevereiro',
+                    'Março',
+                    'Abril',
+                    'Maio',
+                    'Junho',
+                    'Julho',
+                    'Agosto',
+                    'Setembro',
+                    'Outubro',
+                    'Novembro',
+                    'Dezembro');
+    }
+    
     //Variavel de intervalo que 0 e mes atual 1 e mes atual e anterior e assim sucessivamente
     public function retornaTotalResEmp($intervalo){
         try {

@@ -24,12 +24,16 @@ class exemplarDAO
             $statement->bindValue(":idExemplar", $exemplar->getIdtbExemplar());
             $statement->bindValue(":idLivro", $exemplar->getTbLivroIdtbLivro());
             if ($statement->execute()) {
-                return "<script> notificacao('pe-7s-info', 'Exemplar', 'Registro foi removido com êxito', 'success'); </script>";                
+                if ($statement->rowCount() > 0) {
+                    return "<script> notificacao('pe-7s-info', 'Exemplar', 'Registro foi removido com êxito', 'success'); </script>";                
+                } else {
+                    return "<script> notificacao('pe-7s-info', 'Exemplar', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
+                }
             } else {
-                return "<script> notificacao('pe-7s-info', 'Exemplar', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Exemplar', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -53,10 +57,10 @@ class exemplarDAO
                     return "<script> notificacao('pe-7s-info', 'Exemplar', 'Falha ao tentar inserir o Registro', 'danger'); </script>";                
                 }
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Exemplar', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " .$erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -71,10 +75,10 @@ class exemplarDAO
                 $exemplar = new exemplar($rs->idtb_exemplar, $rs->tb_livro_idtb_livro, $rs->tipoExemplar);
                 return $exemplar;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Exemplar', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -89,10 +93,10 @@ class exemplarDAO
                 }
                 return $exemplares;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Exemplar', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -116,10 +120,10 @@ class exemplarDAO
                 }
                 return $exemplares;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Exemplar', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -130,10 +134,10 @@ class exemplarDAO
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
                 return $rs->total;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Exemplar', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 

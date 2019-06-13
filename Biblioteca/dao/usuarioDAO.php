@@ -33,10 +33,10 @@ class usuarioDAO
                 $result = $statement->fetch(PDO::FETCH_OBJ);
                 return $result==null ? false : true;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Usuário', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -50,10 +50,10 @@ class usuarioDAO
                 $result = $statement->fetch(PDO::FETCH_OBJ);
                 return $result==null ? false : true;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Usuário', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " .$erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -63,12 +63,16 @@ class usuarioDAO
             $statement = conexao::getInstance()->prepare("DELETE FROM tb_usuario WHERE idtb_usuario=:id");
             $statement->bindValue(":id", $usuario->getIdtbUsuario());
             if ($statement->execute()) {
-                return "<script> notificacao('pe-7s-info', 'Usuário', 'Registro foi removido com êxito', 'success'); </script>";                
+                if($statement->rowCount() > 0) {
+                    return "<script> notificacao('pe-7s-info', 'Usuário', 'Registro foi removido com êxito', 'success'); </script>";                
+                } else {
+                    return "<script> notificacao('pe-7s-info', 'Usuário', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
+                }
             } else {
-                return "<script> notificacao('pe-7s-info', 'Usuário', 'Falha ao tentar remover o Registro', 'danger'); </script>";              
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Usuário', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -99,10 +103,10 @@ class usuarioDAO
                     return "<script> notificacao('pe-7s-info', 'Usuário', 'Falha ao tentar inserir o Registro', 'danger'); </script>";                
                 }
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL!'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Usuário', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " .$erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -117,10 +121,10 @@ class usuarioDAO
                 $usuario = new usuario($rs->idtb_usuario, $rs->nomeUsuario, $rs->tipo, $rs->email, $rs->senha, $rs->recuperar);
                 return $usuario;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Usuário', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -137,10 +141,10 @@ class usuarioDAO
                 }
                 return $usuario;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Usuário', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch(PDOException $erro){
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -155,10 +159,10 @@ class usuarioDAO
                 }
                 return $usuarios;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Usuário', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 
@@ -169,10 +173,10 @@ class usuarioDAO
                 $rs = $statement->fetch(PDO::FETCH_OBJ);
                 return $rs->total;
             } else {
-                throw new PDOException("<script> alert('Não foi possível executar a declaração SQL !'); </script>");
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Usuário', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
             }
         } catch (PDOException $erro) {
-            return "Erro: " . $erro->getMessage();
+            return $erro->getMessage();
         }
     }
 

@@ -84,17 +84,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bibliotecaLPAW`.`tb_autoria` (
   `tb_livro_idtb_livro` INT NOT NULL,
-  `tb_autores_idtb_autores` INT NOT NULL,
-  PRIMARY KEY (`tb_livro_idtb_livro`, `tb_autores_idtb_autores`),
-  INDEX `fk_tb_livro_has_tb_autores_tb_autores1_idx` (`tb_autores_idtb_autores` ASC),
-  INDEX `fk_tb_livro_has_tb_autores_tb_livro_idx` (`tb_livro_idtb_livro` ASC),
-  CONSTRAINT `fk_tb_livro_has_tb_autores_tb_livro`
+  `tb_autor_idtb_autor` INT NOT NULL,
+  PRIMARY KEY (`tb_livro_idtb_livro`, `tb_autor_idtb_autor`),
+  INDEX `fk_tb_livro_has_tb_autor_tb_autor1_idx` (`tb_autor_idtb_autor` ASC),
+  INDEX `fk_tb_livro_has_tb_autor_tb_livro_idx` (`tb_livro_idtb_livro` ASC),
+  CONSTRAINT `fk_tb_livro_has_tb_autor_tb_livro`
     FOREIGN KEY (`tb_livro_idtb_livro`)
     REFERENCES `bibliotecaLPAW`.`tb_livro` (`idtb_livro`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tb_livro_has_tb_autores_tb_autores1`
-    FOREIGN KEY (`tb_autores_idtb_autores`)
+  CONSTRAINT `fk_tb_livro_has_tb_autor_tb_autor1`
+    FOREIGN KEY (`tb_autor_idtb_autor`)
     REFERENCES `bibliotecaLPAW`.`tb_autor` (`idtb_autor`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

@@ -1,4 +1,5 @@
 <?php
+use Hamcrest\Type\IsArray;
 
 require_once "view/template.php";
 require_once "dao/livroDAO.php";
@@ -34,19 +35,23 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
                         $_POST["categoria"]);
     if(isset($_POST["id"])){
         $livro->setIdtbLivro($_POST["id"]);
-    }
+    } 
+    
     $autoresPost = $_POST["autores"];
-    $idLivro = $livroDAO->salvarAtualizar($livro);
-    if ($idLivro == "Erro") {
-        $msg = "<script> notificacao('pe-7s-info', 'Livro', 'Falha ao tentar inserir o Registro', 'danger'); </script>";
-    } else {
-        $autoresBD = $autoriaDAO->buscarAutores($idLivro);
+    $msg = $livroDAO->salvarAtualizar($livro);
+    $idLivro = ($livro->getIdtbLivro()!="") ? $livro->getIdtbLivro() : $livroDAO->ultimoIdInserido();
+    var_dump($idLivro);
+    $autoresBD = $autoriaDAO->buscarAutores($idLivro);
+    
+    if(is_array($autoresBD)) {
         $adicionados = array_diff($autoresPost, $autoresBD);
         $removidos = array_diff($autoresBD, $autoresPost);
-        $msg = "<script> notificacao('pe-7s-info', 'Livro', 'Registro foi inserido com êxito', 'success'); </script>";
-        $msg1 = $autoriaDAO->remover($idLivro, $removidos);
-        $msg2 = $autoriaDAO->salvar($idLivro, $adicionados);
+    } else {
+        $adicionados = $removidos = null;   
     }
+
+    $msg1 = ($removidos != null) ? $autoriaDAO->remover($idLivro, $removidos) : null;
+    $msg2 = ($adicionados != null) ? $autoriaDAO->salvar($idLivro, $adicionados) : $autoriaDAO->salvar($idLivro, $autoresPost);
     unset($livro);
 }
 
