@@ -3,7 +3,7 @@ require_once 'db/consulta.php';
 
 if(isset($_GET['tipo']) && $_GET['tipo'] == 'totalResEmp'){
     $consulta = new consulta();
-    $retorno = $consulta->retornaTotalResEmp(0);
+    $retorno = $consulta->retornaTotalResEmp(3);
     header('Content-type: application/json');
     echo json_encode( $retorno );
 }

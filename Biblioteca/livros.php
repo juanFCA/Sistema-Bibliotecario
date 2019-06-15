@@ -40,7 +40,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     $autoresPost = $_POST["autores"];
     $msg = $livroDAO->salvarAtualizar($livro);
     $idLivro = ($livro->getIdtbLivro()!="") ? $livro->getIdtbLivro() : $livroDAO->ultimoIdInserido();
-    var_dump($idLivro);
     $autoresBD = $autoriaDAO->buscarAutores($idLivro);
     
     if(is_array($autoresBD)) {

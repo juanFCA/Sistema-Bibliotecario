@@ -18,30 +18,49 @@ class consulta
                     'Novembro',
                     'Dezembro');
     }
-    
+
     //Variavel de intervalo que 0 e mes atual 1 e mes atual e anterior e assim sucessivamente
     public function retornaTotalResEmp($intervalo){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT EXTRACT(MONTH FROM dataEmprestimo) AS mes, 
-                                                                           COUNT(IF(reserva=1,1,null)) AS livrosMesRes,
-                                                                           COUNT(IF(reserva=0,1,null)) AS livrosMesEmp
-                                                                      FROM tb_emprestimo 
-                                                                     WHERE EXTRACT(MONTH FROM dataEmprestimo) 
-                                                                   BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
-                                                                       AND EXTRACT(MONTH FROM CURDATE()) 
-                                                                  GROUP BY mes");
+            $statement = Conexao::getInstance()->prepare("CREATE TEMPORARY TABLE res AS SELECT EXTRACT(MONTH FROM r.dataReserva) AS mes, 
+                                                                                                         COUNT(r.idtb_reserva) AS livrosRes
+                                                                                                    FROM tb_reserva r
+                                                                                                   WHERE EXTRACT(MONTH FROM r.dataReserva) 
+                                                                                                 BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
+                                                                                                     AND EXTRACT(MONTH FROM CURDATE()) GROUP BY mes");
+            $statement2 = Conexao::getInstance()->prepare("CREATE TEMPORARY TABLE emp AS SELECT EXTRACT(MONTH FROM e.dataEmprestimo) AS mes, 
+                                                                                                         COUNT(e.idtb_emprestimo) AS livrosEmp
+                                                                                                    FROM tb_emprestimo e
+                                                                                                   WHERE EXTRACT(MONTH FROM e.dataEmprestimo) 
+                                                                                                 BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
+                                                                                                     AND EXTRACT(MONTH FROM CURDATE()) GROUP BY mes");
+            $statement3 = Conexao::getInstance()->prepare("SELECT r.mes AS mesesRes,
+                                                                            e.mes AS mesesEmp, 
+                                                                            r.livrosRes AS livrosReservas,
+                                                                            e.livrosEmp AS livrosEmprestimos FROM res r
+                                                                  LEFT JOIN emp e ON r.mes = e.mes");
             $statement->bindValue(":intervalo", $intervalo);
-            if($statement->execute()){
-                if($statement->rowCount() > 0){
-                    $labels = array();
+            $statement2->bindValue(":intervalo", $intervalo);
+            if($statement->execute() && $statement2->execute() && $statement3->execute()){
+                if($statement3->rowCount() > 0){
+                    $labelsRes = array();
+                    $labelsEmp = array();
+                    while($rs = $statement3->fetch(PDO::FETCH_OBJ)) {
+                        var_dump($rs->mesesRes, $rs->mesesEmp);
+                        if ($rs->mesesRes) array_push($labelsRes, $this->nomeMeses()[$rs->mesesRes -1]);
+                        if ($rs->mesesEmp) array_push($labelsEmp, $this->nomeMeses()[$rs->mesesEmp -1]);
+                    }
                     $seriesRes = array();
                     $seriesEmp = array();
-                    while($rs = $statement->fetch(PDO::FETCH_OBJ)){
-                        array_push($labels, $this->nomeMeses()[$rs->mes -1]);
-                        array_push($seriesRes, $rs->livrosMesRes);
-                        array_push($seriesEmp, $rs->livrosMesEmp);
+                    while($rs = $statement3->fetch(PDO::FETCH_OBJ)){
+                        array_push($seriesRes, $rs->livrosReservas);
+                        array_push($seriesEmp, $rs->livrosEmprestimos);
                     }
-                    $dados = array($labels, $seriesRes, $seriesEmp);
+                    if (in_array(null, $labelsRes)) {
+                        $dados = array($labelsEmp, $seriesRes, $seriesEmp);
+                    } else {
+                        $dados = array($labelsRes, $seriesRes, $seriesEmp);
+                    }
                     return $dados;
                 }else{
                     return "<script>alert('Erro ao buscar os Dados!')</script>";
@@ -57,13 +76,12 @@ class consulta
     //Variavel de intervalo que 0 e mes atual 1 e mes atual e anterior e assim sucessivamente
     public function retornaReservasMes($intervalo){
         try {
-            $statement = Conexao::getInstance()->prepare("SELECT EXTRACT(MONTH FROM dataEmprestimo) AS mes, 
-                                                                           COUNT(dataEmprestimo) AS livrosMes 
-                                                                      FROM tb_emprestimo 
-                                                                     WHERE EXTRACT(MONTH FROM dataEmprestimo) 
+            $statement = Conexao::getInstance()->prepare("SELECT EXTRACT(MONTH FROM dataReserva) AS mes, 
+                                                                           COUNT(idtb_reserva) AS livrosMes 
+                                                                      FROM tb_reserva
+                                                                     WHERE EXTRACT(MONTH FROM dataReserva) 
                                                                    BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
                                                                        AND EXTRACT(MONTH FROM CURDATE()) 
-                                                                       AND reserva = 1 
                                                                   GROUP BY mes");
             $statement->bindValue(":intervalo", $intervalo);
             if($statement->execute()){
@@ -91,12 +109,11 @@ class consulta
     public function retornaEmprestimosMes($intervalo){
         try {
             $statement = Conexao::getInstance()->prepare("SELECT EXTRACT(MONTH FROM dataEmprestimo) AS mes, 
-                                                                           COUNT(dataEmprestimo) AS livrosMes 
+                                                                           COUNT(idtb_emprestimo) AS livrosMes 
                                                                       FROM tb_emprestimo 
                                                                      WHERE EXTRACT(MONTH FROM dataEmprestimo) 
                                                                    BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
                                                                        AND EXTRACT(MONTH FROM CURDATE()) 
-                                                                       AND reserva = 0 
                                                                   GROUP BY mes");
             $statement->bindValue(":intervalo", $intervalo);
             if($statement->execute()){
@@ -124,17 +141,16 @@ class consulta
     public function retornaReservasCategoria($intervalo){
         try {
             $statement = Conexao::getInstance()->prepare("SELECT c.nomeCategoria AS categoria, 
-                                                                           COUNT(em.reserva) AS total FROM tb_emprestimo em 
+                                                                           COUNT(r.idtb_reserva) AS total FROM tb_reserva r 
                                                                 INNER JOIN tb_exemplar ex 
-                                                                        ON em.tb_exemplar_idtb_exemplar = ex.idtb_exemplar
+                                                                        ON r.tb_exemplar_idtb_exemplar = ex.idtb_exemplar
                                                                 INNER JOIN tb_livro l 
                                                                         ON ex.tb_livro_idtb_livro = l.idtb_livro
                                                                 INNER JOIN tb_categoria c 
                                                                         ON l.tb_categoria_idtb_categoria = c.idtb_categoria
-                                                                     WHERE EXTRACT(MONTH FROM em.dataEmprestimo) 
+                                                                     WHERE EXTRACT(MONTH FROM r.dataReserva) 
                                                                    BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
                                                                        AND EXTRACT(MONTH FROM CURDATE()) 
-                                                                       AND em.reserva = 1 
                                                                   GROUP BY categoria");
             $statement->bindValue(":intervalo", $intervalo);
             if($statement->execute()){
@@ -162,7 +178,7 @@ class consulta
     public function retornaEmprestimosCategoria($intervalo){
         try {
             $statement = Conexao::getInstance()->prepare("SELECT c.nomeCategoria AS categoria, 
-                                                                           COUNT(em.reserva) AS total FROM tb_emprestimo em 
+                                                                          COUNT(em.idtb_emprestimo) AS total FROM tb_emprestimo em 
                                                                INNER JOIN tb_exemplar ex 
                                                                        ON em.tb_exemplar_idtb_exemplar = ex.idtb_exemplar
                                                                INNER JOIN tb_livro l 
@@ -172,7 +188,6 @@ class consulta
                                                                     WHERE EXTRACT(MONTH FROM em.dataEmprestimo) 
                                                                   BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
                                                                       AND EXTRACT(MONTH FROM CURDATE()) 
-                                                                      AND em.reserva = 0 
                                                                  GROUP BY categoria");
             $statement->bindValue(":intervalo", $intervalo);
             if($statement->execute()){

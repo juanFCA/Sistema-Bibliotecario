@@ -21,7 +21,7 @@ if( $valido == true)
 {
     $usuario = $usuarioDAO->buscarPorEmail($email);
     $_SESSION['usuario'] = $usuario;
-    ($usuario->getTipo() == 1) ? header('location:dashboard.php') : header('location:index.php');
+    ($usuario->getTipo() == 1 || $usuario->getTipo() == 2) ? header('location:dashboard.php') : header('location:index.php');
 }
 else{
     unset ($_SESSION['usuario']);

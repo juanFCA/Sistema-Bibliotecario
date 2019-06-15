@@ -45,9 +45,9 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     unset($emprestimo);
 }
 
-if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
+if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["id"] && $_REQUEST["idUsuario"] && $_REQUEST["idExemplar"]) {
     $emprestimo = new emprestimo($_GET["id"], $_GET["idUsuario"], $_GET["idExemplar"], "", "", "", "", 2);
-    $msg = $emprestimoDAO->devolverEmprestimo($emprestimo);
+    $msg = $emprestimoDAO->devolver($emprestimo);
     unset($emprestimo);
 }
 
@@ -65,7 +65,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["idUsuario
                             <form action="?act=save&id=" method="POST" name="form1">
                             <input type="hidden" name="id" value="<?php if(!empty($emprestimo)) {echo $emprestimo->getIdtbEmprestimo();}?>" required/>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <div class="form-group">
                                             <label>Exemplar - Livro</label>
                                             <select id="exemplar" name="idExemplar" class="form-control" required>
@@ -84,7 +84,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["idUsuario
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <div class="form-group">
                                             <label>Usuário</label>
                                             <select id="usuario" name="idUsuario" class="form-control" required>
@@ -103,25 +103,23 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $_REQUEST["idUsuario
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="">Observações</label>
-                                            <textarea style="resize: none" name="observacoes" class="form-control" rows="3"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <Label>Data do Empréstimo</Label>
                                             <input type="date" class="form-control" name="dataEmprestimo">
                                         </div>
                                     </div>
-                                    <div class="col-md-6 text-right">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10">
                                         <div class="form-group">
-                                            <br>
+                                            <label for="">Observações</label>
+                                            <textarea style="resize: none" name="observacoes" class="form-control" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-right">
+                                        <div class="form-group">
+                                            <br><br><br>
                                             <input class="btn btn-success" type="submit" value="REGISTRAR">
                                         </div>
                                     </div>

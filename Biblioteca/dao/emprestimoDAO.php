@@ -57,7 +57,7 @@ class emprestimoDAO
         }
     }
 
-    public function devolverEmprestimo(emprestimo $emprestimo) {
+    public function devolver(emprestimo $emprestimo) {
         try {
             $statement = Conexao::getInstance()->prepare("UPDATE tb_emprestimo SET dataDevolucao=NOW(),
                                                                                    situacao=:situacao
@@ -175,7 +175,7 @@ class emprestimoDAO
                 <th>Data Devolução</th> 
                 <th>Situação</th>   
                 <th>Observações</th>
-                <th class='col-xs-1 col-sm-1 col-md-1 col-lg-1' colspan='1'>Ação</th>
+                <th>Ação</th>
                </tr>
              </thead>
              <tbody>";
@@ -190,7 +190,7 @@ class emprestimoDAO
                     <td>" . $this->situacao()[$acti->situacao] . "</td>
                     <td>$acti->observacoes</td>";
                     echo ($acti->situacao == 1 || $acti->situacao == 3) ? 
-                    '<td><a href="?act=upd&id='.$acti->id.'idUsuario='.$acti->idUsuario.'&idExemplar='.$acti->idExemplar.'" title="Devolver Emprestimo"><i class="pe-7s-refresh text-warning"></i></a></td>'
+                    '<td class="text-center"><a href="?act=upd&id='.$acti->id.'&idUsuario='.$acti->idUsuario.'&idExemplar='.$acti->idExemplar.'" title="Devolver Emprestimo"><i class="pe-7s-refresh text-warning"></i></a></td>'
                     :'<td></td>';
                     echo "</tr>";
             endforeach;

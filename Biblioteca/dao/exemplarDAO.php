@@ -43,7 +43,6 @@ class exemplarDAO
             if ($exemplar->getIdtbExemplar() != "") {
                 $statement = conexao::getInstance()->prepare("UPDATE tb_exemplar SET tipoExemplar=:tipoExemplar, tb_livro_idtb_livro=:idLivro WHERE idtb_exemplar=:idExemplar");
                 $statement->bindValue(":idExemplar", $exemplar->getIdtbExemplar());
-                var_dump($exemplar);
             } else {
                 $statement = conexao::getInstance()->prepare("INSERT INTO tb_exemplar(tipoExemplar, tb_livro_idtb_livro) VALUES (:tipoExemplar, :idLivro)");
             }
@@ -102,16 +101,7 @@ class exemplarDAO
 
     public function buscarDisponiveisEmprestimo() {
         try {
-            $statement = conexao::getInstance()->prepare("SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro 
-                                                                      FROM tb_exemplar ex 
-                                                                INNER JOIN tb_emprestimo em ON ex.idtb_exemplar = em.tb_exemplar_idtb_exemplar 
-                                                                     WHERE em.dataDevolucao IS NOT null 
-                                                                     UNION 
-                                                                    SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro 
-                                                                      FROM tb_exemplar ex 
-                                                                 LEFT JOIN tb_emprestimo emp ON ex.idtb_exemplar = emp.tb_exemplar_idtb_exemplar 
-                                                                     WHERE emp.tb_exemplar_idtb_exemplar IS null 
-                                                                  ORDER BY idtb_exemplar");
+            $statement = conexao::getInstance()->prepare("SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro FROM tb_exemplar ex LEFT JOIN tb_emprestimo e ON ex.idtb_exemplar = e.tb_exemplar_idtb_exemplar LEFT JOIN tb_reserva r ON ex.idtb_exemplar = r.tb_exemplar_idtb_exemplar WHERE e.tb_exemplar_idtb_exemplar IS null AND r.tb_exemplar_idtb_exemplar IS null UNION SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro FROM tb_exemplar ex INNER JOIN tb_emprestimo e ON ex.idtb_exemplar = e.tb_exemplar_idtb_exemplar WHERE e.situacao = 2 UNION SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro FROM tb_exemplar ex INNER JOIN tb_reserva r ON ex.idtb_exemplar = r.tb_exemplar_idtb_exemplar WHERE r.situacao <> 1 ");
             if ($statement->execute()) {
                 $exemplares = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {

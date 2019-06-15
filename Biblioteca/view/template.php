@@ -201,7 +201,7 @@ class Template
                                 <p class=\"hidden-lg hidden-md\">Principal</p>
                             </a>
                         </li>";
-                    if ($_SESSION['usuario']->getTipo() == 1) {
+                    if ($_SESSION['usuario']->getTipo() == 1 || $_SESSION['usuario']->getTipo() == 2) {
                         echo "<li>
                             <a href=\"dashboard.php\">
                                 <i class=\"fa fa-dashboard\" title=\"Dashboard\"></i>

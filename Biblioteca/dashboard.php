@@ -11,6 +11,10 @@ template::mainpanel("Dashboard");
 $consulta = new consulta();
 $numRegistros = $consulta->retornaCountRegistros();
 
+$retorno =$consulta->retornaTotalResEmp(3);
+echo "<pre>";
+var_dump($retorno[0]);
+echo "</pre>";
 ?>
 
     <div class='content' xmlns="http://www.w3.org/1999/html">
