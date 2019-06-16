@@ -227,7 +227,7 @@ class Template
                                     <li><a href=\"relatorio/gerar.php?tipo=LivroExemplares\" target=\"_blank\">Total de Exemplares por Livro</a></li>
                                     <li><a href=\"relatorio/gerar.php?tipo=Emprestados\" target=\"_blank\">Livros Emprestados</a></li>
                                     <li><a href=\"relatorio/gerar.php?tipo=Reservados\" target=\"_blank\">Livros Reservados</a></li>
-                                    <li><a href=\"relatorio/gerar.php?tipo=Devolucao\" target=\"_blank\">Livros com Devolução em Atraso</a></li>
+                                    <li><a href=\"relatorio/gerar.php?tipo=Atrasados\" target=\"_blank\">Livros com Devolução em Atraso</a></li>
                                     <li><a href=\"relatorio/gerar.php?tipo=Usuários\" target=\"_blank\">Usuários e seus Dados Cadastrais</a></li>
                                     <li class=\"divider\"></li>
                                     <li><a href=\"relatorio/gerar.php?tipo=Exportar\" target=\"_blank\">Exportar Todos os Gráficos</a></li>

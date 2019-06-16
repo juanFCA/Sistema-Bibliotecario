@@ -457,7 +457,7 @@ class relatorio {
                          ON ex.tb_livro_idtb_livro = l.idtb_livro
                  INNER JOIN tb_usuario u
                          ON em.tb_usuario_idtb_usuario = u.idtb_usuario
-                      WHERE em.reserva = 0 AND em.dataDevolucao IS null
+                      WHERE em.situacao != 2
                    ORDER BY u.nomeUsuario";
         $statement = conexao::getInstance()->prepare($sqlLista);
         $statement->execute();
@@ -507,15 +507,15 @@ class relatorio {
     public function listaReservados() {
         $sqlLista = "SELECT u.nomeUsuario AS usuario, 
                             l.titulo AS livro,
-                            em.dataEmprestimo AS reserva
-                       FROM tb_emprestimo em
+                            r.dataReserva AS reserva
+                       FROM tb_reserva r
                  INNER JOIN tb_exemplar ex
-                         ON em.tb_exemplar_idtb_exemplar = ex.idtb_exemplar
+                         ON r.tb_exemplar_idtb_exemplar = ex.idtb_exemplar
                  INNER JOIN tb_livro l
                          ON ex.tb_livro_idtb_livro = l.idtb_livro
                  INNER JOIN tb_usuario u
-                         ON em.tb_usuario_idtb_usuario = u.idtb_usuario
-                      WHERE em.reserva = 1 AND em.dataDevolucao IS null
+                         ON r.tb_usuario_idtb_usuario = u.idtb_usuario
+                      WHERE r.situacao = 1
                    ORDER BY u.nomeUsuario";
         $statement = conexao::getInstance()->prepare($sqlLista);
         $statement->execute();
@@ -526,7 +526,7 @@ class relatorio {
                 <div class="col-md-12">
                     <div class="card">
                         <div class="header">
-                            <p class="category">Listagem de Livros Emprestados</p>
+                            <p class="category">Listagem de Livros Reservados</p>
                         </div>
                         <div class="content">
                             <table align="center" class="table table-hover table-striped">
@@ -545,6 +545,65 @@ class relatorio {
                                         <td width="265px">'.$value['usuario'].'</td>
                                         <td width="265px">'.$value['livro'].'</td>
                                         <td width="125px">'.$value['reserva'].'</td>
+                                    </tr>
+            ';
+        }
+        $relatorio .= '    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            <div>  
+        ';
+
+        return $relatorio;
+    }
+
+    public function listaAtrasados() {
+        $sqlLista = "SELECT u.nomeUsuario AS usuario, 
+                            l.titulo AS livro,
+                            em.dataEmprestimo AS emprestimo,
+                            em.dataVencimento AS vencimento
+                       FROM tb_emprestimo em
+                 INNER JOIN tb_exemplar ex
+                         ON em.tb_exemplar_idtb_exemplar = ex.idtb_exemplar
+                 INNER JOIN tb_livro l
+                         ON ex.tb_livro_idtb_livro = l.idtb_livro
+                 INNER JOIN tb_usuario u
+                         ON em.tb_usuario_idtb_usuario = u.idtb_usuario
+                      WHERE em.situacao = 3
+                   ORDER BY u.nomeUsuario";
+        $statement = conexao::getInstance()->prepare($sqlLista);
+        $statement->execute();
+        $dados = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $relatorio = '
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <p class="category">Listagem de Livros com Devolução em Atraso</p>
+                        </div>
+                        <div class="content">
+                            <table align="center" class="table table-hover table-striped">
+                                <thead>
+                                    <tr style="text-transform: uppercase;">
+                                        <th width="265px">NOME DO USUÁRIO</th>                                   
+                                        <th width="265px">TÍTULO DO LIVRO</th>
+                                        <th width="125px">DT EMPRÉSTIMO</th>
+                                        <th width="125px">DT VENCIMENTO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+        ';
+        foreach ($dados as $key => $value) {
+            $relatorio .= '
+                                    <tr class="text-center">
+                                        <td width="265px">'.$value['usuario'].'</td>
+                                        <td width="265px">'.$value['livro'].'</td>
+                                        <td width="125px">'.$value['emprestimo'].'</td>
+                                        <td width="125px">'.$value['vencimento'].'</td>
                                     </tr>
             ';
         }

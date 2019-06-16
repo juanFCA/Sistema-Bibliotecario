@@ -34,33 +34,31 @@ class consulta
                                                                                                    WHERE EXTRACT(MONTH FROM e.dataEmprestimo) 
                                                                                                  BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
                                                                                                      AND EXTRACT(MONTH FROM CURDATE()) GROUP BY mes");
-            $statement3 = Conexao::getInstance()->prepare("SELECT r.mes AS mesesRes,
-                                                                            e.mes AS mesesEmp, 
-                                                                            r.livrosRes AS livrosReservas,
-                                                                            e.livrosEmp AS livrosEmprestimos FROM res r
-                                                                  LEFT JOIN emp e ON r.mes = e.mes");
+            $statement3 = Conexao::getInstance()->prepare("SELECT CASE WHEN r.mes IS NOT null THEN r.mes 
+                                                                                 WHEN e.mes IS NOT null THEN e.mes 
+                                                                               END AS mes,
+                                                                            CASE WHEN r.livrosRes IS NOT null THEN r.livrosRes 
+                                                                                 WHEN r.livrosRes IS null THEN 0
+                                                                               END AS livrosReservas,
+                                                                            CASE WHEN e.livrosEmp IS NOT null THEN e.livrosEmp
+                                                                                 WHEN e.livrosEmp IS null THEN 0
+                                                                               END AS livrosEmprestimos
+                                                                       FROM res r
+                                                                  LEFT JOIN emp e ON r.mes = e.mes
+                                                                   GROUP BY mes");
             $statement->bindValue(":intervalo", $intervalo);
             $statement2->bindValue(":intervalo", $intervalo);
             if($statement->execute() && $statement2->execute() && $statement3->execute()){
                 if($statement3->rowCount() > 0){
-                    $labelsRes = array();
-                    $labelsEmp = array();
-                    while($rs = $statement3->fetch(PDO::FETCH_OBJ)) {
-                        var_dump($rs->mesesRes, $rs->mesesEmp);
-                        if ($rs->mesesRes) array_push($labelsRes, $this->nomeMeses()[$rs->mesesRes -1]);
-                        if ($rs->mesesEmp) array_push($labelsEmp, $this->nomeMeses()[$rs->mesesEmp -1]);
-                    }
+                    $labels = array();
                     $seriesRes = array();
                     $seriesEmp = array();
                     while($rs = $statement3->fetch(PDO::FETCH_OBJ)){
+                        array_push($labels, $this->nomeMeses()[$rs->mes -1]);
                         array_push($seriesRes, $rs->livrosReservas);
                         array_push($seriesEmp, $rs->livrosEmprestimos);
                     }
-                    if (in_array(null, $labelsRes)) {
-                        $dados = array($labelsEmp, $seriesRes, $seriesEmp);
-                    } else {
-                        $dados = array($labelsRes, $seriesRes, $seriesEmp);
-                    }
+                    $dados = array($labels, $seriesRes, $seriesEmp);
                     return $dados;
                 }else{
                     return "<script>alert('Erro ao buscar os Dados!')</script>";

@@ -77,7 +77,9 @@ switch ($tipo) {
         $html = $relatorio->listaReservados();
         $pdf->setPageOrientation('L');
         break;
-    case 'Devolucao':
+    case 'Atrasados':
+        $html = $relatorio->listaAtrasados();
+        $pdf->setPageOrientation('L');
         break;
     case 'Exportar':
         break;
