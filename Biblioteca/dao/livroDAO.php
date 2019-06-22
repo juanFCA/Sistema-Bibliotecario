@@ -284,4 +284,123 @@ class livroDAO
         endif;
     }
 
+    public static function acervoCardsPaginado()
+    {
+        //endereço atual da página
+        $endereco = $_SERVER ['PHP_SELF'];
+
+        /* Constantes de configuração */
+        define('QTDE_REGISTROS', 16);
+        define('RANGE_PAGINAS', 2);
+
+        /* Recebe o número da página via parâmetro na URL */
+        $pagina_atual = (isset($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
+
+        /* Calcula a linha inicial da consulta */
+        $linha_inicial = ($pagina_atual - 1) * QTDE_REGISTROS;
+
+        /* Instrução de consulta para paginação com MySQL */
+        $sql = "SELECT l.idtb_livro, l.titulo, l.isbn, l.edicao, l.ano, l.upload, e.nomeEditora, c.nomeCategoria, 
+                       COUNT(ex.idtb_exemplar) AS total,
+                       COUNT(IF(ex.tipoExemplar=1,1,null)) AS circular,
+                       COUNT(IF(ex.tipoExemplar=2,1,null)) AS naoCircular
+                FROM tb_livro l
+                INNER JOIN tb_exemplar ex
+                ON l.idtb_livro = ex.tb_livro_idtb_livro
+                INNER JOIN tb_editora e
+                ON l.tb_editora_idtb_editora = e.idtb_editora
+                INNER JOIN tb_categoria c
+                ON l.tb_categoria_idtb_categoria = c.idtb_categoria
+                GROUP BY l.titulo
+                 LIMIT {$linha_inicial}, " . QTDE_REGISTROS;
+        $statement = conexao::getInstance()->prepare($sql);
+        $statement->execute();
+        $dados = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        /* Conta quantos registos existem na tabela */
+        $sqlContador = "SELECT COUNT(*) AS total_registros FROM tb_livro";
+        $statement = conexao::getInstance()->prepare($sqlContador);
+        $statement->execute();
+        $valor = $statement->fetch(PDO::FETCH_OBJ);
+
+        /* Idêntifica a primeira página */
+        $primeira_pagina = 1;
+
+        /* Cálcula qual será a última página */
+        $ultima_pagina = ceil($valor->total_registros / QTDE_REGISTROS);
+
+        /* Cálcula qual será a página anterior em relação a página atual em exibição */
+        $pagina_anterior = ($pagina_atual > 1) ? $pagina_atual - 1 : 0;
+
+        /* Cálcula qual será a pŕoxima página em relação a página atual em exibição */
+        $proxima_pagina = ($pagina_atual < $ultima_pagina) ? $pagina_atual + 1 : 0;
+
+        /* Cálcula qual será a página inicial do nosso range */
+        $range_inicial = (($pagina_atual - RANGE_PAGINAS) >= 1) ? $pagina_atual - RANGE_PAGINAS : 1;
+
+        /* Cálcula qual será a página final do nosso range */
+        $range_final = (($pagina_atual + RANGE_PAGINAS) <= $ultima_pagina) ? $pagina_atual + RANGE_PAGINAS : $ultima_pagina;
+
+        /* Verifica se vai exibir o botão "Primeiro" e "Pŕoximo" */
+        $exibir_botao_inicio = ($range_inicial < $pagina_atual) ? '' : 'disabled';
+
+        /* Verifica se vai exibir o botão "Anterior" e "Último" */
+        $exibir_botao_final = ($range_final > $pagina_atual) ? '' : 'disabled';
+
+        if (!empty($dados)):
+            foreach (array_chunk($dados, 4, true) as $livros):
+                echo "<div class='row'>";
+                foreach ($livros as $acti):
+                    echo "<div class='col-md-3'>
+                        <div class='card card-user'>
+                            <div class='image'>
+                                <img src='https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&amp;fm=jpg&amp;h=300&amp;q=75&amp;w=400' alt=''...'>
+                            </div>
+                            <div class='content text-center'>
+                                    <h4 class='title'>$acti->titulo<br><small>ISBN: $acti->isbn</small></h4><br>
+                                    <p class='description text-center'>
+                                        <span>CATEGORIA: $acti->nomeCategoria<br>
+                                              EDITORA: $acti->nomeEditora<br>
+                                              ANO: $acti->ano<br>
+                                              EDIÇÂO: $acti->edicao<br>
+                                              EXEMPLARES: $acti->total ( C: $acti->circular, NC: $acti->naoCircular )<br>
+                                              ARQUIVO DIGITAL: "; echo !empty($acti->upload) ?  'Sim' : 'Não'; echo "
+                                        </span>
+                                    </p>
+                            </div><hr>
+                            <div class='text-center'>
+                                <div>
+                                    <button type='button' class='btn-simple btn btn-default'><i class='fa fa-facebook-square'></i></button>
+                                    <button type='button' class='btn-simple btn btn-default'><i class='fa fa-twitter'></i></button>
+                                    <button type='button' class='btn-simple btn btn-default'><i class='fa fa-google-plus-square'></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>";
+                endforeach;
+                echo "</div>";
+            endforeach;
+            echo "
+             <nav class='text-center'>
+                <ul class='pagination justify-content-center' style='text-align: center'>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-prev $exibir_botao_inicio' href='$endereco?page=$pagina_anterior' title='Página Anterior'></a></li>
+                    <li class='page-item  $exibir_botao_inicio' ><a class='page-link pe-7s-left-arrow $exibir_botao_inicio' href='$endereco?page=$pagina_anterior' title='Página Anterior'></a></li>
+             ";
+            /* Loop para montar a páginação central com os números */
+            for ($i = $range_inicial; $i <= $range_final; $i++):
+                $destaque = ($i == $pagina_atual) ? 'active' : '';
+                echo "<li class='page-item $destaque' ><a class='page-link' href='$endereco?page=$i'> $i </a></li>";
+            endfor;
+            echo "<li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-right-arrow $exibir_botao_final' href='$endereco?page=$proxima_pagina' title='Próxima Página'></a></li>
+                  <li class='page-item $exibir_botao_final' ><a  class='page-link pe-7s-next $exibir_botao_final' href='$endereco?page=$ultima_pagina'  title='Última Página'></a></li>
+                </ul>
+             <nav/>";
+        else:
+            echo "<div class='alert alert-danger text-center' role='alert'>Nenhum registro foi encontrado!</div>
+            </div>
+            </div>
+            </div>
+            </div>";
+        endif;
+    }
 }

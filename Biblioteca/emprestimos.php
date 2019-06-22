@@ -20,6 +20,8 @@ template::header();
 template::sidebar("emprestimos");
 template::mainpanel("Empréstimos");
 
+$msg = $emprestimoDAO->consultaSituacaoTodos();
+
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
     $emprestimo = new emprestimo("",
                                  $_POST["idUsuario"],

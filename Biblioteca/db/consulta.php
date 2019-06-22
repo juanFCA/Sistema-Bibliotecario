@@ -27,25 +27,17 @@ class consulta
                                                                                                     FROM tb_reserva r
                                                                                                    WHERE EXTRACT(MONTH FROM r.dataReserva) 
                                                                                                  BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
-                                                                                                     AND EXTRACT(MONTH FROM CURDATE()) GROUP BY mes");
+                                                                                                     AND EXTRACT(MONTH FROM CURDATE()) GROUP BY mes;");
             $statement2 = Conexao::getInstance()->prepare("CREATE TEMPORARY TABLE emp AS SELECT EXTRACT(MONTH FROM e.dataEmprestimo) AS mes, 
                                                                                                          COUNT(e.idtb_emprestimo) AS livrosEmp
                                                                                                     FROM tb_emprestimo e
                                                                                                    WHERE EXTRACT(MONTH FROM e.dataEmprestimo) 
                                                                                                  BETWEEN EXTRACT(MONTH FROM CURDATE() - INTERVAL :intervalo MONTH) 
-                                                                                                     AND EXTRACT(MONTH FROM CURDATE()) GROUP BY mes");
-            $statement3 = Conexao::getInstance()->prepare("SELECT CASE WHEN r.mes IS NOT null THEN r.mes 
-                                                                                 WHEN e.mes IS NOT null THEN e.mes 
-                                                                               END AS mes,
-                                                                            CASE WHEN r.livrosRes IS NOT null THEN r.livrosRes 
-                                                                                 WHEN r.livrosRes IS null THEN 0
-                                                                               END AS livrosReservas,
-                                                                            CASE WHEN e.livrosEmp IS NOT null THEN e.livrosEmp
-                                                                                 WHEN e.livrosEmp IS null THEN 0
-                                                                               END AS livrosEmprestimos
-                                                                       FROM res r
-                                                                  LEFT JOIN emp e ON r.mes = e.mes
-                                                                   GROUP BY mes");
+                                                                                                     AND EXTRACT(MONTH FROM CURDATE()) GROUP BY mes;");
+            $statement3 = Conexao::getInstance()->prepare("SELECT IF(LENGTH(r.mes) > LENGTH(e.mes) , r.mes, e.mes) AS mes,
+                                                                          CASE WHEN r.livrosRes IS NOT null THEN r.livrosRes ELSE 0 END AS livrosReservas,
+                                                                          CASE WHEN e.livrosEmp IS NOT null THEN e.livrosEmp ELSE 0 END AS livrosEmprestimos
+                                                                          FROM emp e LEFT JOIN res r ON e.mes = r.mes GROUP BY mes");
             $statement->bindValue(":intervalo", $intervalo);
             $statement2->bindValue(":intervalo", $intervalo);
             if($statement->execute() && $statement2->execute() && $statement3->execute()){

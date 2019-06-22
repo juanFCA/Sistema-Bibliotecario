@@ -101,7 +101,20 @@ class exemplarDAO
 
     public function buscarDisponiveisEmprestimo() {
         try {
-            $statement = conexao::getInstance()->prepare("SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro FROM tb_exemplar ex LEFT JOIN tb_emprestimo e ON ex.idtb_exemplar = e.tb_exemplar_idtb_exemplar LEFT JOIN tb_reserva r ON ex.idtb_exemplar = r.tb_exemplar_idtb_exemplar WHERE e.tb_exemplar_idtb_exemplar IS null AND r.tb_exemplar_idtb_exemplar IS null UNION SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro FROM tb_exemplar ex INNER JOIN tb_emprestimo e ON ex.idtb_exemplar = e.tb_exemplar_idtb_exemplar WHERE e.situacao = 2 UNION SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro FROM tb_exemplar ex INNER JOIN tb_reserva r ON ex.idtb_exemplar = r.tb_exemplar_idtb_exemplar WHERE r.situacao <> 1 ");
+            $statement = conexao::getInstance()->prepare("SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro FROM tb_exemplar ex 
+                                                                LEFT JOIN tb_emprestimo e ON ex.idtb_exemplar = e.tb_exemplar_idtb_exemplar 
+                                                                LEFT JOIN tb_reserva r ON ex.idtb_exemplar = r.tb_exemplar_idtb_exemplar 
+                                                                    WHERE e.tb_exemplar_idtb_exemplar IS null 
+                                                                      AND r.tb_exemplar_idtb_exemplar IS null 
+                                                                    UNION 
+                                                                   SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro FROM tb_exemplar ex 
+                                                               INNER JOIN tb_emprestimo e ON ex.idtb_exemplar = e.tb_exemplar_idtb_exemplar 
+                                                                    WHERE e.situacao = 2 
+                                                                    UNION 
+                                                                   SELECT ex.idtb_exemplar, ex.tipoExemplar, ex.tb_livro_idtb_livro FROM tb_exemplar ex 
+                                                               INNER JOIN tb_reserva r ON ex.idtb_exemplar = r.tb_exemplar_idtb_exemplar 
+                                                                    WHERE r.situacao <> 1
+                                                                 ORDER BY idtb_exemplar");
             if ($statement->execute()) {
                 $exemplares = [];
                 while($rs = $statement->fetch(PDO::FETCH_OBJ)) {

@@ -11,6 +11,8 @@ template::mainpanel("Dashboard");
 $consulta = new consulta();
 $numRegistros = $consulta->retornaCountRegistros();
 
+$consulta->retornaTotalResEmp(0);
+
 ?>
 
     <div class='content' xmlns="http://www.w3.org/1999/html">

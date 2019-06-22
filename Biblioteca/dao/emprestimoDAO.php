@@ -83,6 +83,62 @@ class emprestimoDAO
         }
     }
 
+    public function emAtraso(emprestimo $emprestimo) {
+        try {
+            $statement = Conexao::getInstance()->prepare("UPDATE tb_emprestimo SET situacao=:situacao
+                                                                             WHERE idtb_emprestimo=:id
+                                                                               AND tb_usuario_idtb_usuario=:idUsuario 
+                                                                               AND tb_exemplar_idtb_exemplar=:idExemplar");
+
+            $statement->bindValue(":id", $emprestimo->getIdtbEmprestimo());
+            $statement->bindValue(":idUsuario", $emprestimo->getTbUsuarioIdtbUsuario());
+            $statement->bindValue(":idExemplar", $emprestimo->getTbExemplarIdtbExemplar());
+            $statement->bindValue(":situacao", $emprestimo->getSituacao());
+            if($statement->execute()){
+                if($statement->rowCount() > 0){
+                    return 1;
+                }else{
+                    return 0;
+                }
+            }else{
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Emprestimo', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return $erro->getMessage();
+        }
+    }
+
+    public function consultaSituacaoTodos() {
+        try {
+            $acerto = 0;
+            $statement = conexao::getInstance()->prepare("SELECT * FROM tb_emprestimo e 
+                                                                            WHERE e.dataVencimento < NOW() 
+                                                                              AND e.dataDevolucao IS null 
+                                                                              AND e.situacao <> 3");
+            if ($statement->execute()) {
+                $emprestimos = [];
+                while($rs = $statement->fetch(PDO::FETCH_OBJ)) {
+                    $emprestimo = new emprestimo($rs->idtb_emprestimo, $rs->tb_usuario_idtb_usuario, $rs->tb_exemplar_idtb_exemplar,
+                        $rs->dataEmprestimo, $rs->observacoes, $rs->dataVencimento, $rs->dataDevolucao, $rs->situacao);
+                    $emprestimo->setSituacao(3);
+                    array_push($emprestimos, $emprestimo);
+                }
+                foreach ($emprestimos as $objeto) {
+                    $acerto += $this->emAtraso($objeto);
+                }
+                if (count($emprestimos) == $acerto) {
+                    return "<script> notificacao('pe-7s-info', 'Emprestimos', 'Situações Atualizadas', 'success'); </script>";
+                } else {
+                    return "<script> notificacao('pe-7s-info', 'Emprestimos', 'Falha ao tentar atualizar Situações', 'danger'); </script>";
+                }
+            } else {
+                throw new PDOException("<script> notificacao('pe-7s-info', 'Emprestimo', 'Não foi possível executar a declaração SQL!', 'danger'); </script>");
+            }
+        } catch (PDOException $erro) {
+            return $erro->getMessage();
+        }
+    }
+
     public function tabelapaginada()
     {
         //carrega o banco
