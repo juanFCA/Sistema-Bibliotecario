@@ -14,6 +14,9 @@ define("SMTPAUTH", true);
 define("USERNAME", "email");
 define("PASSWORD", "senha");
 define("ALIAS", "Biblioteca Digital");
-define("LOGO", './assets/img/logo.jpg');
+define("ASSUNTOREC", "Recuperar Senha");
+//Imagens
+define("LOGO", "./assets/img/logo.jpg");
+define("LIVRO", "./assets/img/livro.png");
 
 ?>

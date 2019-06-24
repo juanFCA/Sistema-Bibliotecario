@@ -55,6 +55,10 @@ switch ($tipo) {
         $html = $relatorio->listaEmprestimos();
         $pdf->setPageOrientation('L');
         break;
+    case 'Reservas':
+        $html = $relatorio->listaReservas();
+        $pdf->setPageOrientation('L');
+        break;
     case 'Exemplares':
         $html = $relatorio->listaExemplares();
         break;

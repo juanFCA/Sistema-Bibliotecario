@@ -11,7 +11,19 @@ require_once "../view/template.php";
 require_once "../db/conexao.php";
 
 class relatorio {
-        
+
+    public function situacaoLivro() {
+        return array( 1 => 'EM ABERTO',
+            2 => 'FINALIZADO',
+            3 => 'EM ATRASO');
+    }
+
+    public function situacaoReserva() {
+        return array( 1 => 'EM ABERTO',
+            2 => 'FINALIZADO',
+            3 => 'CANCELADO');
+    }
+
     public function listaAutores() {
 
         $sqlLista = "SELECT * FROM tb_autor";
@@ -327,7 +339,7 @@ class relatorio {
                             em.dataDevolucao AS dataDevolucao,
                             em.observacoes AS observacoes,
                             em.dataVencimento AS dataVencimento,
-                            em.reserva AS reserva,
+                            em.situacao AS situacao,
                             em.tb_usuario_idtb_usuario AS idUsuario,
                             em.tb_exemplar_idtb_exemplar AS idExemplar
                        FROM tb_emprestimo em
@@ -371,11 +383,73 @@ class relatorio {
                                         <td width="130px">'.$value['usuario'].'</td>
                                         <td width="130px">'.$value['livro'].'</td>
                                         <td width="100px">'.$value['dataEmprestimo'].'</td>
-                                        <td width="100px">'; 
-            $relatorio .= ($value['reserva'] == 1) ?  'RESERVADO' : (($value['dataDevolucao'] == null) ? 'EMPRESTADO' : 'DEVOLVIDO'); 
-            $relatorio .= '</td>
+                                        <td width="100px">'.$this->situacaoLivro()[$value['situacao']].'</td>
                                         <td width="100px">'.$value['dataDevolucao'].'</td>
                                         <td width="100px">'.$value['dataVencimento'].'</td>
+                                        <td>'.$value['observacoes'].'</td>
+                                    </tr>';
+        }
+        $relatorio .= '    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            <div>  
+        ';
+
+        return $relatorio;
+    }
+
+    public function listaReservas() {
+
+        $sqlLista = "SELECT u.nomeUsuario AS usuario, 
+                            l.titulo AS livro, 
+                            res.dataReserva AS dataReserva,
+                            res.observacoes AS observacoes,
+                            res.situacao AS situacao,
+                            res.tb_usuario_idtb_usuario AS idUsuario,
+                            res.tb_exemplar_idtb_exemplar AS idExemplar
+                       FROM tb_reserva res
+                 INNER JOIN tb_usuario u 
+                         ON res.tb_usuario_idtb_usuario = u.idtb_usuario
+                 INNER JOIN tb_exemplar ex
+                         ON res.tb_exemplar_idtb_exemplar = ex.idtb_exemplar
+                 INNER JOIN tb_livro l
+                         ON ex.tb_livro_idtb_livro = l.idtb_livro
+                   ORDER BY res.dataReserva";
+
+        $statement = conexao::getInstance()->prepare($sqlLista);
+        $statement->execute();
+        $dados = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $relatorio = '
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <p class="category">Listagem de Reservas no Sistema</p>
+                        </div>
+                        <div class="content">
+                            <table align="center" class="table table-hover table-striped">
+                                <thead>
+                                    <tr style="text-transform: uppercase;">
+                                        <th width="180px">USUÁRIO</th>
+                                        <th width="180px">LIVRO</th>
+                                        <th width="100px">RESERVA</th>
+                                        <th width="100px">SITUAÇÃO</th>   
+                                        <th>OBSERVAÇÕES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+        ';
+        foreach ($dados as $key => $value) {
+            $relatorio .= '
+                                    <tr class="text-center">
+                                        <td width="180px">'.$value['usuario'].'</td>
+                                        <td width="180px">'.$value['livro'].'</td>
+                                        <td width="100px">'.$value['dataReserva'].'</td>
+                                        <td width="100px">'.$this->situacaoReserva()[$value['situacao']].'</td>
                                         <td>'.$value['observacoes'].'</td>
                                     </tr>';
         }

@@ -363,16 +363,14 @@ class livroDAO
                                               EDITORA: $acti->nomeEditora<br>
                                               ANO: $acti->ano<br>
                                               EDIÇÂO: $acti->edicao<br>
-                                              EXEMPLARES: $acti->total ( C: $acti->circular, NC: $acti->naoCircular )<br>
-                                              ARQUIVO DIGITAL: "; echo !empty($acti->upload) ?  'Sim' : 'Não'; echo "
+                                              EXEMPLARES: $acti->total ( C: $acti->circular, NC: $acti->naoCircular )
                                         </span>
                                     </p>
                             </div><hr>
                             <div class='text-center'>
-                                <div>
-                                    <button type='button' class='btn-simple btn btn-default'><i class='fa fa-facebook-square'></i></button>
-                                    <button type='button' class='btn-simple btn btn-default'><i class='fa fa-twitter'></i></button>
-                                    <button type='button' class='btn-simple btn btn-default'><i class='fa fa-google-plus-square'></i></button>
+                                <div>";
+                                    echo !empty($acti->upload) ?  '<a title=\'Download de Arquivo Digital\' class=\'pe-7s-cloud-download\' href='.$acti->upload.' download></a>' :
+                                        '<a title=\'Não Possui Arquivo Digital\' class=\'pe-7s-lock\' href=\'#\'></a>'; echo " 
                                 </div>
                             </div>
                         </div>

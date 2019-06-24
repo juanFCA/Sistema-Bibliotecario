@@ -124,54 +124,81 @@ class Template
                     </a>
                 </div>
                 <ul class=\"nav\">
-                    <li class="; echo (!empty($janela) && $janela == "autores") ? "active" : "deactive"; echo">
+                    <li class=";
+                        echo (!empty($janela) && $janela == "categorias") ? "active" : "deactive";
+                        echo ">
+                        <a href='index.php'>
+                            <i class=\"pe-7s-home\"></i>
+                            <p>Acervo</p>
+                        </a>
+                    </li>";
+                    if ($_SESSION['usuario']->getTipo() == 1 || $_SESSION['usuario']->getTipo() == 2) {echo "   
+                    <li class=";
+                        echo (!empty($janela) && $janela == "autores") ? "active" : "deactive";
+                        echo ">
                         <a href='autores.php'>
                             <i class=\"pe-7s-id\"></i>
                             <p>Autores</p>
                         </a>
                     </li>
-                    <li class="; echo (!empty($janela) && $janela == "categorias") ? "active" : "deactive"; echo">
+                    <li class=";
+                        echo (!empty($janela) && $janela == "categorias") ? "active" : "deactive";
+                        echo ">
                         <a href='categorias.php'>
                             <i class=\"pe-7s-albums\"></i>
                             <p>Categorias</p>
                         </a>
                     </li>
-                    <li class="; echo (!empty($janela) && $janela == "editoras") ? "active" : "deactive"; echo">
+                    <li class=";
+                        echo (!empty($janela) && $janela == "editoras") ? "active" : "deactive";
+                        echo ">
                         <a href='editoras.php'>
                             <i class=\"pe-7s-culture\"></i>
                             <p>Editoras</p>
                         </a>
                     </li>
-                    <li class="; echo (!empty($janela) && $janela == "livros") ? "active" : "deactive"; echo">
+                    <li class=";
+                        echo (!empty($janela) && $janela == "livros") ? "active" : "deactive";
+                        echo ">
                         <a href='livros.php'>
                             <i class=\"pe-7s-bookmarks\"></i>
                             <p>Livros</p>
                         </a>
                     </li>
-                    <li class="; echo (!empty($janela) && $janela == "exemplares") ? "active" : "deactive"; echo">
+                    <li class=";
+                        echo (!empty($janela) && $janela == "exemplares") ? "active" : "deactive";
+                        echo ">
                         <a href='exemplares.php'>
                             <i class=\"pe-7s-notebook\"></i>
                             <p>Exemplares</p>
                         </a>
                     </li>
-                    <li class="; echo (!empty($janela) && $janela == "emprestimos") ? "active" : "deactive"; echo">
+                    <li class=";
+                        echo (!empty($janela) && $janela == "emprestimos") ? "active" : "deactive";
+                        echo ">
                         <a href='emprestimos.php'>
                             <i class=\"pe-7s-news-paper\"></i>
                             <p>Empréstimos</p>
                         </a>
                     </li>
-                    <li class="; echo (!empty($janela) && $janela == "reservas") ? "active" : "deactive"; echo">
+                    <li class=";
+                        echo (!empty($janela) && $janela == "reservas") ? "active" : "deactive";
+                        echo ">
                         <a href='reservas.php'>
                             <i class=\"pe-7s-news-paper\"></i>
                             <p>Reservas</p>
                         </a>
-                    </li>
+                    </li>";
+                    }
+                    if ($_SESSION['usuario']->getTipo() == 1) { echo"
                     <li class="; echo (!empty($janela) && $janela == "usuarios") ? "active" : "deactive"; echo">
                         <a href='usuarios.php'>
                             <i class=\"pe-7s-users\"></i>
                             <p>Usuários</p>
                         </a>
                     </li>
+                    ";
+                    } echo "
                 </ul>
             </div>
         </div>";

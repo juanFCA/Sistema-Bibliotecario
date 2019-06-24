@@ -25,12 +25,24 @@ template::sidebar("livros");
 template::mainpanel("Livros");
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
+    $upload_directory='uploads/livros/';
+    $file = $_FILES["upload"];
+    $ext = substr($file['name'], strrpos($file['name'], '.') + 1);
+    $path=md5(microtime()).'.'.$ext;
+    if (isset($_POST['MAX_FILE_SIZE'])){
+        // Move o arquivo da pasta temporaria de upload para a pasta de destino
+        if (move_uploaded_file($file["tmp_name"], $upload_directory.$path)) {
+            $msg3 = "<script> notificacao('pe-7s-info', 'Livro', 'Upload de Arquivo Realizado com Êxito', 'success'); </script>";
+        } else {
+            $msg3 = "<script> notificacao('pe-7s-info', 'Livro', 'Falha ao tentar realizar Upload de Arquivo', 'danger'); </script>";
+        }
+    }
     $livro = new livro("",
                         $_POST["titulo"],
                         $_POST["isbn"],
                         $_POST["edicao"],
                         $_POST["ano"],
-                        $_POST["upload"],
+                       "$upload_directory"."$path",
                         $_POST["editora"],
                         $_POST["categoria"]);
     if(isset($_POST["id"])){
@@ -78,7 +90,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                         <h4 class='title'>Dados do Livro</h4>
                     </div>
                     <div class='content'>
-                        <form action="?act=save&id=" method="POST" name="form1">
+                        <form action="?act=save&id=" method="POST" enctype="multipart/form-data" name="form1">
                             <input type="hidden" name="id" value="<?php if(!empty($livro)) {echo $livro->getIdtbLivro();}?>" required/>
                             <div class="row">
                                 <div class="col-md-5">
@@ -171,6 +183,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="form-group">
+                                        <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
                                         <Label>Upload de Arquivo Digital</Label>
                                         <input type="file" name="upload" value="<?php if(isset($livro) && $livro != null) {echo $livro->getUpload();}?>"/>
                                     </div>
@@ -197,5 +210,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $_REQUEST["id"]) {
 template::footer("Livros");
 echo (isset($msg) && ($msg != null || $msg != "")) ? $msg : '';
 echo (isset($msg1) && ($msg1 != null || $msg1 != "")) ? $msg1 : '';
-echo (isset($msg2) && ($msg2 != null || $msg2 != "")) ? $msg2 : '';                        
+echo (isset($msg2) && ($msg2 != null || $msg2 != "")) ? $msg2 : '';
+echo (isset($msg3) && ($msg3 != null || $msg3 != "")) ? $msg3 : '';
 ?>
