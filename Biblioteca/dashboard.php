@@ -161,7 +161,7 @@ $consulta->retornaTotalResEmp(0);
                         <div class="content">
                             <canvas id="charttotalresemp"></canvas>
                             <div class="footer">
-                                <div class="stats col-md-8">
+                                <div class="stats">
                                     <i class="fa fa-clock-o"></i> Considerando apenas o Mês Atual!
                                 </div>
                             </div>
