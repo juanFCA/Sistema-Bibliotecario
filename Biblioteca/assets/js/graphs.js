@@ -52,6 +52,20 @@ $(document).ready(function(){
     });
 });
 
+//Exporta o Gráfico
+$('#buttontotalresemp').on('click', function(){
+    html2canvas($('#charttotalresemp'), {
+        onrendered: function(canvas) {
+            var imgData = canvas.toDataURL('image/png');
+            var pdf = new jsPDF('p', 'mm');
+            pdf.setFontSize(22);
+            pdf.text(25, 25, "Total de Reservas e Emprestimos no Mês Atual");
+            pdf.addImage(imgData, 'PNG', 25, 40);
+            pdf.save('test.pdf');
+        }
+    });
+});
+
 $(document).ready(function(){
     $.ajax({
         type: 'POST',
@@ -77,6 +91,20 @@ $(document).ready(function(){
                     }
                 }
             });
+        }
+    });
+});
+
+//Exporta o Gráfico
+$('#buttonresmes').on('click', function(){
+    html2canvas($('#chartreservames'), {
+        onrendered: function(canvas) {
+            var imgData = canvas.toDataURL('image/png');
+            var pdf = new jsPDF('p', 'mm');
+            pdf.setFontSize(22);
+            pdf.text(25, 25, "Reservas por Mês - 3 últimos");
+            pdf.addImage(imgData, 'PNG', 25, 40);
+            pdf.save('test.pdf');
         }
     });
 });
@@ -110,6 +138,20 @@ $(document).ready(function(){
     });
 });
 
+//Exporta o Gráfico
+$('#buttonempmes').on('click', function(){
+    html2canvas($('#chartemprestimomes'), {
+        onrendered: function(canvas) {
+            var imgData = canvas.toDataURL('image/png');
+            var pdf = new jsPDF('p', 'mm');
+            pdf.setFontSize(22);
+            pdf.text(25, 25, "Emprestimos por Mês - 3 últimos");
+            pdf.addImage(imgData, 'PNG', 25, 40);
+            pdf.save('test.pdf');
+        }
+    });
+});
+
 $(document).ready(function(){
     $.ajax({
         type: 'POST',
@@ -139,6 +181,20 @@ $(document).ready(function(){
     });
 });
 
+//Exporta o Gráfico
+$('#buttonrescat').on('click', function(){
+    html2canvas($('#chartreservacategoria'), {
+        onrendered: function(canvas) {
+            var imgData = canvas.toDataURL('image/png');
+            var pdf = new jsPDF('p', 'mm');
+            pdf.setFontSize(22);
+            pdf.text(25, 25, "Reservas por Categorias");
+            pdf.addImage(imgData, 'PNG', 25, 40);
+            pdf.save('test.pdf');
+        }
+    });
+});
+
 $(document).ready(function(){
     $.ajax({
         type: 'POST',
@@ -164,6 +220,20 @@ $(document).ready(function(){
                     }
                 }
             });
+        }
+    });
+});
+
+//Exporta o Gráfico
+$('#buttonempcat').on('click', function(){
+    html2canvas($('#chartemprestimocategoria'), {
+        onrendered: function(canvas) {
+            var imgData = canvas.toDataURL('image/png');
+            var pdf = new jsPDF('p', 'mm');
+            pdf.setFontSize(22);
+            pdf.text(25, 25, "Emprestimos por Categorias");
+            pdf.addImage(imgData, 'PNG', 25, 40);
+            pdf.save('test.pdf');
         }
     });
 });

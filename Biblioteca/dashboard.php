@@ -148,13 +148,20 @@ $consulta->retornaTotalResEmp(0);
 
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="header">
-                            <h4 class="title">Total de Reservas e Emprestimos</h4>
+                        <div class="row header">
+                            <div class="col-md-8">
+                                <h4 class="title">Total de Reservas e Emprestimos</h4>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <button class="btn btn-simple btn-link btn-icon" id="buttontotalresemp" type="button" title="Exportar Gráfico">
+                                    <i class="fa fa-download"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="content">
                             <canvas id="charttotalresemp"></canvas>
                             <div class="footer">
-                                <div class="stats">
+                                <div class="stats col-md-8">
                                     <i class="fa fa-clock-o"></i> Considerando apenas o Mês Atual!
                                 </div>
                             </div>
@@ -166,8 +173,15 @@ $consulta->retornaTotalResEmp(0);
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="header">
-                            <h4 class="title">Reservas por Mês</h4>
+                        <div class="row header">
+                            <div class="col-md-8">
+                                <h4 class="title">Reservas por Mês</h4>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <button class="btn btn-simple btn-link btn-icon" id="buttonresmes" type="button" title="Exportar Gráfico">
+                                    <i class="fa fa-download"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="content">
                             <canvas id="chartreservames"></canvas>
@@ -181,8 +195,15 @@ $consulta->retornaTotalResEmp(0);
                 </div>
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="header">
-                            <h4 class="title">Emprestimos por Mês</h4>
+                        <div class="row header">
+                            <div class="col-md-8">
+                                <h4 class="title">Emprestimos por Mês</h4>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <button class="btn btn-simple btn-link btn-icon" id="buttonempmes" type="button" title="Exportar Gráfico">
+                                    <i class="fa fa-download"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="content">
                             <canvas id="chartemprestimomes"></canvas>
@@ -199,8 +220,15 @@ $consulta->retornaTotalResEmp(0);
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="header">
-                            <h4 class="title">Reservas por Categoria</h4>
+                        <div class="row header">
+                            <div class="col-md-8">
+                                <h4 class="title">Reservas por Categoria</h4>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <button class="btn btn-simple btn-link btn-icon" id="buttonrescat" type="button" title="Exportar Gráfico">
+                                    <i class="fa fa-download"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="content">
                             <canvas id="chartreservacategoria"></canvas>
@@ -214,8 +242,15 @@ $consulta->retornaTotalResEmp(0);
                 </div>
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="header">
-                            <h4 class="title">Emprestimos por Categoria</h4>
+                        <div class="row header">
+                            <div class="col-md-8">
+                                <h4 class="title">Emprestimos por Categoria</h4>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <button class="btn btn-simple btn-link btn-icon" id="buttonempcat" type="button" title="Exportar Gráfico">
+                                    <i class="fa fa-download"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="content">
                             <canvas id="chartemprestimocategoria"></canvas>
@@ -236,3 +271,5 @@ $consulta->retornaTotalResEmp(0);
 template::footer("Dashboard");
 ?>
 <script src="assets/js/graphs.js" type="text/javascript"></script>
+<script src="assets/js/html2canvas.min.js" type="text/javascript"></script>
+<script src="assets/js/jspdf.min.js" type="text/javascript"></script>
