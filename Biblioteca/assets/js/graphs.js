@@ -61,7 +61,8 @@ $('#buttontotalresemp').on('click', function(){
             pdf.setFontSize(22);
             pdf.text(25, 25, "Total de Reservas e Emprestimos no Mês Atual");
             pdf.addImage(imgData, 'PNG', 25, 40);
-            pdf.save('test.pdf');
+            pdf.output('dataurlnewwindow');
+            //pdf.save('test.pdf');
         }
     });
 });
@@ -104,7 +105,8 @@ $('#buttonresmes').on('click', function(){
             pdf.setFontSize(22);
             pdf.text(25, 25, "Reservas por Mês - 3 últimos");
             pdf.addImage(imgData, 'PNG', 25, 40);
-            pdf.save('test.pdf');
+            pdf.output('dataurlnewwindow');
+            //pdf.save('test.pdf');
         }
     });
 });
@@ -147,7 +149,8 @@ $('#buttonempmes').on('click', function(){
             pdf.setFontSize(22);
             pdf.text(25, 25, "Emprestimos por Mês - 3 últimos");
             pdf.addImage(imgData, 'PNG', 25, 40);
-            pdf.save('test.pdf');
+            pdf.output('dataurlnewwindow');
+            //pdf.save('test.pdf');
         }
     });
 });
@@ -190,7 +193,8 @@ $('#buttonrescat').on('click', function(){
             pdf.setFontSize(22);
             pdf.text(25, 25, "Reservas por Categorias");
             pdf.addImage(imgData, 'PNG', 25, 40);
-            pdf.save('test.pdf');
+            pdf.output('dataurlnewwindow');
+            //pdf.save('test.pdf');
         }
     });
 });
@@ -233,7 +237,8 @@ $('#buttonempcat').on('click', function(){
             pdf.setFontSize(22);
             pdf.text(25, 25, "Emprestimos por Categorias");
             pdf.addImage(imgData, 'PNG', 25, 40);
-            pdf.save('test.pdf');
+            pdf.output('dataurlnewwindow');
+            //pdf.save('test.pdf');
         }
     });
 });
