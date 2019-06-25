@@ -25,26 +25,39 @@ template::sidebar("livros");
 template::mainpanel("Livros");
 
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save") {
-    $upload_directory='uploads/livros/';
-    $file = $_FILES["upload"];
-    $ext = substr($file['name'], strrpos($file['name'], '.') + 1);
-    $path=md5(microtime()).'.'.$ext;
-    if (isset($_POST['MAX_FILE_SIZE'])){
+
+    if (isset($_FILES["upload"]) && !empty($_FILES["upload"])) {
+        var_dump(isset($_FILES["upload"]) && !empty($_FILES["upload"]));
+        $upload_directory='uploads/livros/';
+        $file = $_FILES["upload"];
+        $ext = substr($file['name'], strrpos($file['name'], '.') + 1);
+        $path=md5(microtime()).'.'.$ext;
         // Move o arquivo da pasta temporaria de upload para a pasta de destino
         if (move_uploaded_file($file["tmp_name"], $upload_directory.$path)) {
             $msg3 = "<script> notificacao('pe-7s-info', 'Livro', 'Upload de Arquivo Realizado com Êxito', 'success'); </script>";
         } else {
-            $msg3 = "<script> notificacao('pe-7s-info', 'Livro', 'Falha ao tentar realizar Upload de Arquivo', 'danger'); </script>";
+            $msg3 = "<script> notificacao('pe-7s-info', 'Livro', 'Falha ao tentar realizar Upload de Arquivo - Nenhum Arquivo', 'danger'); </script>";
         }
-    }
-    $livro = new livro("",
+        $livro = new livro("",
                         $_POST["titulo"],
                         $_POST["isbn"],
                         $_POST["edicao"],
                         $_POST["ano"],
-                       "$upload_directory"."$path",
+                        "$upload_directory"."$path",
                         $_POST["editora"],
                         $_POST["categoria"]);
+    } else {
+        $livro = new livro("",
+                        $_POST["titulo"],
+                        $_POST["isbn"],
+                        $_POST["edicao"],
+                        $_POST["ano"],
+                        null,
+                        $_POST["editora"],
+                        $_POST["categoria"]);
+        unset($msg);
+    }
+
     if(isset($_POST["id"])){
         $livro->setIdtbLivro($_POST["id"]);
     } 
