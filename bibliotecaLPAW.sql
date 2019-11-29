@@ -275,7 +275,7 @@ CREATE TABLE `tb_usuario` (
 --
 
 INSERT INTO `tb_usuario` (`idtb_usuario`, `nomeUsuario`, `tipo`, `email`, `senha`, `recuperar`) VALUES
-(1, 'Juan Ferreira Carlos', 1, 'juanfcarlos.93@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 0),
+(1, 'Administrador', 1, 'admin@admin.com', 'e10adc3949ba59abbe56e057f20f883e', 0),
 (2, 'Aluno', 5, 'aluno@aluno.com', 'e10adc3949ba59abbe56e057f20f883e', 0),
 (3, 'Professor', 4, 'professor@professor.com', 'e10adc3949ba59abbe56e057f20f883e', 0),
 (4, 'Bibliotecario', 2, 'bibliotecario@bibliotecario.com', 'e10adc3949ba59abbe56e057f20f883e', 0),

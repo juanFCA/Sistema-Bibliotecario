@@ -1,6 +1,7 @@
 <?php
 
 require_once "conexao.php";
+require_once "configDB.php";
 
 class consulta
 {
@@ -206,7 +207,7 @@ class consulta
             $statement = Conexao::getInstance()->prepare("SELECT table_name AS tabela, 
                                                                            table_rows AS quantidade
                                                                       FROM INFORMATION_SCHEMA.TABLES 
-                                                                     WHERE TABLE_SCHEMA = 'bibliotecaLPAW'");
+                                                                     WHERE TABLE_SCHEMA = '". DBNAME ."'");
             if($statement->execute()){
                 if($statement->rowCount() > 0){
                     $tabela = array();
